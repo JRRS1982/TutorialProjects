@@ -1,8 +1,16 @@
-import { Company } from './Company';
-import { User } from './User';
+// import { Company } from './Company';
+// import { User } from './User';
 
-const user = new User();
-console.log(user);
-
-const company = new Company();
-console.log(company);
+new google.maps.Map(
+  // first parameter is required by google... and needs to be html, so we created a div on index.html
+  document.getElementById('map'), 
+  // second param is not required, but optional object about the options for the map.
+  {
+    // options on the centre of the google map.
+    zoom: 1,
+    center: {
+      lat: 0,
+      lng: 0,
+    }
+  }
+);

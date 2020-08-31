@@ -1,8 +1,6 @@
-```
-// install parcel 
-npm install -g parcel-bundler
-// use npx and parcel to run
-npx parcel index.html
-```
+- npm install -g parcel-bundler
+- npm install faker (install faker)
+- npm install @types/faker
+- npm install @types/googlemaps
 
-- npm install faker
+- npx parcel index (run program)

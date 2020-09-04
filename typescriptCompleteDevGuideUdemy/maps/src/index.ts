@@ -1,16 +1,10 @@
-// import { Company } from './Company';
-// import { User } from './User';
+import { Company } from './Company';
+import { CustomMap } from './CustomMap';
+import { User } from './User';
 
-new google.maps.Map(
-  // first parameter is required by google... and needs to be html, so we created a div on index.html
-  document.getElementById('map'), 
-  // second param is not required, but optional object about the options for the map.
-  {
-    // options on the centre of the google map.
-    zoom: 1,
-    center: {
-      lat: 0,
-      lng: 0,
-    }
-  }
-);
+const user = new User();
+const company = new Company();
+const customMap = new CustomMap('map'); // in the index.html we created a HTML element called map, the google api requires a html element to be given as a first param
+
+customMap.addCompanyMarker(company);
+customMap.addUserMarker(user);

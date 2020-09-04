@@ -4,6 +4,7 @@ interface Mappable {
     lat: number;
     lng: number;
   };
+  markerContent(): string;
 }
 
 export class CustomMap {
@@ -25,12 +26,19 @@ export class CustomMap {
   }
 
   addMarker(mappable: Mappable): void { // having a Mappable interface defined above means that every class that may want to be added to the map in the future does not need to be added as an OR to the params, it just needs to comply with the structure in Mappable interface.
-    new google.maps.Marker({
+    const marker = new google.maps.Marker({
       map: this.googleMap, // where being added to
       position: { // what is being added
         lat: mappable.location.lat,
         lng: mappable.location.lng
       }
+    });
+    
+    marker.addListener('click', () => {
+      const infoWindow = new google.maps.InfoWindow({ // here for scoping reasons only, could be raised a level, but not used elsewhere in the class.
+        content: mappable.markerContent()
+      });
+      infoWindow.open(this.googleMap, marker) // open function on infoWindow takes two params, a html map and MVC object.
     });
   }
 }

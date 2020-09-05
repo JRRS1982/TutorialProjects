@@ -1,20 +1,8 @@
-class Sorter {
-  constructor(public collection: number[]) {}
-  
-  sort(): void {  // this is a bubble sort
-    const { length } = this.collection;
-    for (let i = 0; i < length; i++) { // for each element in the original
-      for (let k = 0; k < length - i - 1; k++) { // loop the left element, for all of i... but shorten i each time as the left element will have been put in order.
-        if (this.collection[k] > this.collection[k + 1]) { // if right is bigger then the left.
-          const temp = this.collection[k];  // save the left side value for use in a moment.
-          this.collection[k] = this.collection[k+1]; // set the left side to the right value
-          this.collection[k+1] = temp; // set the right side as the left value. 
-        }
-      }
-    }
-  }
-}
+import { NumbersCollection } from './NumbersCollection';
+import { Sorter } from "./Sorter";
 
-const sorter = new Sorter([10, 3, -2, 0]);
-sorter.sort();
+const numbersCollection = new NumbersCollection([10, 3, -2, 0]); // create an object that has the attributes we need.
+const sorter = new Sorter(numbersCollection); // passing in object that has the data we want to sort and the two implements that are going to be different fo each type of data that is going to be passed in.
+
+sorter.bubbleSort();
 console.log(sorter.collection);

@@ -7,15 +7,17 @@ interface Sortable {
   swap(leftElement: number, rightElement: number): void,
 }
 
-export class Sorter {
-  constructor(public collection: Sortable) {}
-
+export abstract class Sorter {
+  abstract compare(leftIndex: number, rightIndex: number): boolean; // says the child class will use this signature.
+  abstract swap(leftIndex: number, rightIndex: number): void; // says the child class will use this signature.
+  abstract length: number; // this is a getter in the child so its can just be an attribute.
+  
   bubbleSort(): void {
-    const { length } = this.collection;
+    const { length } = this;
     for (let i = 0; i < length; i++) { // for each element in the original
       for (let k = 0; k < length - i - 1; k++) { // loop the left element, for all of i... but shorten i each time as the left element will have been put in order.
-        if (this.collection.compare(k, k+1)) { 
-          this.collection.swap(k, k + 1);
+        if (this.compare(k, k+1)) { 
+          this.swap(k, k + 1);
         }
       }
     }

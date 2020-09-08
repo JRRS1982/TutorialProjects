@@ -1,10 +1,16 @@
+import { Sorter } from "./Sorter";
+
 class Node { // a node/element in the linked list.
   next: Node | null = null;  // reference to the next element in the list.
   constructor(public data: number){}
 }
 
 // A linked list requires a node... that node has a reference to the next element in the list and its own value.
-export class LinkedList {
+export class LinkedList extends Sorter {
+  constructor() {
+    super(); // inherit from Sorter
+  }
+  
   head: Node | null = null; // the list starts empty - head is the first element in the list.
 
   add(data: number): void {
@@ -70,9 +76,8 @@ export class LinkedList {
     }
     let node: Node | null = this.head; 
     while (node) {
-      console.log(node.data) {
-        node = node.next;
-      }
+      console.log(node.data);
+      node = node.next;
     }
   }
 }

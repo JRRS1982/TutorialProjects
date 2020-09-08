@@ -1,11 +1,11 @@
 import { NumbersCollection } from './NumbersCollection';
 
 // length, compare and swap functions are all that are required for an element to be sorted
-interface Sortable {
-  length: number,
-  compare(leftElement:number, rightElement: number): boolean,
-  swap(leftElement: number, rightElement: number): void,
-}
+// interface Sortable { .... // INTERFACE WAS USED FOR THE ELEMENT PASSED INTO SORTER, BUT NOW WE ARE USING AN ABSTRACT CLASS, WHICH IS A DEEPER COUPLING AND MEANS WE DONT NEED TO INITIALIZE SORTER ANYMORE.
+//   length: number,
+//   compare(leftElement:number, rightElement: number): boolean,
+//   swap(leftElement: number, rightElement: number): void,
+// }
 
 export abstract class Sorter {
   abstract compare(leftIndex: number, rightIndex: number): boolean; // says the child class will use this signature.

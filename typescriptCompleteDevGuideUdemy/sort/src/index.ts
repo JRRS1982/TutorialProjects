@@ -19,5 +19,5 @@ linkedList.add(500);
 linkedList.add(11);
 linkedList.add(-20);
 linkedList.add(2);
-linkedList.bubbleSort();
+linkedList.bubbleSort(); // inherit bubble
 linkedList.print();

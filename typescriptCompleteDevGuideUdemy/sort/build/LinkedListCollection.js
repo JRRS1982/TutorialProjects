@@ -26,10 +26,11 @@ var Node = /** @class */ (function () {
 var LinkedList = /** @class */ (function (_super) {
     __extends(LinkedList, _super);
     function LinkedList() {
-        var _this = _super.call(this) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.head = null; // the list starts empty - head is the first element in the list.
         return _this;
     }
+    // IMPORTANT: IF THE CHILD DOES NOT DEFINE A CONSTRUCTOR THEN YOU DON'T NEED TO CALL SUPER TO INHERIT PARENT
     LinkedList.prototype.add = function (data) {
         var node = new Node(data);
         if (!this.head) {

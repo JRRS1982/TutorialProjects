@@ -6,13 +6,10 @@ class Node { // a node/element in the linked list.
 }
 
 // A linked list requires a node... that node has a reference to the next element in the list and its own value.
-export class LinkedList extends Sorter {
-  constructor() {
-    super(); // inherit from Sorter
-  }
-  
+export class LinkedList extends Sorter { 
   head: Node | null = null; // the list starts empty - head is the first element in the list.
-
+  // IMPORTANT: IF THE CHILD DOES NOT DEFINE A CONSTRUCTOR THEN YOU DON'T NEED TO CALL SUPER TO INHERIT PARENT
+  
   add(data: number): void {
     const node = new Node(data);
     if (!this.head){ 

@@ -2,11 +2,13 @@ import fs from 'fs'; // import file system rom node standard library to allow us
 import { MatchResult } from './MatchResult';
 import { dateStringToDate } from './utils';
 
+type MatchData = [Date, string, string, number, MatchResult, string];
 
 export class CsvFileReader {
-  data: string[][] = [];
+  data: MatchData[] = []; // using a tuple as the csv should be a fixed order
+
   constructor(public filename: string) {}
-  
+
   read(): void {
     this.data = fs
     .readFileSync(this.filename, { //its currently one huge string that spans many lines

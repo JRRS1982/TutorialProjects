@@ -9,7 +9,7 @@ var utils_1 = require("./utils");
 var CsvFileReader = /** @class */ (function () {
     function CsvFileReader(filename) {
         this.filename = filename;
-        this.data = [];
+        this.data = []; // using a tuple as the csv should be a fixed order
     }
     CsvFileReader.prototype.read = function () {
         this.data = fs_1.default

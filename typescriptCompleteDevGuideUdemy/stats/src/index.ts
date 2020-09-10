@@ -1,11 +1,11 @@
-import { CsvFileReader } from './CsvFileReader';
+import { MatchReader } from './MatchReader';
 import { MatchResult } from './MatchResult';
 
 /*
 * Data structure of football.csv:
 * date / homeTeam / awayTeam / homeScore / awayScore / winner / referee
 */
-const reader = new CsvFileReader('football.csv');
+const reader = new MatchReader('football.csv'); // Match reader is a child of CsVFileReader, and CsvFileReader accepts generic types!
 reader.read();
 
 let manUnitedWins = 0;

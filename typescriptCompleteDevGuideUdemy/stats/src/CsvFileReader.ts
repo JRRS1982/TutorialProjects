@@ -1,11 +1,10 @@
 import fs from 'fs'; // import file system rom node standard library to allow us to interact with the computers system.
 
-
-export abstract class CsvFileReader<TypeOfData> {  // TypeOfData makes this a generic type so it can be used by other data types, not just match data
-  data: TypeOfData[] = []; // using a tuple as the csv should be a fixed order
+export abstract class CsvFileReader<GenericType> {  // TypeOfData makes this a generic type so it can be used by other data types, not just match data
+  data: GenericType[] = []; // using a tuple as the csv should be a fixed order
 
   constructor(public filename: string) {}
-  abstract mapRow(row: string[]): TypeOfData;
+  abstract mapRow(row: string[]): GenericType;
   
   read(): void {
     this.data = fs

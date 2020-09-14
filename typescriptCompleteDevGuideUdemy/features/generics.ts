@@ -45,3 +45,31 @@ function printAnything<T>(array: T[]): void {  // T
 
 printAnything<string>(['a','b','c']);  // string here is setting the type explicitly
 printAnything(['a','b','c']);  // setting type with inference
+
+
+// GENERIC CONSTRAINTS - adding promises to generic types (i.e. a generic type has not length / any other attribute)
+
+class Car {
+  print() {
+    console.log('I am a car');
+  }
+}
+
+class House {
+  print() {
+    console.log('I am a house');
+  }
+}
+
+interface Printable {
+  print(): void;
+}
+
+function printHousesOrCars<T extends Printable>(arr: T[]): void { // ie T extends an interface
+  for (let index = 0; index < arr.length; index++) {
+    arr[index].print();
+  }
+}
+
+// printHousesOrCars([1,2,'a']) wont work - strings and numbers are not 'printable' as they have no print function
+printHousesOrCars([new House, new House, new Car]);

@@ -2,14 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var MatchReader_1 = require("./MatchReader");
 var MatchResult_1 = require("./MatchResult");
+var CsvFileReader_1 = require("./CsvFileReader");
 /*
 * Data structure of football.csv:
 * date / homeTeam / awayTeam / homeScore / awayScore / winner / referee
 */
-var reader = new MatchReader_1.MatchReader('football.csv'); // Match reader is a child of CsVFileReader, and CsvFileReader accepts generic types!
-reader.read();
+// so csvFile reader is used here, but it could be replaced with an api reader or other reader as long as it has what MatchReader needs.
+var csvFileReader = new CsvFileReader_1.CsvFileReader('football.csv');
+var matchReader = new MatchReader_1.MatchReader(csvFileReader);
+matchReader.load();
 var manUnitedWins = 0;
-for (var _i = 0, _a = reader.data; _i < _a.length; _i++) {
+for (var _i = 0, _a = matchReader.matches; _i < _a.length; _i++) {
     var match = _a[_i];
     if (match[1] === 'Man United' && match[5] === MatchResult_1.MatchResult.HomeWin) {
         manUnitedWins++;

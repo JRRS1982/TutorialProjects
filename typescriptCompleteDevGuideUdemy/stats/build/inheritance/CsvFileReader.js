@@ -8,7 +8,7 @@ var fs_1 = __importDefault(require("fs")); // import file system rom node standa
 var CsvFileReader = /** @class */ (function () {
     function CsvFileReader(filename) {
         this.filename = filename;
-        this.data = [];
+        this.data = []; // using a tuple as the csv should be a fixed order
     }
     CsvFileReader.prototype.read = function () {
         this.data = fs_1.default
@@ -18,9 +18,9 @@ var CsvFileReader = /** @class */ (function () {
             .split('\n') //by new line
             .map(function (row) {
             return row.split(','); //each line/match is a row, and we want to split that row by the commas on it.
-        });
+        })
+            .map(this.mapRow);
     };
-    ;
     return CsvFileReader;
 }());
 exports.CsvFileReader = CsvFileReader;

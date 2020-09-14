@@ -1,8 +1,6 @@
-import { HtmlReport } from './reportTargets/HtmlReport';
 import { CsvFileReader } from './CsvFileReader';
 import { MatchReader } from './MatchReader';
 import { Summary } from './Summary';
-import { WinsAnalysis } from "./analyzers/WinsAnalysis";
 
 /*
 * Data structure of football.csv:
@@ -16,10 +14,6 @@ const csvFileReader = new CsvFileReader('football.csv');
 const matchReader = new MatchReader(csvFileReader);
 matchReader.load();
 
-const summary = new Summary(
-  new WinsAnalysis('Man United'), 
-  // new ConsoleReport()
-  new HtmlReport()
-);
+const summary = Summary.winsAnalysisWithHTMLReport('Man United'); // as winsAnalysisWithHTMLReport is a static method we don't need to create an instance of the class.
 
-summary.buildAndPrintReport(matchReader.matches);    
+summary.buildAndPrintReport(matchReader.matches);

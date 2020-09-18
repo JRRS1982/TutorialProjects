@@ -4,7 +4,15 @@
 
 ## Commands run
 
-npm install -g parcel-bundler
+```
+"scripts": {
+  "start:db": "json-server -w db.json", 
+  "start:parcel": "parcel index.html",
+  "start": "concurrently npm:start:*"
+},
+```
+ 
+npm run start
 
 ## Requirements
 

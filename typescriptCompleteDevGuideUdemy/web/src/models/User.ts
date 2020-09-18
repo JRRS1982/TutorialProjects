@@ -27,4 +27,18 @@ export class User {
     handlers.push(callback);  // push/add the callback into the event handler
     this.events[eventName] = handlers; // push the event handler into the events array.
   }
+
+  public trigger(eventName: string): void { // for every element in the eventHandlers call it if it exists
+    const handlers = this.events[eventName];
+    if (!handlers || handlers.length ===0) {
+      return;
+    }
+    handlers.forEach(callback => {
+      callback();
+    });
+  }
+  
+  public save() {
+    
+  }
 }

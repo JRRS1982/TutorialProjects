@@ -117,9 +117,61 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/index.ts":[function(require,module,exports) {
-console.log('hi there');
-},{}],"../../../../../.npm/_npx/79731/lib/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+})({"src/models/User.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.User = void 0;
+
+var User =
+/** @class */
+function () {
+  function User(data) {
+    this.data = data; // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
+
+    this.events = {}; // events to be an object, that has an unknown key which is a string, that points to an array of callback functions.
+  } // get a single piece of info about this user
+
+
+  User.prototype.get = function (propName) {
+    return this.data[propName];
+  }; // changes information about a user, returns nothing and what is passed has to comply with UserProps
+
+
+  User.prototype.set = function (update) {
+    Object.assign(this.data, update);
+  }; // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
+
+
+  User.prototype.on = function (eventName, callback) {
+    var handlers = this.events[eventName] || []; // is there an event already?
+
+    handlers.push(callback); // push/add the callback into the event handler
+
+    this.events[eventName] = handlers; // push the event handler into the events array.
+  };
+
+  return User;
+}();
+
+exports.User = User;
+},{}],"src/index.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var User_1 = require("./models/User");
+
+var user = new User_1.User({});
+user.on('change', function () {});
+user.on('change', function () {});
+user.on('that change', function () {});
+console.log(user);
+},{"./models/User":"src/models/User.ts"}],"../../../../../.npm/_npx/83959/lib/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -147,7 +199,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61972" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54137" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -323,5 +375,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../.npm/_npx/79731/lib/node_modules/parcel/src/builtins/hmr-runtime.js","src/index.ts"], null)
+},{}]},{},["../../../../../.npm/_npx/83959/lib/node_modules/parcel/src/builtins/hmr-runtime.js","src/index.ts"], null)
 //# sourceMappingURL=/src.f10117fe.js.map

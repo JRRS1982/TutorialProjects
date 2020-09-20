@@ -1,6 +1,5 @@
-import axios from 'axios';
+import { User } from './models/User';
 
-axios.post('http://localhost:3000/users', {  // the json-server is running on local host 3000, therefore to make a request to create a user we post to that with the properties we want to add.
-  name: 'myName',
-  age: 20
-});
+const user = new User({ age: 1, name: 'myName' });
+
+console.log(user.get('name'));

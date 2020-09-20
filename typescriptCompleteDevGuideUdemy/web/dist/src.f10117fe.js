@@ -1907,8 +1907,14 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults.js","./cancel/Cancel":"node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/index.ts":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/User.ts":[function(require,module,exports) {
 "use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
@@ -1919,14 +1925,96 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.User = void 0;
 
 var axios_1 = __importDefault(require("axios"));
 
-axios_1.default.post('http://localhost:3000/users', {
-  name: 'myName',
-  age: 20
+var User = /*#__PURE__*/function () {
+  function User(data) {
+    _classCallCheck(this, User);
+
+    this.data = data; // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
+
+    this.events = {}; // events to be an object, that has an unknown key which is a string, that points to an array of callback functions.
+  } // get a single piece of info about this user
+
+
+  _createClass(User, [{
+    key: "get",
+    value: function get(propName) {
+      return this.data[propName];
+    } // changes information about a user, returns nothing and what is passed has to comply with UserProps
+
+  }, {
+    key: "set",
+    value: function set(update) {
+      Object.assign(this.data, update);
+    } // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
+
+  }, {
+    key: "on",
+    value: function on(eventName, callback) {
+      var handlers = this.events[eventName] || []; // is there an event already?
+
+      handlers.push(callback); // push/add the callback into the event handler
+
+      this.events[eventName] = handlers; // push the event handler into the events array.
+    }
+  }, {
+    key: "trigger",
+    value: function trigger(eventName) {
+      var handlers = this.events[eventName];
+
+      if (!handlers || handlers.length === 0) {
+        return;
+      }
+
+      handlers.forEach(function (callback) {
+        callback();
+      });
+    }
+  }, {
+    key: "fetch",
+    value: function fetch() {
+      var _this = this;
+
+      axios_1.default.get("http://localhost:3000/users/".concat(this.get('id'))).then(function (response) {
+        _this.set(response.data); // the json data back from server - i.e. users/id of what is in db.json
+
+      });
+    }
+  }, {
+    key: "save",
+    value: function save() {
+      var id = this.get('id');
+
+      if (id) {
+        axios_1.default.put("http://localhost:3000/users/".concat(id), this.data); // update
+      } else {
+        axios_1.default.post("http://localhost:3000/users/".concat(id), this.data); // save
+      }
+    }
+  }]);
+
+  return User;
+}();
+
+exports.User = User;
+},{"axios":"node_modules/axios/index.js"}],"src/index.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
-},{"axios":"node_modules/axios/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+var User_1 = require("./models/User");
+
+var user = new User_1.User({
+  age: 1,
+  name: 'myName'
+});
+console.log(user.get('name'));
+},{"./models/User":"src/models/User.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1954,7 +2042,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58229" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57779" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,63 +1,27 @@
-import axios, { AxiosResponse } from 'axios';
+import { Sync } from './Sync';
+import { Eventing } from "./Eventing";
+import { Attributes } from "./Attributes"
 
-interface UserProps {
-  id?: number; // going to represent the User ID - if a user has one it has been saved to the back end.
+export interface UserProps {
   name?: string;
   age?: number;
+  id?: number; // going to represent the User ID - if a user has one it has been saved to the back end.
 }
 
-type Callback = () => void;
+const rootUrl = 'http://localhost:3000/users';
 
 export class User {
-  // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
-  events: {[key: string]: Callback[] } = {};  // events to be an object, that has an unknown key which is a string, that points to an array of callback functions.
-  
-  constructor(private data: UserProps) {}
-  
-  // get a single piece of info about this user
-  public get(propName: string): (string | number) { // type union - return a string or number
-    return this.data[propName];
-  }
-  
-  // changes information about a user, returns nothing and what is passed has to comply with UserProps
-  public set(update: UserProps): void {
-    Object.assign(this.data, update);
-  }
-  
-  // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
-  public on(eventName: string, callback: Callback): void  { // created a type alias above, for clean code, the second function is going to be an argument.
-    const handlers = this.events[eventName] || []; // is there an event already?
-    handlers.push(callback);  // push/add the callback into the event handler
-    this.events[eventName] = handlers; // push the event handler into the events array.
-  }
+  public events: Eventing = new Eventing(); // unlikely to change, normally we would use composition and an interface, but in this instance its ok to hard code.
+  public sync: Sync<UserProps> = new Sync<UserProps>(rootUrl); // Sync has a generic class, we are passing in UserProps for that type, but that type has an OPTIONAL id... so in Sync the id has to be optional as well
 
-  public trigger(eventName: string): void { // for every element in the eventHandlers call it if it exists
-    const handlers = this.events[eventName];
+  /*
+  Mega - so setting attributes, with a type of the generic class attributes, with the UserProps to indicate what properties are in the attributes.
+  However we also need to pass in one argument to UserProps to set the initial properties i.e. what is showing as data in Attributes, of the the User we want to create. 
+  So we are creating attributes, but we cant initialize here, we need to pass in the data aka attrs/attributes to UserProps in the constructor, so define it outside and set in constructor.
+  */
+  public attributes: Attributes<UserProps>;
 
-    if (!handlers || handlers.length ===0) {
-      return;
-    }
-
-    handlers.forEach(callback => {
-      callback();
-    });
-  }
-
-  public fetch(): void {
-    axios.get(`http://localhost:3000/users/${this.get('id')}`)
-      .then((response: AxiosResponse):void => { // AxiosResponse comes from Axios import
-        this.set(response.data); // the json data back from server - i.e. users/id of what is in db.json
-      }
-    );
-  }
-  
-  public save(): void {
-    const id = this.get('id');
-
-    if (id) {
-      axios.put(`http://localhost:3000/users/${id}`, this.data) // update
-    } else {
-      axios.post(`http://localhost:3000/users/${id}`, this.data)  // save
-    }
+  constructor(attrs: UserProps) {
+    this.attributes = new Attributes<UserProps>(attrs);
   }
 }

@@ -1907,7 +1907,7 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults.js","./cancel/Cancel":"node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/User.ts":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/Sync.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1925,35 +1925,66 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.User = void 0;
+exports.Sync = void 0;
 
 var axios_1 = __importDefault(require("axios"));
 
-var User = /*#__PURE__*/function () {
-  function User(data) {
-    _classCallCheck(this, User);
+var Sync = /*#__PURE__*/function () {
+  function Sync(rootUrl) {
+    _classCallCheck(this, Sync);
 
-    this.data = data; // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
+    this.rootUrl = rootUrl;
+  }
 
+  _createClass(Sync, [{
+    key: "fetch",
+    value: function fetch(id) {
+      return axios_1.default.get("".concat(this.rootUrl, "/").concat(id));
+    }
+  }, {
+    key: "save",
+    value: function save(data) {
+      var id = data.id; // destructuring - setting id as the id on data
+
+      if (id) {
+        return axios_1.default.put("".concat(this.rootUrl, "/").concat(id), data); // update existing
+      } else {
+        return axios_1.default.post(this.rootUrl, data); // save new
+      }
+    }
+  }]);
+
+  return Sync;
+}();
+
+exports.Sync = Sync;
+},{"axios":"node_modules/axios/index.js"}],"src/models/Eventing.ts":[function(require,module,exports) {
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Eventing = void 0;
+
+var Eventing = /*#__PURE__*/function () {
+  function Eventing() {
+    _classCallCheck(this, Eventing);
+
+    // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
     this.events = {}; // events to be an object, that has an unknown key which is a string, that points to an array of callback functions.
-  } // get a single piece of info about this user
+  } // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
 
 
-  _createClass(User, [{
-    key: "get",
-    value: function get(propName) {
-      return this.data[propName];
-    } // changes information about a user, returns nothing and what is passed has to comply with UserProps
-
-  }, {
-    key: "set",
-    value: function set(update) {
-      Object.assign(this.data, update);
-    } // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
-
-  }, {
+  _createClass(Eventing, [{
     key: "on",
     value: function on(eventName, callback) {
+      // created a type alias above, for clean code, the second function is going to be an argument.
       var handlers = this.events[eventName] || []; // is there an event already?
 
       handlers.push(callback); // push/add the callback into the event handler
@@ -1963,6 +1994,7 @@ var User = /*#__PURE__*/function () {
   }, {
     key: "trigger",
     value: function trigger(eventName) {
+      // for every element in the eventHandlers call it if it exists
       var handlers = this.events[eventName];
 
       if (!handlers || handlers.length === 0) {
@@ -1973,34 +2005,89 @@ var User = /*#__PURE__*/function () {
         callback();
       });
     }
-  }, {
-    key: "fetch",
-    value: function fetch() {
-      var _this = this;
-
-      axios_1.default.get("http://localhost:3000/users/".concat(this.get('id'))).then(function (response) {
-        _this.set(response.data); // the json data back from server - i.e. users/id of what is in db.json
-
-      });
-    }
-  }, {
-    key: "save",
-    value: function save() {
-      var id = this.get('id');
-
-      if (id) {
-        axios_1.default.put("http://localhost:3000/users/".concat(id), this.data); // update
-      } else {
-        axios_1.default.post("http://localhost:3000/users/".concat(id), this.data); // save
-      }
-    }
   }]);
+
+  return Eventing;
+}();
+
+exports.Eventing = Eventing;
+},{}],"src/models/Attributes.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Attributes = void 0;
+
+var Attributes =
+/** @class */
+function () {
+  function Attributes(data) {
+    this.data = data;
+  }
+  /*
+  Ok crazy shit happening here... using keys of a generic type to make it reusable.
+  <K extends keyof T>  = setups up a generic constraint, i.e. K can only be a KEYOF type t which is in the constructor - which is UserProps in this case.
+  (key: K): T[K] = we are passing in a string, but that string has be match the KEY of the TYPE... i.e. (key) name of (type) UserProps
+  */
+
+
+  Attributes.prototype.get = function (key) {
+    return this.data[key];
+  }; // changes information about a user, returns nothing and what is passed has to comply with UserProps
+
+
+  Attributes.prototype.set = function (update) {
+    Object.assign(this.data, update);
+  };
+
+  return Attributes;
+}();
+
+exports.Attributes = Attributes;
+/*
+BASICALLY THIS IS TO ENSURE THAT THE GET METHOD RETURNS THE RIGHT TYPE, NOT STRING | NUMBER
+*/
+// const attrs = new Attributes<UserProps>({
+//   id: 4,
+//   age: 20, 
+//   name: 'aaa'
+// });
+// const name = attrs.get('age');
+// const name = attrs.get('id');
+// const name = attrs.get('name');
+},{}],"src/models/User.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.User = void 0;
+
+var Sync_1 = require("./Sync");
+
+var Eventing_1 = require("./Eventing");
+
+var Attributes_1 = require("./Attributes");
+
+var rootUrl = 'http://localhost:3000/users';
+
+var User =
+/** @class */
+function () {
+  function User(attrs) {
+    this.events = new Eventing_1.Eventing(); // unlikely to change, normally we would use composition and an interface, but in this instance its ok to hard code.
+
+    this.sync = new Sync_1.Sync(rootUrl); // Sync has a generic class, we are passing in UserProps for that type, but that type has an OPTIONAL id... so in Sync the id has to be optional as well
+
+    this.attributes = new Attributes_1.Attributes(attrs);
+  }
 
   return User;
 }();
 
 exports.User = User;
-},{"axios":"node_modules/axios/index.js"}],"src/index.ts":[function(require,module,exports) {
+},{"./Sync":"src/models/Sync.ts","./Eventing":"src/models/Eventing.ts","./Attributes":"src/models/Attributes.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2013,7 +2100,6 @@ var user = new User_1.User({
   age: 1,
   name: 'myName'
 });
-console.log(user.get('name'));
 },{"./models/User":"src/models/User.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

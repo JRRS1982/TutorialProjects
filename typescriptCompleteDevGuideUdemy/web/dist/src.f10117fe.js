@@ -1961,41 +1961,33 @@ exports.Sync = Sync;
 },{"axios":"node_modules/axios/index.js"}],"src/models/Eventing.ts":[function(require,module,exports) {
 "use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Eventing = void 0;
 
-var Eventing = /*#__PURE__*/function () {
+var Eventing =
+/** @class */
+function () {
   function Eventing() {
-    _classCallCheck(this, Eventing);
+    var _this = this; // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
 
-    // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
+
     this.events = {}; // events to be an object, that has an unknown key which is a string, that points to an array of callback functions.
-  } // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
+    // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
 
-
-  _createClass(Eventing, [{
-    key: "on",
-    value: function on(eventName, callback) {
+    this.on = function (eventName, callback) {
       // created a type alias above, for clean code, the second function is going to be an argument.
-      var handlers = this.events[eventName] || []; // is there an event already?
+      var handlers = _this.events[eventName] || []; // is there an event already?
 
       handlers.push(callback); // push/add the callback into the event handler
 
-      this.events[eventName] = handlers; // push the event handler into the events array.
-    }
-  }, {
-    key: "trigger",
-    value: function trigger(eventName) {
+      _this.events[eventName] = handlers; // push the event handler into the events array.
+    };
+
+    this.trigger = function (eventName) {
       // for every element in the eventHandlers call it if it exists
-      var handlers = this.events[eventName];
+      var handlers = _this.events[eventName];
 
       if (!handlers || handlers.length === 0) {
         return;
@@ -2004,8 +1996,8 @@ var Eventing = /*#__PURE__*/function () {
       handlers.forEach(function (callback) {
         callback();
       });
-    }
-  }]);
+    };
+  }
 
   return Eventing;
 }();
@@ -2023,18 +2015,20 @@ var Attributes =
 /** @class */
 function () {
   function Attributes(data) {
+    var _this = this;
+
     this.data = data;
-  }
-  /*
-  Ok crazy shit happening here... using keys of a generic type to make it reusable.
-  <K extends keyof T>  = setups up a generic constraint, i.e. K can only be a KEYOF type t which is in the constructor - which is UserProps in this case.
-  (key: K): T[K] = we are passing in a string, but that string has be match the KEY of the TYPE... i.e. (key) name of (type) UserProps
-  */
+    /*
+    Ok crazy shit happening here... using keys of a generic type to make it reusable.
+    <K extends keyof T>  = setups up a generic constraint, i.e. K can only be a KEYOF type t which is in the constructor - which is UserProps in this case.
+    (key: K): T[K] = we are passing in a string, but that string has be match the KEY of the TYPE... i.e. (key) name of (type) UserProps
+    with a = after get and => before { the get functions is now an arrow / bound function, which solves a scope issue.
+    */
 
-
-  Attributes.prototype.get = function (key) {
-    return this.data[key];
-  }; // changes information about a user, returns nothing and what is passed has to comply with UserProps
+    this.get = function (key) {
+      return _this.data[key];
+    };
+  } // changes information about a user, returns nothing and what is passed has to comply with UserProps
 
 
   Attributes.prototype.set = function (update) {
@@ -2130,6 +2124,11 @@ var user = new User_1.User({
   age: 1,
   name: 'myName'
 });
+console.log(user.get('name'));
+user.on('change', function () {
+  console.log('User was changed');
+});
+user.trigger('change');
 },{"./models/User":"src/models/User.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

@@ -2083,6 +2083,36 @@ function () {
     this.attributes = new Attributes_1.Attributes(attrs);
   }
 
+  Object.defineProperty(User.prototype, "on", {
+    /*
+    we we returning the events on function, not calling it so user = User.new... then user.on is actually the Events on function. Its acting like a bridge to the events function, we get back a reference to the on method on the eventing class
+    const on = user.on;
+    on... would then be the events function
+    The full implementation would be this... i.e. you are not calling the user function, but the events function.
+    user.on('change', ()=> {
+      console.log('user was changed')
+    });
+    */
+    get: function get() {
+      return this.events.on; // reference to the events on function, so when user.on() is called events on is what is actually called thanks to the get.
+    },
+    enumerable: false,
+    configurable: true
+  });
+  Object.defineProperty(User.prototype, "trigger", {
+    get: function get() {
+      return this.events.trigger;
+    },
+    enumerable: false,
+    configurable: true
+  });
+  Object.defineProperty(User.prototype, "get", {
+    get: function get() {
+      return this.attributes.get;
+    },
+    enumerable: false,
+    configurable: true
+  });
   return User;
 }();
 

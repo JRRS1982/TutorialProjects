@@ -1,11 +1,9 @@
 import { User } from './models/User';
 
-const user = new User({ age: 1, name: 'myName' });
+const user = new User({ id: 1, name: 'even newer name', age: 0 });
 
-console.log(user.get('name'));
+user.on('save', () => {
+  console.log(user);
+});
 
-user.on('change', () => {
-  console.log('User was changed');
-})
-
-user.trigger('change');
+user.save();

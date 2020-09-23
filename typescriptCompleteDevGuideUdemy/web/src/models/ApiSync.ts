@@ -4,7 +4,7 @@ interface HasId {
   id?: number;
 }
 
-export class Sync<T extends HasId> { // using a generic class means there are no properties, so we need to add id, as we need it. So any 
+export class ApiSync<T extends HasId> { // using a generic class means there are no properties, so we need to add id, as we need it. So any 
   constructor(public rootUrl: string) {}
   
   public fetch(id: number): AxiosPromise {

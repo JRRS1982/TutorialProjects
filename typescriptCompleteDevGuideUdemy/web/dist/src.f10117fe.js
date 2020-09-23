@@ -1907,14 +1907,8 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults.js","./cancel/Cancel":"node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/Sync.ts":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/ApiSync.ts":[function(require,module,exports) {
 "use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
@@ -1925,85 +1919,36 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Sync = void 0;
+exports.ApiSync = void 0;
 
 var axios_1 = __importDefault(require("axios"));
 
-var Sync = /*#__PURE__*/function () {
-  function Sync(rootUrl) {
-    _classCallCheck(this, Sync);
-
+var ApiSync =
+/** @class */
+function () {
+  function ApiSync(rootUrl) {
     this.rootUrl = rootUrl;
   }
 
-  _createClass(Sync, [{
-    key: "fetch",
-    value: function fetch(id) {
-      return axios_1.default.get("".concat(this.rootUrl, "/").concat(id));
-    }
-  }, {
-    key: "save",
-    value: function save(data) {
-      var id = data.id; // destructuring - setting id as the id on data
+  ApiSync.prototype.fetch = function (id) {
+    return axios_1.default.get(this.rootUrl + "/" + id);
+  };
 
-      if (id) {
-        return axios_1.default.put("".concat(this.rootUrl, "/").concat(id), data); // update existing
-      } else {
-        return axios_1.default.post(this.rootUrl, data); // save new
-      }
-    }
-  }]);
+  ApiSync.prototype.save = function (data) {
+    var id = data.id; // destructuring - setting id as the id on data
 
-  return Sync;
+    if (id) {
+      return axios_1.default.put(this.rootUrl + "/" + id, data); // update existing
+    } else {
+      return axios_1.default.post(this.rootUrl, data); // save new
+    }
+  };
+
+  return ApiSync;
 }();
 
-exports.Sync = Sync;
-},{"axios":"node_modules/axios/index.js"}],"src/models/Eventing.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Eventing = void 0;
-
-var Eventing =
-/** @class */
-function () {
-  function Eventing() {
-    var _this = this; // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
-
-
-    this.events = {}; // events to be an object, that has an unknown key which is a string, that points to an array of callback functions.
-    // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
-
-    this.on = function (eventName, callback) {
-      // created a type alias above, for clean code, the second function is going to be an argument.
-      var handlers = _this.events[eventName] || []; // is there an event already?
-
-      handlers.push(callback); // push/add the callback into the event handler
-
-      _this.events[eventName] = handlers; // push the event handler into the events array.
-    };
-
-    this.trigger = function (eventName) {
-      // for every element in the eventHandlers call it if it exists
-      var handlers = _this.events[eventName];
-
-      if (!handlers || handlers.length === 0) {
-        return;
-      }
-
-      handlers.forEach(function (callback) {
-        callback();
-      });
-    };
-  }
-
-  return Eventing;
-}();
-
-exports.Eventing = Eventing;
-},{}],"src/models/Attributes.ts":[function(require,module,exports) {
+exports.ApiSync = ApiSync;
+},{"axios":"node_modules/axios/index.js"}],"src/models/Attributes.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2054,34 +1999,24 @@ BASICALLY THIS IS TO ENSURE THAT THE GET METHOD RETURNS THE RIGHT TYPE, NOT STRI
 // const name = attrs.get('age');
 // const name = attrs.get('id');
 // const name = attrs.get('name');
-},{}],"src/models/User.ts":[function(require,module,exports) {
+},{}],"src/models/Model.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.User = void 0;
+exports.Model = void 0;
 
-var Sync_1 = require("./Sync");
-
-var Eventing_1 = require("./Eventing");
-
-var Attributes_1 = require("./Attributes");
-
-var rootUrl = 'http://localhost:3000/users';
-
-var User =
+var Model =
 /** @class */
 function () {
-  function User(attrs) {
-    this.events = new Eventing_1.Eventing(); // unlikely to change, normally we would use composition and an interface, but in this instance its ok to hard code.
-
-    this.sync = new Sync_1.Sync(rootUrl); // Sync has a generic class, we are passing in UserProps for that type, but that type has an OPTIONAL id... so in Sync the id has to be optional as well
-
-    this.attributes = new Attributes_1.Attributes(attrs);
+  function Model(attributes, events, sync) {
+    this.attributes = attributes;
+    this.events = events;
+    this.sync = sync;
   }
 
-  Object.defineProperty(User.prototype, "on", {
+  Object.defineProperty(Model.prototype, "on", {
     /*
     we we returning the events on function, not calling it so user = User.new... then user.on is actually the Events on function. Its acting like a bridge to the events function, we get back a reference to the on method on the eventing class
     const on = user.on;
@@ -2097,14 +2032,14 @@ function () {
     enumerable: false,
     configurable: true
   });
-  Object.defineProperty(User.prototype, "trigger", {
+  Object.defineProperty(Model.prototype, "trigger", {
     get: function get() {
       return this.events.trigger;
     },
     enumerable: false,
     configurable: true
   });
-  Object.defineProperty(User.prototype, "get", {
+  Object.defineProperty(Model.prototype, "get", {
     get: function get() {
       return this.attributes.get;
     },
@@ -2112,12 +2047,12 @@ function () {
     configurable: true
   });
 
-  User.prototype.set = function (update) {
+  Model.prototype.set = function (update) {
     this.attributes.set(update);
     this.events.trigger('change');
   };
 
-  User.prototype.fetch = function () {
+  Model.prototype.fetch = function () {
     var _this = this;
 
     var id = this.get('id'); // same as this.attributes.get('id') as its referring to that above
@@ -2132,7 +2067,7 @@ function () {
     });
   };
 
-  User.prototype.save = function () {
+  Model.prototype.save = function () {
     var _this = this;
 
     this.sync.save(this.attributes.getAll()) // so using the sync class save function with attributes class getAll function in a nice little way.
@@ -2144,11 +2079,118 @@ function () {
     });
   };
 
-  return User;
+  return Model;
 }();
 
+exports.Model = Model;
+},{}],"src/models/Eventing.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Eventing = void 0;
+
+var Eventing =
+/** @class */
+function () {
+  function Eventing() {
+    var _this = this; // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
+
+
+    this.events = {}; // events to be an object, that has an unknown key which is a string, that points to an array of callback functions.
+    // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
+
+    this.on = function (eventName, callback) {
+      // created a type alias above, for clean code, the second function is going to be an argument.
+      var handlers = _this.events[eventName] || []; // is there an event already?
+
+      handlers.push(callback); // push/add the callback into the event handler
+
+      _this.events[eventName] = handlers; // push the event handler into the events array.
+    };
+
+    this.trigger = function (eventName) {
+      // for every element in the eventHandlers call it if it exists
+      var handlers = _this.events[eventName];
+
+      if (!handlers || handlers.length === 0) {
+        return;
+      }
+
+      handlers.forEach(function (callback) {
+        callback();
+      });
+    };
+  }
+
+  return Eventing;
+}();
+
+exports.Eventing = Eventing;
+},{}],"src/models/User.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.User = void 0;
+
+var ApiSync_1 = require("./ApiSync");
+
+var Attributes_1 = require("./Attributes");
+
+var Model_1 = require("./Model");
+
+var Eventing_1 = require("./Eventing");
+
+var rootUrl = 'http://localhost:3000/users';
+
+var User =
+/** @class */
+function (_super) {
+  __extends(User, _super);
+
+  function User() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  User.buildUser = function (attrs) {
+    return new User(new Attributes_1.Attributes(attrs), // comply with Model constructor as User extends that.
+    new Eventing_1.Eventing(), new ApiSync_1.ApiSync(rootUrl));
+  };
+
+  return User;
+}(Model_1.Model);
+
 exports.User = User;
-},{"./Sync":"src/models/Sync.ts","./Eventing":"src/models/Eventing.ts","./Attributes":"src/models/Attributes.ts"}],"src/index.ts":[function(require,module,exports) {
+},{"./ApiSync":"src/models/ApiSync.ts","./Attributes":"src/models/Attributes.ts","./Model":"src/models/Model.ts","./Eventing":"src/models/Eventing.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

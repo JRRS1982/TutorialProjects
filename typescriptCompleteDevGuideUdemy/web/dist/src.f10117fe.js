@@ -133,13 +133,47 @@ function () {
   } // adding where this User form is added... so the parent is a HTML element
 
 
+  UserForm.prototype.eventsMap = function () {
+    return {
+      'click:button': this.onButtonCLick
+    };
+  };
+
+  UserForm.prototype.onButtonCLick = function () {
+    console.log('Hi tHere');
+  };
+
   UserForm.prototype.template = function () {
     return " \n      <div>\n        <h1>User Form</u1>\n        <input />\n        <button>Click Me</button>\n      </div>\n    ";
+  };
+
+  UserForm.prototype.bindEvents = function (fragment) {
+    var eventsMap = this.eventsMap();
+
+    var _loop_1 = function _loop_1(eventKey) {
+      var _a = eventKey.split(':'),
+          eventName = _a[0],
+          selector = _a[1]; // destructuring so split i.e. click:button to eventName = click, selector = button
+      // fairly complicated - add the above eventsMap to the html fragments
+
+
+      fragment.querySelectorAll(selector) // return array of elements that match this selector
+      .forEach(function (element) {
+        element.addEventListener(eventName, eventsMap[eventKey]); // so add the this.onButtonClick value to the click event on the above selector
+      });
+    };
+
+    for (var eventKey in eventsMap) {
+      _loop_1(eventKey);
+    }
   };
 
   UserForm.prototype.render = function () {
     var templateElement = document.createElement('template');
     templateElement.innerHTML = this.template(); // here we are using the string from template() and adding it to the templateElement.
+
+    this.bindEvents(templateElement.content); // pass in DocumentFragment... i.e. HTML that has not yet been added to dom.
+    // templateElement, being an HTMLTemplateElement has various attributes, one of those being content, that is the content of the html, i.e. the html itself, that has some reference to a DocumentFragment... the purpose of those is to hold some html in memory before it gets attached to the dom. 
 
     this.parent.append(templateElement.content); // and append this HTML to the parent element, that may be a div inside the larger document
   };

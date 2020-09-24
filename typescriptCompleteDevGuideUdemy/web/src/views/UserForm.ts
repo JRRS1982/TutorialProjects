@@ -1,9 +1,15 @@
+import { User } from './../models/User';
+
 export class UserForm {
-  constructor(public parent: Element) {} // adding where this User form is added... so the parent is a HTML element
+  constructor(
+    public parent: Element, 
+    public model: User
+  ) {} // adding where this User form is added... so the parent is a HTML Element, and 
 
   eventsMap(): { [key: string]: () => void } { // type setting eventsMap that an object will be returned, with a string as key and object as value - that has void return
     return {
-      'click:button': this.onButtonCLick
+      'click:button': this.onButtonCLick,
+      'mouseenter:h1': this.onHeaderHover,
     };
   }
   
@@ -15,10 +21,16 @@ export class UserForm {
     return ` 
       <div>
         <h1>User Form</u1>
+        <div>User name: ${this.model.get('name')}</div>
+        <div>User age: ${this.model.get('age')}</div>
         <input />
         <button>Click Me</button>
       </div>
     `;
+  }
+  
+  onHeaderHover(): void { // just a second example
+    console.log('Hovered over H1...');
   }
   
   bindEvents(fragment: DocumentFragment): void {

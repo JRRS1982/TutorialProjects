@@ -1,3 +1,4 @@
+import { Collection } from './Collection';
 import { ApiSync } from './ApiSync';
 import { Attributes } from './Attributes';
 import { Model } from "./Model";
@@ -28,4 +29,11 @@ export class User extends Model<UserProps> { // inheritance
   //     new LocalSync<UserProps>(rootUrl)
   //   );
   // }
+  
+  static buildUserCollection(): Collection<User, UserProps>{ // a helper to create the collection - User.buildUserCollection(); basically reducing typing, as would need to write all the below each time and this function stops that. Collection gives us access to other functions / is generic which is why we are using it.
+     return new Collection<User, UserProps>(  // so collection requires generic Type and Props
+      rootUrl, // where request goes is required in collection constructor
+      (json: UserProps) => User.buildUser(json) // how to create an instance of THIS model is required
+    );
+  }
 }

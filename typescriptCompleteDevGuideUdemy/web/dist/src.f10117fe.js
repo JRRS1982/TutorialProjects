@@ -1907,7 +1907,112 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults.js","./cancel/Cancel":"node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/ApiSync.ts":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/models/Eventing.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Eventing = void 0;
+
+var Eventing =
+/** @class */
+function () {
+  function Eventing() {
+    var _this = this; // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
+
+
+    this.events = {}; // events to be an object, that has an unknown key which is a string, that points to an array of callback functions.
+    // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
+
+    this.on = function (eventName, callback) {
+      // created a type alias above, for clean code, the second function is going to be an argument.
+      var handlers = _this.events[eventName] || []; // is there an event already?
+
+      handlers.push(callback); // push/add the callback into the event handler
+
+      _this.events[eventName] = handlers; // push the event handler into the events array.
+    };
+
+    this.trigger = function (eventName) {
+      // for every element in the eventHandlers call it if it exists
+      var handlers = _this.events[eventName];
+
+      if (!handlers || handlers.length === 0) {
+        return;
+      }
+
+      handlers.forEach(function (callback) {
+        callback();
+      });
+    };
+  }
+
+  return Eventing;
+}();
+
+exports.Eventing = Eventing;
+},{}],"src/models/Collection.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Collection = void 0;
+
+var axios_1 = __importDefault(require("axios"));
+
+var Eventing_1 = require("./Eventing");
+
+var Collection =
+/** @class */
+function () {
+  function Collection(rootUrl, deserialize // take json data and create an instance of a model. This is important to make this reusable
+  ) {
+    this.rootUrl = rootUrl;
+    this.deserialize = deserialize;
+    this.models = [];
+    this.events = new Eventing_1.Eventing();
+  }
+
+  Object.defineProperty(Collection.prototype, "on", {
+    get: function get() {
+      return this.events.on;
+    },
+    enumerable: false,
+    configurable: true
+  });
+  Object.defineProperty(Collection.prototype, "trigger", {
+    get: function get() {
+      return this.events.trigger;
+    },
+    enumerable: false,
+    configurable: true
+  });
+
+  Collection.prototype.fetch = function () {
+    var _this = this;
+
+    axios_1.default.get(this.rootUrl) // get from whatever the url is
+    .then(function (response) {
+      response.data.forEach(function (value) {
+        _this.models.push(_this.deserialize(value)); // use deserialize as a function from the constructor here to turn the data in the response from axios into a Model object, i would have been user... but anything that complys to Model
+
+      });
+    });
+  };
+
+  return Collection;
+}();
+
+exports.Collection = Collection;
+},{"axios":"node_modules/axios/index.js","./Eventing":"src/models/Eventing.ts"}],"src/models/ApiSync.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -2076,51 +2181,6 @@ function () {
 }();
 
 exports.Model = Model;
-},{}],"src/models/Eventing.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Eventing = void 0;
-
-var Eventing =
-/** @class */
-function () {
-  function Eventing() {
-    var _this = this; // putting a bracket around the key will indicate we know what the input will be (other than being in the type of a string)
-
-
-    this.events = {}; // events to be an object, that has an unknown key which is a string, that points to an array of callback functions.
-    // building an event handler - building an object, with eventName key, that will have an array of callback functions that will trigger when that event is triggered.
-
-    this.on = function (eventName, callback) {
-      // created a type alias above, for clean code, the second function is going to be an argument.
-      var handlers = _this.events[eventName] || []; // is there an event already?
-
-      handlers.push(callback); // push/add the callback into the event handler
-
-      _this.events[eventName] = handlers; // push the event handler into the events array.
-    };
-
-    this.trigger = function (eventName) {
-      // for every element in the eventHandlers call it if it exists
-      var handlers = _this.events[eventName];
-
-      if (!handlers || handlers.length === 0) {
-        return;
-      }
-
-      handlers.forEach(function (callback) {
-        callback();
-      });
-    };
-  }
-
-  return Eventing;
-}();
-
-exports.Eventing = Eventing;
 },{}],"src/models/User.ts":[function(require,module,exports) {
 "use strict";
 
@@ -2155,6 +2215,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.User = void 0;
 
+var Collection_1 = require("./Collection");
+
 var ApiSync_1 = require("./ApiSync");
 
 var Attributes_1 = require("./Attributes");
@@ -2177,73 +2239,30 @@ function (_super) {
   User.buildUser = function (attrs) {
     return new User(new Attributes_1.Attributes(attrs), // comply with Model constructor as User extends that.
     new Eventing_1.Eventing(), new ApiSync_1.ApiSync(rootUrl));
+  }; // a potential other implementation to sync locally instead of via an api.
+  // static localUser(attrs: UserProps): User { 
+  //   return new User(
+  //     new Attributes<UserProps>(attrs),
+  //     new Eventing(),
+  //     new LocalSync<UserProps>(rootUrl)
+  //   );
+  // }
+
+
+  User.buildUserCollection = function () {
+    return new Collection_1.Collection( // so collection requires generic Type and Props
+    rootUrl, // where request goes is required in collection constructor
+    function (json) {
+      return User.buildUser(json);
+    } // how to create an instance of THIS model is required
+    );
   };
 
   return User;
 }(Model_1.Model);
 
 exports.User = User;
-},{"./ApiSync":"src/models/ApiSync.ts","./Attributes":"src/models/Attributes.ts","./Model":"src/models/Model.ts","./Eventing":"src/models/Eventing.ts"}],"src/models/Collection.ts":[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Collection = void 0;
-
-var axios_1 = __importDefault(require("axios"));
-
-var Eventing_1 = require("./Eventing");
-
-var Collection =
-/** @class */
-function () {
-  function Collection(rootUrl, deserialize // take json data and create an instance of a model. This is important to make this reusable
-  ) {
-    this.rootUrl = rootUrl;
-    this.deserialize = deserialize;
-    this.models = [];
-    this.events = new Eventing_1.Eventing();
-  }
-
-  Object.defineProperty(Collection.prototype, "on", {
-    get: function get() {
-      return this.events.on;
-    },
-    enumerable: false,
-    configurable: true
-  });
-  Object.defineProperty(Collection.prototype, "trigger", {
-    get: function get() {
-      return this.events.trigger;
-    },
-    enumerable: false,
-    configurable: true
-  });
-
-  Collection.prototype.fetch = function () {
-    var _this = this;
-
-    axios_1.default.get(this.rootUrl) // get from whatever the url is
-    .then(function (response) {
-      response.data.forEach(function (value) {
-        _this.models.push(_this.deserialize(value)); // use deserialize as a function from the constructor here to turn the data in the response from axios into a Model object, i would have been user... but anything that complys to Model
-
-      });
-    });
-  };
-
-  return Collection;
-}();
-
-exports.Collection = Collection;
-},{"axios":"node_modules/axios/index.js","./Eventing":"src/models/Eventing.ts"}],"src/index.ts":[function(require,module,exports) {
+},{"./Collection":"src/models/Collection.ts","./ApiSync":"src/models/ApiSync.ts","./Attributes":"src/models/Attributes.ts","./Model":"src/models/Model.ts","./Eventing":"src/models/Eventing.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2252,19 +2271,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var User_1 = require("./models/User");
 
-var Collection_1 = require("./models/Collection");
-
-var collection = new Collection_1.Collection( // so collection requires generic Type and Props
-'http://localhost:3000/users', // where request goes is required in collection constructor
-function (json) {
-  return User_1.User.buildUser(json);
-} // how to create an instance of THIS model is required
-);
+var collection = User_1.User.buildUserCollection();
 collection.on('change', function () {
   console.log(collection);
 });
 collection.fetch();
-},{"./models/User":"src/models/User.ts","./models/Collection":"src/models/Collection.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./models/User":"src/models/User.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

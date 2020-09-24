@@ -36,4 +36,9 @@ export class User extends Model<UserProps> { // inheritance
       (json: UserProps) => User.buildUser(json) // how to create an instance of THIS model is required
     );
   }
+  
+  setRandomAge(): void {
+    const age = Math.round(Math.random() * 100);
+    this.set({ age: age });  // or can just have age as a shortened syntax.
+  }
 }

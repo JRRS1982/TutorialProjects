@@ -2258,6 +2258,13 @@ function (_super) {
     );
   };
 
+  User.prototype.setRandomAge = function () {
+    var age = Math.round(Math.random() * 100);
+    this.set({
+      age: age
+    }); // or can just have age as a shortened syntax.
+  };
+
   return User;
 }(Model_1.Model);
 
@@ -2274,28 +2281,27 @@ var UserForm =
 /** @class */
 function () {
   function UserForm(parent, model) {
+    var _this = this;
+
     this.parent = parent;
     this.model = model;
+
+    this.onSetAgeClick = function () {
+      _this.model.setRandomAge();
+
+      console.log(_this.model.get('age'));
+    };
   } // adding where this User form is added... so the parent is a HTML Element, and 
 
 
   UserForm.prototype.eventsMap = function () {
     return {
-      'click:button': this.onButtonCLick,
-      'mouseenter:h1': this.onHeaderHover
+      'click:.set-age': this.onSetAgeClick
     };
   };
 
-  UserForm.prototype.onButtonCLick = function () {
-    console.log('Hi tHere');
-  };
-
   UserForm.prototype.template = function () {
-    return " \n      <div>\n        <h1>User Form</u1>\n        <div>User name: " + this.model.get('name') + "</div>\n        <div>User age: " + this.model.get('age') + "</div>\n        <input />\n        <button>Click Me</button>\n      </div>\n    ";
-  };
-
-  UserForm.prototype.onHeaderHover = function () {
-    console.log('Hovered over H1...');
+    return "\n      <div>\n        <h1>User Form</u1>\n        <div>User name: " + this.model.get('name') + "</div>\n        <div>User age: " + this.model.get('age') + "</div>\n        <input />\n        <button>Click Me</button>\n        <button class=\"set-age\">Set random age</button>\n      </div>\n    ";
   };
 
   UserForm.prototype.bindEvents = function (fragment) {

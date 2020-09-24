@@ -8,29 +8,26 @@ export class UserForm {
 
   eventsMap(): { [key: string]: () => void } { // type setting eventsMap that an object will be returned, with a string as key and object as value - that has void return
     return {
-      'click:button': this.onButtonCLick,
-      'mouseenter:h1': this.onHeaderHover,
+      'click:.set-age': this.onSetAgeClick,  // the colon dot :. here is to specify any class names, such as this. You can just click:button, but that would be for all buttons.
     };
   }
   
-  onButtonCLick(): void {
-    console.log('Hi tHere');
+  onSetAgeClick = (): void => { // USE ARROW FUNCTIONS - GETTING SCOPE ISSUES OF THIS WITHOUT THEM
+    this.model.setRandomAge();
+    console.log(this.model.get('age'));
   }
-  
+
   template(): string { // template acts as skeleton for structure of an html element, its not yet HTML
-    return ` 
+    return `
       <div>
         <h1>User Form</u1>
         <div>User name: ${this.model.get('name')}</div>
         <div>User age: ${this.model.get('age')}</div>
         <input />
         <button>Click Me</button>
+        <button class="set-age">Set random age</button>
       </div>
     `;
-  }
-  
-  onHeaderHover(): void { // just a second example
-    console.log('Hovered over H1...');
   }
   
   bindEvents(fragment: DocumentFragment): void {

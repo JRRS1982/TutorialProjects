@@ -36,16 +36,16 @@ export class Model<T extends HasId> {
     console.log('user was changed')
   });
   */
-  get on() {
-  return this.events.on;  // reference to the events on function, so when user.on() is called events on is what is actually called thanks to the get.
-  }
-
+ 
+  
+  /*  reference to the events on function, so when user.on() is called events on is what is actually called thanks to the get.
+    this is the same as the trigger function below, but shortened further. Access to the events and attributes objects IS ONLY AVAILABLE AS WE PASS THIS IN, IT WOULD NOT WORK IF IT WAS CONTAINED IN THE CONSTRUCTOR
+  */
+  on =  this.events.on;
+  get = this.attributes.get;
+  
   get trigger() {
     return this.events.trigger;
-  }
-
-  get get() {
-    return this.attributes.get;
   }
 
   set(update: T): void {

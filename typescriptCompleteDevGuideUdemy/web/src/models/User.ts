@@ -19,4 +19,13 @@ export class User extends Model<UserProps> { // inheritance
       new ApiSync<UserProps>(rootUrl)
     );
   }
+  
+  // a potential other implementation to sync locally instead of via an api.
+  // static localUser(attrs: UserProps): User { 
+  //   return new User(
+  //     new Attributes<UserProps>(attrs),
+  //     new Eventing(),
+  //     new LocalSync<UserProps>(rootUrl)
+  //   );
+  // }
 }

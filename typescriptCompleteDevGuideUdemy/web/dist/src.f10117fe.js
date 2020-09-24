@@ -2014,9 +2014,6 @@ function () {
     this.attributes = attributes;
     this.events = events;
     this.sync = sync;
-  }
-
-  Object.defineProperty(Model.prototype, "on", {
     /*
     we we returning the events on function, not calling it so user = User.new... then user.on is actually the Events on function. Its acting like a bridge to the events function, we get back a reference to the on method on the eventing class
     const on = user.on;
@@ -2026,22 +2023,18 @@ function () {
       console.log('user was changed')
     });
     */
-    get: function get() {
-      return this.events.on; // reference to the events on function, so when user.on() is called events on is what is actually called thanks to the get.
-    },
-    enumerable: false,
-    configurable: true
-  });
+
+    /*  reference to the events on function, so when user.on() is called events on is what is actually called thanks to the get.
+      this is the same as the trigger function below, but shortened further. Access to the events and attributes objects IS ONLY AVAILABLE AS WE PASS THIS IN, IT WOULD NOT WORK IF IT WAS CONTAINED IN THE CONSTRUCTOR
+    */
+
+    this.on = this.events.on;
+    this.get = this.attributes.get;
+  }
+
   Object.defineProperty(Model.prototype, "trigger", {
     get: function get() {
       return this.events.trigger;
-    },
-    enumerable: false,
-    configurable: true
-  });
-  Object.defineProperty(Model.prototype, "get", {
-    get: function get() {
-      return this.attributes.get;
     },
     enumerable: false,
     configurable: true
@@ -2190,7 +2183,67 @@ function (_super) {
 }(Model_1.Model);
 
 exports.User = User;
-},{"./ApiSync":"src/models/ApiSync.ts","./Attributes":"src/models/Attributes.ts","./Model":"src/models/Model.ts","./Eventing":"src/models/Eventing.ts"}],"src/index.ts":[function(require,module,exports) {
+},{"./ApiSync":"src/models/ApiSync.ts","./Attributes":"src/models/Attributes.ts","./Model":"src/models/Model.ts","./Eventing":"src/models/Eventing.ts"}],"src/models/Collection.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Collection = void 0;
+
+var axios_1 = __importDefault(require("axios"));
+
+var Eventing_1 = require("./Eventing");
+
+var Collection =
+/** @class */
+function () {
+  function Collection(rootUrl, deserialize // take json data and create an instance of a model. This is important to make this reusable
+  ) {
+    this.rootUrl = rootUrl;
+    this.deserialize = deserialize;
+    this.models = [];
+    this.events = new Eventing_1.Eventing();
+  }
+
+  Object.defineProperty(Collection.prototype, "on", {
+    get: function get() {
+      return this.events.on;
+    },
+    enumerable: false,
+    configurable: true
+  });
+  Object.defineProperty(Collection.prototype, "trigger", {
+    get: function get() {
+      return this.events.trigger;
+    },
+    enumerable: false,
+    configurable: true
+  });
+
+  Collection.prototype.fetch = function () {
+    var _this = this;
+
+    axios_1.default.get(this.rootUrl) // get from whatever the url is
+    .then(function (response) {
+      response.data.forEach(function (value) {
+        _this.models.push(_this.deserialize(value)); // use deserialize as a function from the constructor here to turn the data in the response from axios into a Model object, i would have been user... but anything that complys to Model
+
+      });
+    });
+  };
+
+  return Collection;
+}();
+
+exports.Collection = Collection;
+},{"axios":"node_modules/axios/index.js","./Eventing":"src/models/Eventing.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2199,16 +2252,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var User_1 = require("./models/User");
 
-var user = new User_1.User({
-  id: 1,
-  name: 'even newer name',
-  age: 0
+var Collection_1 = require("./models/Collection");
+
+var collection = new Collection_1.Collection( // so collection requires generic Type and Props
+'http://localhost:3000/users', // where request goes is required in collection constructor
+function (json) {
+  return User_1.User.buildUser(json);
+} // how to create an instance of THIS model is required
+);
+collection.on('change', function () {
+  console.log(collection);
 });
-user.on('save', function () {
-  console.log(user);
-});
-user.save();
-},{"./models/User":"src/models/User.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+collection.fetch();
+},{"./models/User":"src/models/User.ts","./models/Collection":"src/models/Collection.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2236,7 +2292,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57779" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58129" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

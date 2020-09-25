@@ -1,11 +1,11 @@
-import { User } from "../models/User";
+import { Model } from "../models/Model";
 
-export abstract class View {
-  constructor(public parent: Element, public model: User) { // adding where this User form is added... so the parent is a HTML Element, and 
+export abstract class View<T extends Model<K>, K> { // weird one - all views need to comply to model anyway, so no need to define new interfaces as that interface would need to have all the properties in Model anyway, so the interface would just be a duplicate of model, but model is a generic which needs a type itself! Model is created with the Model<K>, but K is being passed in from the second entry ... ,K
+  constructor(public parent: Element, public model: T) { // adding where this User form is added... so the parent is a HTML Element, and 
     this.bindModel();
   } 
   
-  abstract eventsMap(): { [key: string]: () => void }; // so inheritance style 
+  abstract eventsMap(): { [key: string]: () => void }; // so inheritance style, children need abstract method
   abstract template(): string;
 
   bindModel(): void { // listen for 'change' on the events, and if there is one re-render the html on the page, so it has the new data that was saved.

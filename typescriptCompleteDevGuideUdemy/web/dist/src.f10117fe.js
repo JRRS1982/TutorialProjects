@@ -2107,15 +2107,21 @@ BASICALLY THIS IS TO ENSURE THAT THE GET METHOD RETURNS THE RIGHT TYPE, NOT STRI
 },{}],"src/models/Model.ts":[function(require,module,exports) {
 "use strict";
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Model = void 0;
 
-var Model =
-/** @class */
-function () {
+var Model = /*#__PURE__*/function () {
   function Model(attributes, events, sync) {
+    _classCallCheck(this, Model);
+
     this.attributes = attributes;
     this.events = events;
     this.sync = sync;
@@ -2137,45 +2143,47 @@ function () {
     this.get = this.attributes.get;
   }
 
-  Object.defineProperty(Model.prototype, "trigger", {
+  _createClass(Model, [{
+    key: "set",
+    value: function set(update) {
+      this.attributes.set(update);
+      this.events.trigger('change');
+    }
+  }, {
+    key: "fetch",
+    value: function fetch() {
+      var _this = this;
+
+      var id = this.get('id'); // same as this.attributes.get('id') as its referring to that above
+
+      if (typeof id !== 'number') {
+        throw new Error('Cannot fetch without an id');
+      }
+
+      this.sync.fetch(id).then(function (response) {
+        _this.set(response.data); // calling set from above, which calls attributes.set, but also events.trigger
+
+      });
+    }
+  }, {
+    key: "save",
+    value: function save() {
+      var _this2 = this;
+
+      this.sync.save(this.attributes.getAll()) // so using the sync class save function with attributes class getAll function in a nice little way.
+      .then(function (response) {
+        _this2.trigger('save');
+      }).catch(function () {
+        _this2.trigger('error'); // or catch the error if the save is not successful
+
+      });
+    }
+  }, {
+    key: "trigger",
     get: function get() {
       return this.events.trigger;
-    },
-    enumerable: false,
-    configurable: true
-  });
-
-  Model.prototype.set = function (update) {
-    this.attributes.set(update);
-    this.events.trigger('change');
-  };
-
-  Model.prototype.fetch = function () {
-    var _this = this;
-
-    var id = this.get('id'); // same as this.attributes.get('id') as its referring to that above
-
-    if (typeof id !== 'number') {
-      throw new Error('Cannot fetch without an id');
     }
-
-    this.sync.fetch(id).then(function (response) {
-      _this.set(response.data); // calling set from above, which calls attributes.set, but also events.trigger
-
-    });
-  };
-
-  Model.prototype.save = function () {
-    var _this = this;
-
-    this.sync.save(this.attributes.getAll()) // so using the sync class save function with attributes class getAll function in a nice little way.
-    .then(function (response) {
-      _this.trigger('save');
-    }).catch(function () {
-      _this.trigger('error'); // or catch the error if the save is not successful
-
-    });
-  };
+  }]);
 
   return Model;
 }();
@@ -2269,77 +2277,178 @@ function (_super) {
 }(Model_1.Model);
 
 exports.User = User;
-},{"./Collection":"src/models/Collection.ts","./ApiSync":"src/models/ApiSync.ts","./Attributes":"src/models/Attributes.ts","./Model":"src/models/Model.ts","./Eventing":"src/models/Eventing.ts"}],"src/views/UserForm.ts":[function(require,module,exports) {
+},{"./Collection":"src/models/Collection.ts","./ApiSync":"src/models/ApiSync.ts","./Attributes":"src/models/Attributes.ts","./Model":"src/models/Model.ts","./Eventing":"src/models/Eventing.ts"}],"src/views/View.ts":[function(require,module,exports) {
 "use strict";
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.View = void 0;
+
+var View = /*#__PURE__*/function () {
+  function View(parent, model) {
+    _classCallCheck(this, View);
+
+    this.parent = parent;
+    this.model = model;
+    this.bindModel();
+  }
+
+  _createClass(View, [{
+    key: "bindModel",
+    value: function bindModel() {
+      var _this = this;
+
+      this.model.on('change', function () {
+        _this.render();
+      });
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents(fragment) {
+      var eventsMap = this.eventsMap();
+
+      var _loop = function _loop(eventKey) {
+        var _eventKey$split = eventKey.split(':'),
+            _eventKey$split2 = _slicedToArray(_eventKey$split, 2),
+            eventName = _eventKey$split2[0],
+            selector = _eventKey$split2[1]; // destructuring so split i.e. click:button to eventName = click, selector = button
+        // fairly complicated - add the above eventsMap to the html fragments
+
+
+        fragment.querySelectorAll(selector) // return array of elements that match this selector
+        .forEach(function (element) {
+          element.addEventListener(eventName, eventsMap[eventKey]); // so add the this.onButtonClick value to the click event on the above selector
+        });
+      };
+
+      for (var eventKey in eventsMap) {
+        _loop(eventKey);
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      this.parent.innerHTML = ''; // remove html from parent, so it is re-rendered with new data
+
+      var templateElement = document.createElement('template');
+      templateElement.innerHTML = this.template(); // here we are using the string from template() and adding it to the templateElement.
+
+      this.bindEvents(templateElement.content); // pass in DocumentFragment... i.e. HTML that has not yet been added to dom.
+      // templateElement, being an HTMLTemplateElement has various attributes, one of those being content, that is the content of the html, i.e. the html itself, that has some reference to a DocumentFragment... the purpose of those is to hold some html in memory before it gets attached to the dom. 
+
+      this.parent.append(templateElement.content); // and append this HTML to the parent element, that may be a div inside the larger document
+    }
+  }]);
+
+  return View;
+}();
+
+exports.View = View;
+},{}],"src/views/UserForm.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.UserForm = void 0;
 
-var UserForm =
-/** @class */
-function () {
-  function UserForm(parent, model) {
-    var _this = this;
+var View_1 = require("./View");
 
-    this.parent = parent;
-    this.model = model;
+var UserForm = /*#__PURE__*/function (_View_1$View) {
+  _inherits(UserForm, _View_1$View);
 
-    this.onSetAgeClick = function () {
+  var _super = _createSuper(UserForm);
+
+  function UserForm() {
+    var _this;
+
+    _classCallCheck(this, UserForm);
+
+    _this = _super.apply(this, arguments);
+
+    _this.onSetNameClick = function () {
+      var input = _this.parent.querySelector('input'); // reaching into the DOM to get the input 
+
+
+      if (input) {
+        // element from the HTML - where the name has been written on the page.
+        var name = input.value;
+
+        _this.model.set({
+          name: name
+        }); // short syntax
+
+      }
+    };
+
+    _this.onSetAgeClick = function () {
       _this.model.setRandomAge();
-
-      console.log(_this.model.get('age'));
-    };
-  } // adding where this User form is added... so the parent is a HTML Element, and 
-
-
-  UserForm.prototype.eventsMap = function () {
-    return {
-      'click:.set-age': this.onSetAgeClick
-    };
-  };
-
-  UserForm.prototype.template = function () {
-    return "\n      <div>\n        <h1>User Form</u1>\n        <div>User name: " + this.model.get('name') + "</div>\n        <div>User age: " + this.model.get('age') + "</div>\n        <input />\n        <button>Click Me</button>\n        <button class=\"set-age\">Set random age</button>\n      </div>\n    ";
-  };
-
-  UserForm.prototype.bindEvents = function (fragment) {
-    var eventsMap = this.eventsMap();
-
-    var _loop_1 = function _loop_1(eventKey) {
-      var _a = eventKey.split(':'),
-          eventName = _a[0],
-          selector = _a[1]; // destructuring so split i.e. click:button to eventName = click, selector = button
-      // fairly complicated - add the above eventsMap to the html fragments
-
-
-      fragment.querySelectorAll(selector) // return array of elements that match this selector
-      .forEach(function (element) {
-        element.addEventListener(eventName, eventsMap[eventKey]); // so add the this.onButtonClick value to the click event on the above selector
-      });
     };
 
-    for (var eventKey in eventsMap) {
-      _loop_1(eventKey);
+    return _this;
+  }
+
+  _createClass(UserForm, [{
+    key: "eventsMap",
+    value: function eventsMap() {
+      return {
+        'click:.set-age': this.onSetAgeClick,
+        'click:.set-name': this.onSetNameClick
+      };
     }
-  };
-
-  UserForm.prototype.render = function () {
-    var templateElement = document.createElement('template');
-    templateElement.innerHTML = this.template(); // here we are using the string from template() and adding it to the templateElement.
-
-    this.bindEvents(templateElement.content); // pass in DocumentFragment... i.e. HTML that has not yet been added to dom.
-    // templateElement, being an HTMLTemplateElement has various attributes, one of those being content, that is the content of the html, i.e. the html itself, that has some reference to a DocumentFragment... the purpose of those is to hold some html in memory before it gets attached to the dom. 
-
-    this.parent.append(templateElement.content); // and append this HTML to the parent element, that may be a div inside the larger document
-  };
+  }, {
+    key: "template",
+    value: function template() {
+      return "\n      <div>\n        <h1>User Form</u1>\n        <div>User name: ".concat(this.model.get('name'), "</div>\n        <div>User age: ").concat(this.model.get('age'), "</div>\n        <input />\n        <button class=\"set-name\">Change Name</button>\n        <button class=\"set-age\">Set Random Age</button>\n      </div>\n    ");
+    }
+  }]);
 
   return UserForm;
-}();
+}(View_1.View);
 
 exports.UserForm = UserForm;
-},{}],"src/index.ts":[function(require,module,exports) {
+},{"./View":"src/views/View.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2354,8 +2463,14 @@ var user = User_1.User.buildUser({
   name: 'Name here',
   age: 20
 });
-var userForm = new UserForm_1.UserForm(document.getElementById('root'), user);
-userForm.render();
+var root = document.getElementById('root');
+
+if (root) {
+  var userForm = new UserForm_1.UserForm(root, user);
+  userForm.render();
+} else {
+  throw new Error('Root element not found');
+}
 },{"./models/User":"src/models/User.ts","./views/UserForm":"src/views/UserForm.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -2384,7 +2499,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58011" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53711" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,20 +1,25 @@
 import { User } from './../models/User';
+import { View } from './View';
 
-export class UserForm {
-  constructor(
-    public parent: Element, 
-    public model: User
-  ) {} // adding where this User form is added... so the parent is a HTML Element, and 
-
+export class UserForm extends View { // so inheritance
   eventsMap(): { [key: string]: () => void } { // type setting eventsMap that an object will be returned, with a string as key and object as value - that has void return
     return {
       'click:.set-age': this.onSetAgeClick,  // the colon dot :. here is to specify any class names, such as this. You can just click:button, but that would be for all buttons.
+      'click:.set-name': this.onSetNameClick 
     };
+  }
+  
+  onSetNameClick = (): void => { // USE ARROW FUNCTIONS
+    const input = this.parent.querySelector('input'); // reaching into the DOM to get the input 
+    if (input) {
+      // element from the HTML - where the name has been written on the page.
+      const name = input.value;
+      this.model.set({ name }); // short syntax
+    }
   }
   
   onSetAgeClick = (): void => { // USE ARROW FUNCTIONS - GETTING SCOPE ISSUES OF THIS WITHOUT THEM
     this.model.setRandomAge();
-    console.log(this.model.get('age'));
   }
 
   template(): string { // template acts as skeleton for structure of an html element, its not yet HTML
@@ -24,33 +29,10 @@ export class UserForm {
         <div>User name: ${this.model.get('name')}</div>
         <div>User age: ${this.model.get('age')}</div>
         <input />
-        <button>Click Me</button>
-        <button class="set-age">Set random age</button>
+        <button class="set-name">Change Name</button>
+        <button class="set-age">Set Random Age</button>
       </div>
     `;
   }
-  
-  bindEvents(fragment: DocumentFragment): void {
-    const eventsMap = this.eventsMap();
-    
-    for (let eventKey in eventsMap) {
-      const [eventName, selector] = eventKey.split(':'); // destructuring so split i.e. click:button to eventName = click, selector = button
-      
-      // fairly complicated - add the above eventsMap to the html fragments
-      fragment.querySelectorAll(selector) // return array of elements that match this selector
-        .forEach(element => { // HTML element
-          element.addEventListener(eventName, eventsMap[eventKey]) // so add the this.onButtonClick value to the click event on the above selector
-        })
-    }
-  }
 
-  render(): void {
-    const templateElement = document.createElement('template'); 
-    templateElement.innerHTML = this.template();  // here we are using the string from template() and adding it to the templateElement.
-    
-    this.bindEvents(templateElement.content); // pass in DocumentFragment... i.e. HTML that has not yet been added to dom.
-    
-    // templateElement, being an HTMLTemplateElement has various attributes, one of those being content, that is the content of the html, i.e. the html itself, that has some reference to a DocumentFragment... the purpose of those is to hold some html in memory before it gets attached to the dom. 
-    this.parent.append(templateElement.content); // and append this HTML to the parent element, that may be a div inside the larger document
-  }
 }

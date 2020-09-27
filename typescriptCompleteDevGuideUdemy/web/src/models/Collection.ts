@@ -21,9 +21,11 @@ export class Collection<T, K> { // user = T and userProps = K
   fetch(): void {
     axios.get(this.rootUrl)  // get from whatever the url is
       .then((response: AxiosResponse) => { // with the response which is a response from Axios
-        response.data.forEach((value: K) => { // loop on each element in data which complies with UserProps / K as a generic
+          response.data.forEach((value: K) => { // loop on each element in data which complies with UserProps / K as a generic
           this.models.push(this.deserialize(value)); // use deserialize as a function from the constructor here to turn the data in the response from axios into a Model object, i would have been user... but anything that complies to Model
         });
-      });
+        this.trigger('change');
+      }
+    );
   }
 }

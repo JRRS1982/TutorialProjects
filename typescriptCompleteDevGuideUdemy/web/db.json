@@ -14,21 +14,6 @@
       "id": 3,
       "name": "even even even newer name",
       "age": 123
-    },
-    {
-      "name": "Steve",
-      "age": 20,
-      "id": 4
-    },
-    {
-      "name": "Steve",
-      "age": 20,
-      "id": 5
-    },
-    {
-      "name": "asda",
-      "age": 34,
-      "id": 6
     }
   ]
 }

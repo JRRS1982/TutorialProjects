@@ -5,7 +5,7 @@ export class UserForm extends View<User, UserProps> { // so inheritance
   eventsMap(): { [key: string]: () => void } { // type setting eventsMap that an object will be returned, with a string as key and object as value - that has void return
     return {
       'click:.set-age': this.onSetAgeClick,  // the colon dot :. here is to specify any class names, such as this. You can just click:button, but that would be for all buttons.
-      'click:.set-name': this.onSetNameClick 
+      'click:.set-name': this.onSetNameClick,
       'click:.save-mode': this.onSaveClick 
     };
   }

@@ -16,7 +16,7 @@ router.get('/login', function (req, res) {
     res.send("\n    <form method=\"POST\">\n      <div>\n        <label>Email<label>\n        <input name=\"email\"/>\n      </div>\n      <div>\n        <label>Password<label>\n        <input name=\"password\" type=\"password\"/>\n      </div>\n      <button>Submit</button>\n    </form>\n  ");
 });
 router.post('/login', function (req, res) {
-    var _a = req.body, email = _a.email, password = _a.password; // .body available as we are somehow using body-parser to parse the request.
+    var _a = req.body, email = _a.email, password = _a.password; // .body available as we are somehow using body-parser to parse the request. Looking in the body of the request for email... would not have a body to look if middleware was not used.
     if (email && password && email === 'hi@hi.com' && password === 'password') { // HARD CODE USER/PASS
         req.session = { loggedIn: true }; // setting an attribute on the session.
         res.redirect('/');

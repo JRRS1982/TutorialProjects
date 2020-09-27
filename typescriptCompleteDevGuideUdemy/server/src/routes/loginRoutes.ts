@@ -32,7 +32,7 @@ router.get('/login', (req: Request, res: Response) => {
 });
 
 router.post('/login', (req: RequestWithBody, res: Response) => { // express types library imported to set type of the Request and Response.
-  const { email, password } = req.body // .body available as we are somehow using body-parser to parse the request.
+  const { email, password } = req.body // .body available as we are somehow using body-parser to parse the request. Looking in the body of the request for email... would not have a body to look if middleware was not used.
   
   if (email && password && email === 'hi@hi.com' && password === 'password') { // HARD CODE USER/PASS
     req.session = { loggedIn: true }; // setting an attribute on the session.
@@ -65,7 +65,7 @@ router.get('/logout', (req: Request, res: Response) => {
   res.redirect('/');
 });
 
-router.get('/protected', requireAuth, (req: Request, res: Response) => {
+router.get('/protected', requireAuth, (req: Request, res: Response) => { // requireAuth to ensure you cant get there without auth...
   res.send('Welcome to the protected route, you are a logged in user');
 })
 

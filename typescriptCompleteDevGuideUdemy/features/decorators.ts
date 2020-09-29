@@ -14,7 +14,7 @@
 
 // Decorators are applied when the code for this class is compiled, not when an instance is created.
 
-
+@classDecorator
 class Boat {
   @testDecorator
   color: string = 'red';
@@ -62,9 +62,10 @@ function parameterDecorator(target: Boat, key: string, index: number) {
 }
 
 /*
+ARRRRGGGH THERE ARE CLASS DECORATORS TOO!.... 
 */
 function classDecorator(constructor: typeof Boat) {
-  
+  console.log(constructor);
 }
 
 // this will call pilot function, but as @logError decorator is/was in place we have intercepted the call and called or own private function.

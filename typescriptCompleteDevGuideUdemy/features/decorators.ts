@@ -51,7 +51,7 @@ a decorator - logProblem is this code wrapped in a function so that we can pass 
 // }
 
 /*
-ARRRRGGHHHHHH OK... SO YOU CAN APPLY DECORATORS TO PARAMETERS TOO.... YOU MAY NEED THIS AT SOME POINT TO KNOW WHAT THE ARGUMENTS ARE INTO A FUNCTION.
+PARAMETER DECORATORS TO  TOO.... YOU MAY NEED THIS AT SOME POINT TO KNOW WHAT THE ARGUMENTS ARE INTO A FUNCTION.
 target = BOAT is the prototype of Boat, not an instance of Boat... so it has the functions, but not properties.
 key = pilot function on Boat
 index = a number - the index of the argument that we are applying this decorator to.
@@ -62,7 +62,7 @@ function parameterDecorator(target: Boat, key: string, index: number) {
 }
 
 /*
-ARRRRGGGH THERE ARE CLASS DECORATORS TOO!.... 
+CLASS DECORATORS TOO!.... 
 */
 function classDecorator(constructor: typeof Boat) {
   console.log(constructor);
@@ -72,7 +72,7 @@ function classDecorator(constructor: typeof Boat) {
 // new Boat().pilot();  // to to call logProblem
 
 /*
-Below is a decorator factory, which we can use to inject messages to the above logError decorator... currently lofError() is hard coded and only has one message, 
+DECORATOR FACTORY, which we can use to inject messages to the above logError decorator... currently lofError() is hard coded and only has one message, 
 */
 function logProblem(errorMessage: string) {
   return function(target: any, key: string, desc: PropertyDescriptor): void {

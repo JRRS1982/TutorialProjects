@@ -19,8 +19,8 @@ let colors: string[] = ["red", "green", "blue"];
 let myNumbers: number[] = [1, 2, 3];
 
 // Classes - create an instance of a class
-class Car {}
-let car: Car = new Car();
+class Plane {}
+let plane: Plane = new Plane();
 
 // Object literal - declare a variable called point, assign it an object that has two attributes, therefore we need to define the type of those attributes.
 let point: { x: number; y: number } = {

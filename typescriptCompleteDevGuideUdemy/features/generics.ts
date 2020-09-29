@@ -24,7 +24,6 @@ const arr2 = new ArrayOfAnything(['a', 'b', 'c']); // set the type with inferenc
 
 
 // EXAMPLE OF GENERICS WITH FUNCTIONS
-
 function printStrings(array: string[]): void {
   for (let index = 0; index < array.length; index++) {
     console.log(array[index]);
@@ -46,10 +45,8 @@ function printAnything<T>(array: T[]): void {  // T
 printAnything<string>(['a','b','c']);  // string here is setting the type explicitly
 printAnything(['a','b','c']);  // setting type with inference
 
-
 // GENERIC CONSTRAINTS - adding promises to generic types (i.e. a generic type has not length / any other attribute)
-
-class Car {
+class Bike {
   print() {
     console.log('I am a car');
   }
@@ -72,4 +69,4 @@ function printHousesOrCars<T extends Printable>(arr: T[]): void { // ie T extend
 }
 
 // printHousesOrCars([1,2,'a']) wont work - strings and numbers are not 'printable' as they have no print function
-printHousesOrCars([new House, new House, new Car]);
+printHousesOrCars([new House, new House, new Bike]);

@@ -20,8 +20,8 @@ carMakers.push(100); // wont allow a number to be pushed into an array of string
 
 // Help with map / reduce / foreach
 carMakers.map((car: string): string => { // knows param is a string so...
-  return car.toUpperCase(); // ... makes autocomplete/available functions available within.
+  return car.toUpperCase(); // ... makes string functions available within.
 });
 
-// Flexible types
-const importantDates: (Date | string)[] = [new Date(), '2030-10-10']; // the array has dates or strings, so we can push either to importantDates
+// Flexible = Date OR string is the Type of the importantDates array
+const importantDates: (Date | string)[] = [new Date(), '2030-10-10']; // so both can be added to it.

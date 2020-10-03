@@ -9,9 +9,25 @@ interface AppProps {
   deleteTodo: typeof deleteTodo;
 }
 
-export class _App extends React.Component<AppProps> {  
+interface AppState { 
+  fetching: boolean;
+}
+
+export class _App extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
+    super(props); 
+    this.state = { fetching: false }; // by default we are not fetching anything.
+  }
+  
+  componentDidUpdate(prevProps: AppProps): void {  // will be called with the props that was passed to it previously
+    if (!prevProps.todos.length && this.props.todos.length) { // we successfully fetched the todos (none in previous, but there are in state props.)
+      this.setState({ fetching: false });
+    }
+  }
+  
   onButtonClick = (): void => {
     this.props.fetchTodos();
+    this.setState({ fetching: true});
   };
   
   onTodoClick = (id: number): void => {
@@ -32,7 +48,8 @@ export class _App extends React.Component<AppProps> {
     return (
       <div>
         <button onClick={this.onButtonClick}>Fetch Todos</button>
-        {this.renderList()}
+        { this.state.fetching ? 'LOADING' : null }
+        { this.renderList() }
       </div>
     );
   }

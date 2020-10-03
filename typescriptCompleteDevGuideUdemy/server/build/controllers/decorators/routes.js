@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.del = exports.put = exports.post = exports.get = void 0;
+var MetadataKeys_1 = require("./MetadataKeys");
 var Methods_1 = require("./Methods");
 require("reflect-metadata");
 /**
@@ -15,8 +16,8 @@ function routeBinder(method) {
         // returning a function, as this is a decorator factory - find the target / metadata key
         return function (target, key, desc) {
             // name metadata key of path, add it a value of path, object we are adding it to is target, and the property we are adding this metadata to is key.
-            Reflect.defineMetadata("path", path, target, key);
-            Reflect.defineMetadata("method", method, target, key);
+            Reflect.defineMetadata(MetadataKeys_1.MetadataKeys.path, path, target, key);
+            Reflect.defineMetadata(MetadataKeys_1.MetadataKeys.method, method, target, key);
         };
     };
     ;

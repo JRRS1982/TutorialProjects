@@ -1,3 +1,4 @@
+import { MetadataKeys } from "./MetadataKeys";
 import { Methods } from './Methods';
 import "reflect-metadata";
 
@@ -13,8 +14,8 @@ function routeBinder(method: string) {
     // returning a function, as this is a decorator factory - find the target / metadata key
     return function (target: any, key: string, desc: PropertyDescriptor) {
       // name metadata key of path, add it a value of path, object we are adding it to is target, and the property we are adding this metadata to is key.
-      Reflect.defineMetadata("path", path, target, key);
-      Reflect.defineMetadata("method", method, target, key);
+      Reflect.defineMetadata(MetadataKeys.path, path, target, key);
+      Reflect.defineMetadata(MetadataKeys.method, method, target, key);
     };
   };;
 }

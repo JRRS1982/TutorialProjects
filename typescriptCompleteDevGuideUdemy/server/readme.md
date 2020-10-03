@@ -8,3 +8,8 @@ by default a request object in Express does not have a body property, which is w
 - Quite good practice on making routes.
 - Request object does not have a body, and we need to create one with body-parser middleware. Done in login routes. 
 - RequireAuth and next function, to keep protected route protected we need to have auth, 
+
+email = jeremy@code.com
+password = password
+
+Created a tonne of decorators to enhance the developer experience.

@@ -2,8 +2,32 @@ import { MetadataKeys } from "./MetadataKeys";
 import { Methods } from "./Methods";
 import { AppRouter } from "../../AppRouter";
 import "reflect-metadata";
+import { Request, Response, RequestHandler, NextFunction } from "express";
 
-export function controller(routePrefix: String) {
+/**
+ * return a single request handler - check body has all the keys.
+ */
+export function bodyValidators(keys: string): RequestHandler {
+  // check that there is a req and that the keys above exist in it - if they don't then send a res with an error message, else call next function
+  return function (req: Request, res: Response, next: NextFunction) {
+    if (!req.body) {
+      // if request has no body
+      res.status(422).send("Invalid request");
+      return;
+    }
+    for (let key of keys) {
+      if (!req.body[key]) {
+        // if there is no body on one of the keys
+        res.status(422).send(`Missing property: ${key}`);
+        return;
+      }
+    }
+    next(); // if successful call next.
+  };
+}
+
+
+export function controller(routePrefix: string) {
   return function (target: Function) {
     const router = AppRouter.getInstance();
 
@@ -28,12 +52,28 @@ export function controller(routePrefix: String) {
         key
       );
 
+      const middlewares =
+        Reflect.getMetadata(MetadataKeys.middleware, target.prototype, key) ||
+        []; // we may be trying to add a request handler hat has no middleware so we need to handle that too.
+
+      const requiredBodyProps =
+        Reflect.getMetadata(MetadataKeys.validator, target.prototype, key) ||
+        [];
+
+      const validator = bodyValidators(requiredBodyProps);
+
       /**
        * Typescript knows that router can have post/put/get and therefore as we have created a Methods enum with some of
        * these its a closed set of possible values and no longer an any being passed to router.
        */
       if (path) {
-        router[method](`${routePrefix}${path}`, routeHandler); // method = get/post etc
+        router[method](
+          // method
+          `${routePrefix}${path}`, // path
+          ...middlewares, // update the middlewares
+          validator, // run the validator
+          routeHandler
+        );
       }
     }
   };

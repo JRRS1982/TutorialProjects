@@ -7,4 +7,5 @@ var Methods;
     Methods["post"] = "post";
     Methods["del"] = "delete";
     Methods["put"] = "put";
+    Methods["patch"] = "patch";
 })(Methods = exports.Methods || (exports.Methods = {}));

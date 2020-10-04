@@ -23,13 +23,13 @@ class LoginController {
     `);
   }
 
-  @post('./login') // request handlers
-  @bodyValidator('email', 'password') // validate
+  @post("/login") // request handlers
+  @bodyValidator("email", "password") // validate
   postLogin(req: Request, res: Response) {
     // express types library imported to set type of the Request and Response.
     const { email, password } = req.body; // .body available as we are somehow using body-parser to parse the request. Looking in the body of the request for email... would not have a body to look if middleware was not used.
-  
-    // ONLY HAVE ONE USER --- JUST HARD CODE THE USER /PASS 
+
+    // ONLY HAVE ONE USER --- JUST HARD CODE THE USER /PASS
     if (email === "jeremy@code.com" && password === "password") {
       req.session = { loggedIn: true }; // setting an attribute on the session.
       res.redirect("/");
@@ -37,10 +37,10 @@ class LoginController {
       res.send("Invalid email or password");
     }
   }
-  
-  @get('/logout')
-  getLogout (req: Request, res: Response) {
+
+  @get("/logout")
+  getLogout(req: Request, res: Response) {
     req.session = null;
-    res.redirect('/');
-  };
+    res.redirect("/");
+  }
 }

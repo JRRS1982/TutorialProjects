@@ -24,10 +24,10 @@ var RootController = /** @class */ (function () {
     }
     RootController.prototype.getRoot = function (req, res) {
         if (req.session && req.session.loggedIn) {
-            res.send("\n      <div>\n        <div>You are logged in</div>\n        <a href=\"/auth/logout\">Logout</a>\n      </div>\n    ");
+            res.send("\n        <div>\n          <div>You are logged in</div>\n          <a href=\"/auth/logout\">Logout</a>\n        </div>\n      ");
         }
         else {
-            res.send("\n      <div>\n        <div>You are not logged in</div>\n        <a href=\"/auth/login\">Login</a>\n      </div>\n    ");
+            res.send("\n        <div>\n          <div>You are not logged in</div>\n          <a href=\"/auth/login\">Login</a>\n        </div>\n      ");
         }
     };
     RootController.prototype.getProtected = function (req, res) {
@@ -35,20 +35,20 @@ var RootController = /** @class */ (function () {
         res.send("Welcome to the protected route, you are a logged in user");
     };
     __decorate([
-        decorators_1.get("/"),
+        decorators_1.get('/'),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], RootController.prototype, "getRoot", null);
     __decorate([
-        decorators_1.get("/protected"),
+        decorators_1.get('/protected'),
         decorators_1.use(requireAuth),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], RootController.prototype, "getProtected", null);
     RootController = __decorate([
-        decorators_1.controller("")
+        decorators_1.controller('')
     ], RootController);
     return RootController;
 }());

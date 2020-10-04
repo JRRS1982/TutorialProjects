@@ -22,7 +22,7 @@ var LoginController = /** @class */ (function () {
     LoginController.prototype.postLogin = function (req, res) {
         // express types library imported to set type of the Request and Response.
         var _a = req.body, email = _a.email, password = _a.password; // .body available as we are somehow using body-parser to parse the request. Looking in the body of the request for email... would not have a body to look if middleware was not used.
-        // ONLY HAVE ONE USER --- JUST HARD CODE THE USER /PASS 
+        // ONLY HAVE ONE USER --- JUST HARD CODE THE USER /PASS
         if (email === "jeremy@code.com" && password === "password") {
             req.session = { loggedIn: true }; // setting an attribute on the session.
             res.redirect("/");
@@ -33,9 +33,8 @@ var LoginController = /** @class */ (function () {
     };
     LoginController.prototype.getLogout = function (req, res) {
         req.session = null;
-        res.redirect('/');
+        res.redirect("/");
     };
-    ;
     __decorate([
         decorators_1.get("/login") // want to add metadata on getLogin to indicate that it should be called every time a request is made to /login
         ,
@@ -44,16 +43,16 @@ var LoginController = /** @class */ (function () {
         __metadata("design:returntype", void 0)
     ], LoginController.prototype, "getLogin", null);
     __decorate([
-        decorators_1.post('./login') // request handlers
+        decorators_1.post("/login") // request handlers
         ,
-        decorators_1.bodyValidator('email', 'password') // validate
+        decorators_1.bodyValidator("email", "password") // validate
         ,
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], LoginController.prototype, "postLogin", null);
     __decorate([
-        decorators_1.get('/logout'),
+        decorators_1.get("/logout"),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)

@@ -1,14 +1,12 @@
 import express from "express";
 
-/**
- * singleton class
- */
+// singleton class
 export class AppRouter {
-  // static means that we can access this property without having to create an instance of the class.
-  private static instance: express.Router;
+  private static instance: express.Router; // static method - making this function usable without creating an instance of the class
 
-  // get the instance if it exists or create a new one if there isn't.
   static getInstance(): express.Router {
+   
+    // get the instance if it exists or create a new one if there isn't.
     if (!AppRouter.instance) {
       AppRouter.instance = express.Router();
     }

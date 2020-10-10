@@ -5,6 +5,7 @@ npm run build - builds a production version of the application
 Dockerfile.dev - development version
 Dockerfile - production version
 
+/app/build   <---- the file we show to the world / what we serve up on the production server.
 
 ```
 // DOCKER volumes

@@ -22,4 +22,33 @@ Worker - a working making requests back and forth to Redis. It watches redis for
 
 --- 
 
-HTML push state routing - 
+HTML push state routing with 'otherpage'
+
+nodemon - package for development that will reload the application whenever there are changes in the source code.
+
+Development environment with complete copy of everything in it.
+
+---
+
+```
+// build an image from a development Dockerfile and provide it the context of where (the period)
+docker build -f Dockerfile.dev .
+
+// check the image 
+docker run <imageFromTheBuildAbove>
+```
+
+---
+
+# Compose
+
+postgres
+- what image to use?
+
+redis
+- what image to use?
+
+server
+- specify build
+- specify volumes
+- specify env vars

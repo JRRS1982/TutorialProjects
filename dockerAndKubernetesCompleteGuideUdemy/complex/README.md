@@ -19,3 +19,7 @@ Worker - a working making requests back and forth to Redis. It watches redis for
 "Values i have seen" on the page will be populated from the backend. 
 
 "Calculated values" on the page will be populated from Redis.
+
+--- 
+
+HTML push state routing - 

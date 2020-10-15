@@ -22,8 +22,6 @@ const pgClient = new Pool({
   port: keys.pgPort
 });
 
-pgClient.on('error', () => console.log('Lost PG connection')); // anytime there is a connection which has an error... console log it.
-
 pgClient.on('connect', () => { 
   pgClient
     .query("CREATE TABLE IF NOT EXISTS values (number INT)") // create a table called values with a single column which will be an index of the items submitted from the React app.

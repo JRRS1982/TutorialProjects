@@ -1,3 +1,4 @@
+// list of environment variables that need to be given to the container
 module.exports = {
   redisHost: process.env.REDIS_HOST,
   redisPort: process.env.REDIS_PORT,

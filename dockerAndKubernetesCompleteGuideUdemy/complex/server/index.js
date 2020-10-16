@@ -49,7 +49,7 @@ app.get("/values/all", async (req, res) => {
   res.send(values.rows); // respond with the values (only those)
 });
 
-app.get('/values/current', async (req, res) => {
+app.get("/values/current", async (req, res) => {
   redisClient.hgetall('values', (err, values) => { // 'hgetall' hash value inside redis instance (called values) and get all the info from it.
     res.send(values); 
   });
@@ -63,12 +63,13 @@ app.post("/values", async (req, res) => {
     return res.status(422).send("Index too high");
   }
 
-  redisClient.hset("values", index, "Nothing Yet!"); // saving the value to the location on the index... nothing yet is a placeholher
+  redisClient.hset("values", index, "I have calculated nothing yet!"); // saving the value to the location on the index... nothing yet is a placeholher
   redisPublisher.publish("insert", index); // publish a new 'insert' event... that will alert the worker
   pgClient.query("INSERT INTO values(number) VALUES($1)", [index]); // take the value of the index and add it to postgres
   res.send({ working: true }); // a response to just confirm that we are doing something to calculate the fib number.
 });
 
+d
 app.listen(5000, err => {
   console.log('Listening')
 });

@@ -2,7 +2,7 @@ A way more complicated than it needs to be Fibonacci calculator.
 
 Browser - when user first opens web browser they first visit a Nginx web server.
 
-Nginx - will do some routing, to either a React Server or Express Server. 
+Nginx - will do some routing, to either a React Server or Express Server. If the request from the browser comes in an /api/ prefix it will go to the 'client', else the request will go to the 'server'. Nginx is acting like a middleman that takes requests from the browser and distributes requests, it will strip the /api/ from the request so the 'client' does not need to have the endpoint in that server prefixed with /api/. In the Dockerfile for this we are overwriting the existing default file from nginx with our config file.
 
 React Server - if the request to Nginx is for front end assets the routing from Nginx will be to the React Server.
 
@@ -40,15 +40,23 @@ docker run <imageFromTheBuildAbove>
 
 ---
 
-# Compose
+# docker-compose.yml
 
 postgres
-- what image to use?
+- what image to use? - latest postgres image
 
 redis
-- what image to use?
+- what image to use? - latest redis image
 
 server
 - specify build
 - specify volumes
 - specify env vars
+
+```
+volumes:
+  // leave node_modules where they are
+  /app/node_modules
+  // every time we try to access the ./app file in the container, redirect the request back to the local ./server directory.
+  ./server:/app 
+```

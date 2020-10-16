@@ -29,7 +29,7 @@ class Fib extends Component {
   handleSubmit = async (event) => {
     event.preventDefault(); // dont let the form submit itself
 
-    await axios.post("/ap/values", {
+    await axios.post("/api/values", {
       index: this.state.index, // whatever the user entered into index.
     });
     this.setState({ index: "" }); // clear index after successfully sending it to backend.
@@ -37,7 +37,7 @@ class Fib extends Component {
 
   // seenIndexes comes from postgres and is an array of objects
   renderSeenIndexes() {
-    return this.state.seenIndexes.map(({ number }) => number.join(", ")); // de-structured map to get and return 'number' attribute of elements in the seenIndexes array, then add a comma between them
+    return this.state.seenIndexes.map(({ number }) => number).join(", "); // de-structured map to get and return 'number' attribute of elements in the seenIndexes array, then add a comma between them
   }
 
   // values come from redis and therefore is an object which has key-value pairs.
@@ -61,7 +61,7 @@ class Fib extends Component {
           <label>Enter your index:</label>
           <input // when user presses button
             value={this.state.index}
-            onChange={(event) => this.setState({ index: event.target.value })}
+            onChange={event => this.setState({ index: event.target.value })}
           />
           <button>Submit</button>
         </form>

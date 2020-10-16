@@ -22,7 +22,8 @@ sub.on('message', (channel, message) => { // every time there is a new value in 
   redisClient.hset( // hset being hash
     'values', // insert the new fib value into a hash called values.
     message, // the key of the hash will be the index - the message that was submitted into the form.
-    fib(parseInt(message))); // calculate a new fib value.
+    fib(parseInt(message))// calculate a new fib value.
+  );
 });
 
 sub.subscribe('insert'); // anytime a new value is inserted to redis

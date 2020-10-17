@@ -60,3 +60,18 @@ volumes:
   // every time we try to access the ./app file in the container, redirect the request back to the local ./server directory.
   ./server:/app 
 ```
+
+
+
+--- 
+## CI / CD Workflow
+
+1. Push code to github
+2. Travis auto pulls repo
+3. Travis builds a TEST image and tests the code
+4. Travis builds PRD images
+5. Travis pushes built PRD images to Docker Hub
+6. Travis pushes project to AWS Elastic Beanstalk
+7. Elastic Beanstalk pulls images from Docker Hub and deploys.
+
+Docker hub is a central repo in the Docker world, AWS Elastic Beanstalk will pull images from there, which means that Travis builds the images and therefore Elastic Beanstalk does not need to build the images.

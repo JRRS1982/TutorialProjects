@@ -14,6 +14,9 @@ Webpack - a bundler system.
 package.json - records the projects dependencies and configures the project.
 package-lock.json - records the exact version of the dependencies we install.
 
+## Formatting
+Components are in PascalCase
+
 ## Install
 ```
 npx create-react-app exampleAppName

@@ -1,0 +1,37 @@
+services: 
+  - docker
+
+before_install:
+# build an image from Dockerfile.dev in client folder, and tag it react-test
+  - docker build -t jrrs1982/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+# run the tests, in that image - ensuring to include CI=true, else it will get loaded in watch mode and loop.
+  - docker run -e CI=true jrrs1982/react-test npm test
+
+after_success:
+# build the production images that we have created in these directories
+  - docker build -t jrrs1982/multi-client ./client
+  - docker build -t jrrs1982/multi-nginx ./nginx
+  - docker build -t jrrs1982/multi-server ./server
+  - docker build -t jrrs1982/multi-worker ./worker
+# log into docker CLI with the environment variables that I have added to travis CI - docker login command will expect the password via stdin - standard in
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# take those images and push them to docker hub
+  - docker push jrrs1982/multi-client
+  - docker push jrrs1982/multi-nginx
+  - docker push jrrs1982/multi-server
+  - docker push jrrs1982/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: eu-west-2
+  app: multi-docker
+  env: MultiDocker-env
+  bucket: elasticbeanstalk-eu-west-2-542899262841
+  bucket_path: docker-multi
+  # only build when the master branch is pushed, not on all.
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY

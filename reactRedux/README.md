@@ -44,6 +44,9 @@ import React from 'react'
 ### what is a component?
 A function or class that produces HTML for the user using JSX, and handles feedback from the user using event handlers.
 
+### what are props?
+Properties passed from a parent to child component, this can include other components being passed along as a property. Use props.children in the parent component to refer to/place where its child elements need to go. i.e. comment details is a property of ApprovalCard in components i.e. its contained in the wrapper of the large element that is ApprovalCard.
+
 ### What is JSX
 Babel.js/io is used to process JSX, no browser knows what JSX looks like, Babel changes JSX into normal Javascript code. 
 
@@ -72,3 +75,11 @@ const App = () => {
 ReactDOM.render(<App />, document.querySelector("#root"));
 
 ```
+
+### Class Components
+Benefits 
+- easier code organization
+- can use 'state' therefore easier to handle user input
+- understands lifecycle events therefore easier to do things when the app first starts.
+
+### Feature Components

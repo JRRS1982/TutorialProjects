@@ -82,4 +82,17 @@ Benefits
 - can use 'state' therefore easier to handle user input
 - understands lifecycle events therefore easier to do things when the app first starts.
 
+Requirements
+- Must be a Javascript Class
+- Must extend / be a subclass of React.Component
+- Must define a render method that returns some amount of JSX
+
 ### Feature Components
+
+## State in components
+- only usable with class components (or when using hooks in feature components)
+- you will confuse props with state
+- State is a JS object that contains data relevant to a component
+- Updating state on a component causes the component to almost instantly re-render
+- State must be initialized when a component is first created
+- State can only be updated with the function setState - you will forget this.

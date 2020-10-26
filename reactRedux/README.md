@@ -96,3 +96,25 @@ Requirements
 - Updating state on a component causes the component to almost instantly re-render
 - State must be initialized when a component is first created
 - State can only be updated with the function setState - you will forget this.
+
+
+
+
+## Component Lifecycle Methods
+During the life of a component these steps/functions will take place. It seems simple enough.
+
+1. constructor
+As per normal functions, classes need instantiating. This is a good place for one-time setup.
+2. render
+Will need to show the component, this is how it is done. Avoid doing anything apart from returning JSX in this function.
+3. componentDidMount 
+When render is called, this will also be called (once). This is a good place to do data loading.
+4. componentDidUpdate
+When setState is called, this will also be called. This is another good place to do data loading, when state/props change.
+5. componentWillUnmount
+Called if we remove the component. It is a good place to do cleanup, especially of non React stuff.
+
+Others (less frequently used)
+- shouldComponentUpdate
+- getDerivedStateFromProps
+- getSnapshotBeforeUpdate

@@ -1,3 +1,6 @@
+# Modern React with Redux 2020 Course
+
+These are my notes and projects from [Stephen Grinders Course](https://www.udemy.com/course/react-redux/). I recommend / love all of his stuff. 
 
 ## Features
 React - a reconciler - knows how to work with components
@@ -98,15 +101,13 @@ Requirements
 - State can only be updated with the function setState - you will forget this.
 
 
-
-
 ## Component Lifecycle Methods
 During the life of a component these steps/functions will take place. It seems simple enough.
 
 1. constructor
 As per normal functions, classes need instantiating. This is a good place for one-time setup.
 2. render
-Will need to show the component, this is how it is done. Avoid doing anything apart from returning JSX in this function.
+Will need to show the component, this is how it is done. Avoid doing anything apart from returning JSX in this function. Try and avoid adding conditional statements here, if we need to make helper methods to renderContent.
 3. componentDidMount 
 When render is called, this will also be called (once). This is a good place to do data loading.
 4. componentDidUpdate
@@ -118,3 +119,12 @@ Others (less frequently used)
 - shouldComponentUpdate
 - getDerivedStateFromProps
 - getSnapshotBeforeUpdate
+
+### React Component Conventions
+A component will typically be at the bottom of a file, with the config of the component at the top and helper functions in the middle. 
+
+## How to get feedback from the user
+
+## How to fetch data from an outside service or API
+
+## How to show lists of records

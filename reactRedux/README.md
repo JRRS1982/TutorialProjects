@@ -184,3 +184,22 @@ axios
     console.log(response.data.results); // the objects that come back from unsplash
 });
 ```
+
+## Map function in javascript (reminder)
+
+```
+// just a quick reminder about the map function.
+numbers =  [0,1,2];
+numbers.map((num) => {
+  return num * 10;
+})
+OR 
+numbers.map((num) => num * 10); // slimline
+numbers.map(num => num * 10); // super slimline
+```
+
+## key property on lists
+On a list of elements we are required to add a 'key' for each element in the list so that React is able to work with it. The key should be unique, if it is not used an error will be thrown in console.
+```
+return <img key={image.id} src={image.urls.regular}>
+```

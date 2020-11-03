@@ -150,3 +150,21 @@ onInputChange(event) { // some event callback
 <input type="text" onChange={this.onInputChange} />
 
 ```
+
+## "Cannot read property state of undefined" - the most common error is React 'this'
+
+"I can not access the property state on the value undefined" - undefined is a value in JS, what the error is saying is that 'this' has not been defined, and therefore it does not have an attribute called state, which is what we are trying to call.
+```
+this.state.example -> this is what we are probably wanting to do
+undefined.state.example -> this is what we are actually doing
+
+drive() { return this.sound; }
+drive() // there is no parent for this to be called on so it will return above error.
+
+We are basically calling 'this' where there is no element on the left, i.e. where there is no parent element that is 'this'.
+```
+
+### Axios
+
+- fetch is a function that has been built into modern browsers, its does the job but is not great.
+- axios is a package that can be installed which provides some helper methods which is more reliable and useful for projects.

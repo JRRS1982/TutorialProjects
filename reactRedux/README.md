@@ -133,3 +133,20 @@ pics project
 pics project
 ## How to show lists of records
 pics project
+
+### Functions / Event Handlers
+
+If you apply these to a div/element and pass a callback function the callback function will be called.
+
+- onClick -> callback for when a user clicks on something
+- onChange -> callback for when text changes in an input
+- onSubmit -> callback for when a user submits a form
+
+```
+// i.e. if there is a text input field, onChange will call onInputChange every time the text in the field changes... and in this case return the value of the event that happened... or do whatever you want.
+onInputChange(event) { // some event callback
+  return event.target.value;
+}
+<input type="text" onChange={this.onInputChange} />
+
+```

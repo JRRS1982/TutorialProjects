@@ -12,10 +12,12 @@ import SearchBar from "./SearchBar";
  * 6) App component rerenders and shows images
  */
 class App extends React.Component {
+  state = { images: [] };
   /**
    * async as we are waiting on a response from axios
+   * arrow function as its a callback
    */
-  async onSearchSubmit(searchTerm) {
+  onSearchSubmit = async (searchTerm) => {
     const response = await axios.get("https://api.unsplash.com/search/photos", {
       params: { query: searchTerm }, // what we are searching for
       headers: {
@@ -23,14 +25,15 @@ class App extends React.Component {
         Authorization: "Client-ID cCd8B3JOJ4LOW1_V053RUWEXBDRijih_9mkP9vAmm74", // access key from unsplash
       },
     });
-    console.log(response.data.results);
-  }
+    this.setState({ images: response.data.results });
+  };
 
   render() {
     return (
       <div className="ui container" style={{ marginTop: "30px" }}>
         {/* run onSearchSubmit when the search is submitted, onSubmit is the prop name that is passed to the component */}
         <SearchBar onSubmit={this.onSearchSubmit} />
+        Found: {this.state.images.length}
       </div>
     );
   }

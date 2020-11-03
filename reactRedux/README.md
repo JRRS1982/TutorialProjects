@@ -2,6 +2,10 @@
 
 These are my notes and projects from [Stephen Grinders Course](https://www.udemy.com/course/react-redux/). I recommend / love all of his stuff. 
 
+1. JSX
+2. Components
+3. Pics
+
 ## Features
 React - a reconciler - knows how to work with components
 ReactDom - a renderer - knows how to take instructions and HTML
@@ -124,7 +128,8 @@ Others (less frequently used)
 A component will typically be at the bottom of a file, with the config of the component at the top and helper functions in the middle. 
 
 ## How to get feedback from the user
-
+pics project
 ## How to fetch data from an outside service or API
-
+pics project
 ## How to show lists of records
+pics project

@@ -168,3 +168,19 @@ We are basically calling 'this' where there is no element on the left, i.e. wher
 
 - fetch is a function that has been built into modern browsers, its does the job but is not great.
 - axios is a package that can be installed which provides some helper methods which is more reliable and useful for projects.
+
+When you make a request with axios it will return an object called a promise, which is like a callback with whatever data.
+
+```
+axios
+  .get("https://api.unsplash.com/search/photos", {
+    params: { query: searchTerm }, // what we are searching for
+    headers: { // as per the unsplash docs... we need to include a header with auth.
+      Authorization:
+        "Client-ID cCd8B3JOJ4LOW1_V053RUWEXBDRijih_9mkP9vAmm74", // access key from unsplash
+    },
+  })
+  .then((response) => { // we can use .then with anything that uses a promise... such as as axios, i.e. there will always be a then... its async so we may have to wait for the response, but when there is a response then... do xyz.
+    console.log(response.data.results); // the objects that come back from unsplash
+});
+```

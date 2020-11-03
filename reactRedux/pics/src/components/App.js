@@ -1,10 +1,29 @@
 import React from "react";
+import axios from "axios";
 import SearchBar from "./SearchBar";
 
 // onSearchSubmit will be a callback function that is passed to the searchbar that calls back to the App
+/**
+ * 1) component renders itself one time with no list of images
+ * 2) onSearchSubmit method is called
+ * 3) request is made to unsplash (async so will take time to complete)
+ * 4) request is complete
+ * 5) set image data on state of App component
+ * 6) App component rerenders and shows images
+ */
 class App extends React.Component {
-  onSearchSubmit(searchTerm) {
-    console.log(searchTerm);
+  /**
+   * async as we are waiting on a response from axios
+   */
+  async onSearchSubmit(searchTerm) {
+    const response = await axios.get("https://api.unsplash.com/search/photos", {
+      params: { query: searchTerm }, // what we are searching for
+      headers: {
+        // as per the unsplash docs... we need to include a header with auth.
+        Authorization: "Client-ID cCd8B3JOJ4LOW1_V053RUWEXBDRijih_9mkP9vAmm74", // access key from unsplash
+      },
+    });
+    console.log(response.data.results);
   }
 
   render() {

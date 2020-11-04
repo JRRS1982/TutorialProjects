@@ -1,13 +1,14 @@
+import "./ImageList.css";
 import React from "react";
+import ImageCard from "./ImageCard";
+
 
 const ImageList = (props) => {
-  const images = props.images.map(({ id, urls, description }) => {
-    // DESTRUCTURED - I.E. ELMENTS FROM THE LOOPED ITEM
-    // map through what we got back from unsplash
-
-    return <img key={id} src={urls.regular} alt={description} />; // select the url for the regular size image from list of options
+  // map through what we got back from unsplash
+  const images = props.images.map((image) => {
+    return <ImageCard key={image.id} image={image} />; // select the url for the regular size image from list of options
   });
-  return <div>{images}</div>;
+  return <div className="image-list">{images}</div>;
 };
 
 export default ImageList;

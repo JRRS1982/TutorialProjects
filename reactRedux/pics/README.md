@@ -17,6 +17,8 @@ This is one of the projects from Stephen Griders Course on React, his stuff is g
 
 ### <a name="tech">Tech Stack</a>
 
+* Javascript
+* CSS
 * React
 * Axios
 * Unsplash API

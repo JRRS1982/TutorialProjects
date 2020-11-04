@@ -203,3 +203,17 @@ On a list of elements we are required to add a 'key' for each element in the lis
 ```
 return <img key={image.id} src={image.urls.regular}>
 ```
+
+## React Refs
+- Gives access to a single dom element that is rendered by a component
+- We create 'refs' in the constructor, assign them to instance variables, then pass to a particular JSX element as props.
+1. define constructor
+2. call a function from constructor to create a reference and assign it as an instance variable on our class.
+3. we can setState on these, but it is not required to do so as they are not going to change. In general we only set state on things that are going to change over time.
+```
+// this is an example of how to create a reference called imageRef which is being created as an instance variable which we can therefore refer back to later in the class.
+  constructor(props) {
+    super(props);
+    this.imageRef = React.createRef();
+  }
+```

@@ -23,7 +23,9 @@ Then i am provided a list of items related to that search term on the page.
 ##### API's Used
 
 * Youtube
- - see apis/youtube.js, a public key is in use here, on the console.developers.google console, this key is permitted for use only from localhost:3000.
+- see apis/youtube.js, a public key is in use here, on the console.developers.google console, this key is permitted for use only from localhost:3000.
+- https://developers.google.com/youtube/v3/docs/search/list#request
+- GET https://www.googleapis.com/youtube/v3/search
 
 ### <a name="installation">Installation: how it works</a>
 
@@ -38,6 +40,11 @@ npm start
 
 Should there be any UML / screenshots / documentation for the project, please find them in the 'images' folder of the 
 project.
+
+```
+// install axios
+npm install --save axios
+```
 
 ### <a name="reflection">Reflection and further development</a>
 

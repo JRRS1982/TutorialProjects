@@ -23,12 +23,13 @@ Then i am provided a list of items related to that search term on the page.
 * React
 * Axios
 * Youtube API
+* Semantic-ui https://semantic-ui.com/
 
 ##### Code style
 
 * 
 
-##### API's Used
+##### APIs Used
 
 * Youtube
 - see apis/youtube.js, a public key is in use here, on the console.developers.google console, this key is permitted for use only from localhost:3000.
@@ -41,7 +42,7 @@ Then i am provided a list of items related to that search term on the page.
 // in root of the project
 npm install
 npm start
-// on web browswer of your choice navigate to http://localhost:3000/
+// on web browser of your choice navigate to http://localhost:3000/
 ```
 
 ### <a name="screenshots"> UML / Screenshots / Documentation</a>

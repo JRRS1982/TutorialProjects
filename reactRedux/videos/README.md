@@ -4,6 +4,14 @@
 
 This is a video search project that comes from Stephen Griders React with Redux 2020 tutorial, starting on chapter 11.
 
+There will be a page with a SearchBar, VideoDetail, VideoList adn VideoItem rendered on it. 
+
+- SearchBar: where user input is gathered
+- VideoList: where a list of videos is displayed - the response to the videos returned by the YouTube API.
+- VideoItem: an item within the VideoList.
+- VideoDetail: detail about the selected video.
+
+
 #### Acceptance Criteria
 
 Given i have entered a term into the applications search bar

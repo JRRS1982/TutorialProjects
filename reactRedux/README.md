@@ -217,3 +217,24 @@ return <img key={image.id} src={image.urls.regular}>
     this.imageRef = React.createRef();
   }
 ```
+
+## Hooks
+
+Hooks are a way to write reusable code instead of a more classic technique such as inheritance.
+
+All about giving function components more functionality. Function components can not make use of state or lifecycle methods, hooks are about changing that.
+
+- useState -> a function that lets you use state in a functional component
+- useEffect -> a function that lets you use something like lifecycle methods in a functional component
+- useRef -> a function that lets you create a 'ref' in a function component
+
+1. `useState`
+2. `useReducer`
+3. `useRef`
+4. `useDebugValue`
+5. `useEffect`
+6. `useCallback`
+7. `useImperativeHandle`
+8. `useContext`
+9. `useMemo`
+10. `useLayoutEffect`

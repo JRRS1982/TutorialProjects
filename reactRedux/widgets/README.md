@@ -34,31 +34,15 @@ Outputs: wikipedia search result displayed in a dropdown
 ### <a name="installation">Installation: how it works</a>
 
 ```
-
+git clone
+npm install
+npm start
 ```
-
-clone the repo
-> $ git clone XXXXXX
-bundle install to install the gems and get started
-> $ bundle install
-run tests from the root of the project
-> $ rspec
-enter irb (or pry if you prefer)
-> $ irb
-create an instance of the object under construction and use as you desire.
-> $ XXXX = YYYYY.new
 
 ### <a name="screenshots"> UML / Screenshots / Documentation</a>
 
 Should there be any UML / screenshots / documentation for the project, please find them in the 'images' folder of the 
 project.
-
-Sandi Metz ch9 p203 suggests this table to clarify what needds to be tested... test public interfaces of objects, not attributes.
-| Object | Incoming Messages | Outgoing Messages | Has dependents?
-|:---:|:---:|:---:|:---:|
-| Wheel | diameter- method on wheel | None - everything is in wheel | Yes - needs rim and tyre from wheel
-| Gear | None - there is no request to Gear, the request is to Wheel | diameter method is on wheel, and request is therefore outgoing | No - rim and tyre is from Wheel.  
- 
 
 ### <a name="reflection">Reflection and further development</a>
 

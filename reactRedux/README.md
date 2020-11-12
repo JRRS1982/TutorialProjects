@@ -228,11 +228,27 @@ All about giving function components more functionality. Function components can
 - useEffect -> a function that lets you use something like lifecycle methods in a functional component
 - useRef -> a function that lets you create a 'ref' in a function component
 
-1. `useState`
+1. `useState` 
+    - a hook that allows us to use state within a function component
+    ```
+    const [activeIndex, setActiveIndex] = useState(null);
+    
+    * useState is a primitive component from React, it returns two things, and
+    * we are destructuring what it returns by creating activeIndex and setActiveIndex
+    * variables here. activeIndex is the piece of state we are trying to track, the
+    * second is a function that we are using to update state. useState(null) where
+    * null is the initial value of the state.
+    ```
 2. `useReducer`
 3. `useRef`
 4. `useDebugValue`
 5. `useEffect`
+    - allows function components to use something similar to the lifecycle methods that are provided in class based components. See widgets/src/Search of this in use.
+    - can configure useEffect hook to run some code automatically in one of three scenarios.
+        1. When the component is rendered for the first time only 
+        2. When the component is rendered for the 'first time and whenever it is re-rendered'.
+        3. When the component is rendered for the 'first time' and 'whenever it is re-renders and some piece of data has changed'.
+    - first argument to the function is what, the second argument is when.
 6. `useCallback`
 7. `useImperativeHandle`
 8. `useContext`

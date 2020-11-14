@@ -142,6 +142,6 @@ const Search = () => {
       <div className="ui celled list">{renderedResults}</div>
     </div>
   );
-};;;;;;;
+};
 
 export default Search;

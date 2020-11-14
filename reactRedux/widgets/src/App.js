@@ -10,7 +10,7 @@ const items = [
   },
   {
     title: "Why use React?",
-    content: "React is a favorite front end framework for engineers",
+    content: "React is a favourite front end framework for engineers",
   },
   {
     title: "How to use React?",
@@ -20,16 +20,16 @@ const items = [
 
 const options = [
   {
-    label: "The Color red",
-    value: "red",
+    label: "The Color Red",
+    value: "Red",
   },
   {
-    label: "The Color green",
-    value: "green",
+    label: "The Color Green",
+    value: "Green",
   },
   {
-    label: "The Color blue",
-    value: "blue",
+    label: "The Color Blue",
+    value: "Blue",
   },
 ];
 

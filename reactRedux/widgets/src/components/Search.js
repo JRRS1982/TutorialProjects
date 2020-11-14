@@ -44,8 +44,47 @@ import axios from "axios";
         Reacts preferred way of using async is option 1
    */
 const Search = () => {
-  const [term, setTerm] = useState("");
+  const [term, setTerm] = useState("example");
+  const [debouncedTerm, setDebouncedTerm] = useState(term);
   const [results, setResults] = useState([]);
+
+  /**
+   * when a user types something update the term state and set a delay / setTimeout 
+   * to update debouncedTerm, but, when a user types something (within the delay) 
+   * cancel the previous timer and again immediately update term... and again set 
+   * a timer to update the debounced term..... 
+   * 
+   * We need to "debounce" the request as there there are multiple things in the
+   * second argument [term, result.length], therefore without a debouncedTerm the
+   * term will change for each and a new request will be made for each.
+   * 
+   * i.e. we are updating term, but using debounced term to reduce requests to the
+   * api
+   */
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedTerm(term);
+    }, 1000);
+
+    // a cleanup function that clears the timer 
+    return () => {
+      clearTimeout(timerId);
+    };
+  /**
+   * [term] here is the second argument to useEffect, it is what this useEffect function watches for changes.
+   * 
+   * this useEffect will run any time that term changes, and it it will set the 
+   * debouncedTerm in one second... so debouncedTerm will not change straight away 
+   * and that useEffect will not be triggered (for a second). When a change to debouncedTerm
+   * is actually processed (after a second of waiting) the search will take place!
+   * 
+   * And thats a rap! the search will take place as the debouncedTerm has been updated
+   * which is being watched by another useEffect, that will carry out a search if there
+   * are any changes to that piece of state.
+   * 
+   * however both will run on the first render of the component
+   */
+  }, [term]);
 
   useEffect(() => {
     const search = async () => {
@@ -56,48 +95,14 @@ const Search = () => {
           list: "search",
           origin: "*",
           format: "json",
-          srsearch: term, // what we are searching for - the term piece of state
+          srsearch: debouncedTerm, // what we are searching for - the term piece of state
         },
       });
       setResults(data.query.search); // set the de-structured data value from the response of the call, to the results value on state
     };
-    
-    /**
-     * if there is a search term, and there have been no results before it is 
-     * the first search, therefore carry out the search straight away
-     */
-    if (term && !results.length) {
-      search();
-      
-    /**
-     * else create a timeout - or at least the id of a timeout, that we can use
-     * later. setTimeout will create an id that we can cancel with clearTimeout,
-     * and we will search() after a 1 second delay... if it is not cancelled.
-     */
-    } else {
-      const timeoutId = setTimeout(() => {
-        if (term) {
-          search();
-        }
-      }, 1000); // setTimeout to delay the search by 1 seconds
-    
-    /**
-     * so currently the search will happen is the length of results is zero, or
-     * after one second if there are results already. We are doing this to avoid
-     * making api calls on every single key press in the search box. 
-     * 
-     * The component re-renders after every key press and timeout is cleared by
-     * the clearTimeout function here. This function is THE SECOND ARGUMENT IN
-     * THE USEEFFECT FUNCTION, IT IS NUTS... SEE THE README ABOUT IT. IT IS RUN
-     * AFTER THE COMPONENT RE-RENDERS I.E. FIRST ON THE SECOND TIME THE COMPONENT
-     * IS RENDERED, BUT SECOND ON THE FIRST TIME IT IS RENDERED.
-    */
-      return () => {
-        clearTimeout(timeoutId); // clear the timeout above - the delay of the search.
-      };
-    }
-  }, [term]); // the search term - see the formatting of the [], [term] parameter here is really important see the notes on useEffect
-
+    search();
+  }, [debouncedTerm]); // [debouncedTerm] this is the second argument to the function, see the readme for more info
+  
   const renderedResults = results.map((result) => {
     return (
       <div className="item" key={result.pageid}>
@@ -133,6 +138,6 @@ const Search = () => {
       <div className="ui celled list">{renderedResults}</div>
     </div>
   );
-};;
+};;;;;;;
 
 export default Search;

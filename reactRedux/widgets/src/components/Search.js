@@ -49,41 +49,45 @@ const Search = () => {
   const [results, setResults] = useState([]);
 
   /**
-   * when a user types something update the term state and set a delay / setTimeout 
-   * to update debouncedTerm, but, when a user types something (within the delay) 
-   * cancel the previous timer and again immediately update term... and again set 
-   * a timer to update the debounced term..... 
-   * 
+   * when a user types something update the term state and set a delay / setTimeout
+   * to update debouncedTerm, but, when a user types something (within the delay)
+   * cancel the previous timer and again immediately update term... and again set
+   * a timer to update the debounced term.....
+   *
    * We need to "debounce" the request as there there are multiple things in the
    * second argument [term, result.length], therefore without a debouncedTerm the
    * term will change for each and a new request will be made for each.
-   * 
+   *
    * i.e. we are updating term, but using debounced term to reduce requests to the
    * api
+   *
+   * NICE GUIDE ON DE-BOUNCING HERE: https://www.freecodecamp.org/news/debounce-javascript-tutorial-how-to-make-your-js-wait-up/
+   *
    */
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedTerm(term);
     }, 1000);
 
-    // a cleanup function that clears the timer 
+    // a cleanup function that clears the timer
     return () => {
       clearTimeout(timerId);
     };
-  /**
-   * [term] here is the second argument to useEffect, it is what this useEffect function watches for changes.
-   * 
-   * this useEffect will run any time that term changes, and it it will set the 
-   * debouncedTerm in one second... so debouncedTerm will not change straight away 
-   * and that useEffect will not be triggered (for a second). When a change to debouncedTerm
-   * is actually processed (after a second of waiting) the search will take place!
-   * 
-   * And thats a rap! the search will take place as the debouncedTerm has been updated
-   * which is being watched by another useEffect, that will carry out a search if there
-   * are any changes to that piece of state.
-   * 
-   * however both will run on the first render of the component
-   */
+    /**
+     * [term] here is the second argument to useEffect, it is what this useEffect function watches for changes.
+     *
+     * this useEffect will run any time that term changes, and it it will set the
+     * debouncedTerm in one second... so debouncedTerm will not change straight away
+     * and that useEffect will not be triggered (for a second). When a change to debouncedTerm
+     * is actually processed (after a second of waiting) the search will take place!
+     *
+     * And thats a rap! the search will take place as the debouncedTerm has been updated
+     * which is being watched by another useEffect, that will carry out a search if there
+     * are any changes to that piece of state.
+     *
+     * however both will run on the first render of the component - but there will
+     * only be one api call as that only comes from the debouncedTerm
+     */
   }, [term]);
 
   useEffect(() => {
@@ -102,7 +106,7 @@ const Search = () => {
     };
     search();
   }, [debouncedTerm]); // [debouncedTerm] this is the second argument to the function, see the readme for more info
-  
+
   const renderedResults = results.map((result) => {
     return (
       <div className="item" key={result.pageid}>

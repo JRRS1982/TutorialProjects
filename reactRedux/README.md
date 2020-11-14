@@ -244,6 +244,7 @@ All about giving function components more functionality. Function components can
 4. `useDebugValue`
 5. `useEffect`
     - see widgets/src/components for a tonne of notes on this
+    - is is "watching" what is in the second argument i.e [term] in the example above or [term, result.length] would be watching two things.
     - allows function components to use something similar to the lifecycle methods that are provided in class based components. See widgets/src/Search of this in use.
     - can configure useEffect hook to run some code automatically in one of three scenarios.
         1. When the component is rendered for the first time only 
@@ -252,6 +253,7 @@ All about giving function components more functionality. Function components can
     - first argument to the function is what, the second argument is when.
         - when the first argument that is passed to useEffect is a function, all that we are allowed to return is another function. 
         - MASSIVE HEAD MESS - when the first argument to useEffect is a function it is called at the initial component render, and it returns a second function... but the second function is NOT invoked, it IS invoked when the component re-renders. It acts like a clean up function, it is invoked after the component is RE-rendered, so this second function runs BEFORE the first function at the components RE-render.... urgh! but cool.
+    - when you use a piece of state in the useEffect function you need to included the props/pieces of state in the array of the second argument of function.
 6. `useCallback`
 7. `useImperativeHandle`
 8. `useContext`

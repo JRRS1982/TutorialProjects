@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Search = () => {
-  const [term, setTerm] = useState("");
-  const [results, setResults] = useState([]);
-
-  /**
+/**
    * useEffect
    *
    * the first argument is going to be what is executed, and the second argument
@@ -47,6 +43,9 @@ const Search = () => {
 
         Reacts preferred way of using async is option 1
    */
+const Search = () => {
+  const [term, setTerm] = useState("");
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     const search = async () => {
@@ -62,18 +61,58 @@ const Search = () => {
       });
       setResults(data.query.search); // set the de-structured data value from the response of the call, to the results value on state
     };
-    if (term) {
-      // the initial state of term is an empty state, we can add a default search or only carry out a search if there is a search term... i like not making a request unless we have a term.
+    
+    /**
+     * if there is a search term, and there have been no results before it is 
+     * the first search, therefore carry out the search straight away
+     */
+    if (term && !results.length) {
       search();
+      
+    /**
+     * else create a timeout - or at least the id of a timeout, that we can use
+     * later. setTimeout will create an id that we can cancel with clearTimeout,
+     * and we will search() after a 1 second delay... if it is not cancelled.
+     */
+    } else {
+      const timeoutId = setTimeout(() => {
+        if (term) {
+          search();
+        }
+      }, 1000); // setTimeout to delay the search by 1 seconds
+    
+    /**
+     * so currently the search will happen is the length of results is zero, or
+     * after one second if there are results already. We are doing this to avoid
+     * making api calls on every single key press in the search box. 
+     * 
+     * The component re-renders after every key press and timeout is cleared by
+     * the clearTimeout function here. This function is THE SECOND ARGUMENT IN
+     * THE USEEFFECT FUNCTION, IT IS NUTS... SEE THE README ABOUT IT. IT IS RUN
+     * AFTER THE COMPONENT RE-RENDERS I.E. FIRST ON THE SECOND TIME THE COMPONENT
+     * IS RENDERED, BUT SECOND ON THE FIRST TIME IT IS RENDERED.
+    */
+      return () => {
+        clearTimeout(timeoutId); // clear the timeout above - the delay of the search.
+      };
     }
-  }, [term]);
+  }, [term]); // the search term - see the formatting of the [], [term] parameter here is really important see the notes on useEffect
 
   const renderedResults = results.map((result) => {
     return (
       <div className="item" key={result.pageid}>
+        <div className="right floated content">
+          <a
+            className="ui button"
+            href={`https://en.wikipedia.org?curid=${result.pageid}`}
+          >
+            Go
+          </a>
+        </div>
         <div className="content">
           <div className="head">{result.title}</div>
-          {result.snippet}
+          {/* dangerouslySetInnterHTML is bad and should not use for a professional project - only using as was part of the xss lesson */}
+          <span dangerouslySetInnerHTML={{ __html: result.snippet }} />
         </div>
       </div>
     );
@@ -94,6 +133,6 @@ const Search = () => {
       <div className="ui celled list">{renderedResults}</div>
     </div>
   );
-};
+};;
 
 export default Search;

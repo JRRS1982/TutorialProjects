@@ -258,4 +258,27 @@ All about giving function components more functionality. Function components can
 7. `useImperativeHandle`
 8. `useContext`
 9. `useMemo`
-10. `useLayoutEffect`
+10. `useLayoutEffect
+
+## Event bubbling
+
+When an event happens in a component the event will bubble up the DOM. React will check is the parent of the event has a i.e. onClick event, if it does it will keep bubbling up to the root of the DOM if there are subsequent event listeners in place.
+
+## Event listeners
+
+Listen for an action to take place, such as a 'click' here, 
+
+```
+// document.body being the root element in chrome console, we here add a 
+document.body.addEventListener('click', () => {
+  console.log('Some example text');
+});
+```
+An event listener can be declared as above by directly being added, if so it has the precedence in order of execution, after which React style event listeners will be executed
+such as the onClick function below found in widgets/src/Dropdown.
+```
+onClick={() => {
+  console.log('something here');
+  onSelectedChange(option)
+}}
+```

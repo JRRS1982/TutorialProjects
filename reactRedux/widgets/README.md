@@ -1,4 +1,4 @@
-# PROJECT NAME HERE XXXXXX 
+# Widgets
 
 ### [User Stories](#user_story) | [Tech](#tech) | [Reflection](#reflection) | [Contact](#contact)
 
@@ -6,7 +6,7 @@ This is the [Stephen Griders React-Redux](https://www.udemy.com/course/react-red
 
 Accordion Component 
 
-#### Problem: Input / Output
+#### Problem: Input / O
 
 Inputs: search term from the user
 

@@ -4,13 +4,27 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef();
   
+  /**
+   * useEffect below: 
+   * 
+   * create a callback called onBodyClock, that setsOpen to false if the element we clicked on (event target) is not the Dropdown
+   * 
+   * add the click event listener to the the DOM / document body.
+   * 
+   * return will remove the event listener from the DOM / document body if the Drop down component is removed from the DOM
+   * 
+   */
   useEffect(() => {
-    document.body.addEventListener('click', (event) => {
+    const onBodyClick = (event) => {
       if (ref.current && ref.current.contains(event.target)) { // is the element we clicked on (event target) inside our component
         return;
       }
       setOpen(false);
-    });
+    };
+    document.body.addEventListener('click', onBodyClick); 
+    return () => {
+      document.body.removeEventListener('click', onBodyClick);
+    };
   }, []);
   
   const renderedOptions = options.map((option) => {
@@ -21,6 +35,7 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
     return (
       <div
         key={option.value}
+        style={{ color: option.value }}
         className="item"
         onClick={() => onSelectedChange(option)}
       >
@@ -35,7 +50,7 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
         <div className="label">Select a Color</div>
         <div onClick={() => setOpen(!open)} className={`ui selection dropdown ${open ? 'visible active' : ''}`}>
           <i className="dropdown icon"></i>
-          <div className="text">{selected.label}</div>
+          <div className="text" style={{ color: selected.value }}>{selected.label}</div>
           <div className={`menu ${open ? 'visible transition' : ''}`}>{renderedOptions}</div>
         </div>
       </div>

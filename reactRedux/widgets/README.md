@@ -29,7 +29,8 @@ Outputs: wikipedia search result displayed in a dropdown
 
 * Wikipedia API
     * https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=EXAMPLESEARCHTERM
-* Google Translate API
+* Google Translate API - only works on localhost:3000 - using stephen griders api key.
+    * cloud.google.com/translate/docs
 
 ### <a name="installation">Installation: how it works</a>
 

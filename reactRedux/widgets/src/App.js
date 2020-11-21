@@ -3,6 +3,7 @@ import Accordion from "./components/Accordion";
 import Dropdown from "./components/Dropdown";
 import Search from "./components/Search";
 import Translate from "./components/Translate";
+import Route from "./components/Route";
 
 const items = [
   {
@@ -11,7 +12,7 @@ const items = [
   },
   {
     title: "Why use React?",
-    content: "React is a favourite front end framework for engineers",
+    content: "React is a favorite front end framework for engineers",
   },
   {
     title: "How to use React?",
@@ -36,10 +37,31 @@ const options = [
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
+  const [selected, setSelected] = useState(options[0]);
 
   return (
     <div>
-      <Translate />
+      <Route path="/">
+        {/* Accordion will appear in the Route component as a prop called children */}
+        <Accordion items={items} /> 
+      </Route>
+
+      <Route path="/list">
+        <Search />
+      </Route>
+      
+      <Route path="/dropdown">
+        <Dropdown 
+          label="select a colour"
+          options={options}
+          selected={selected}
+          onSelectedChange={setSelected}
+        />
+      </Route>
+
+      <Route path="/translate">
+        <Translate />
+      </Route>
     </div>
   );
 };

@@ -4,6 +4,8 @@ import Dropdown from "./components/Dropdown";
 import Search from "./components/Search";
 import Translate from "./components/Translate";
 import Route from "./components/Route";
+import Header from "./components/Header";
+
 
 const items = [
   {
@@ -41,6 +43,7 @@ export default () => {
 
   return (
     <div>
+    <Header />
       <Route path="/">
         {/* Accordion will appear in the Route component as a prop called children */}
         <Accordion items={items} /> 

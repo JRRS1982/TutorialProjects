@@ -1,0 +1,10 @@
+.video-item {
+  display: flex !important;
+  align-items: center !important;
+  cursor: pointer;
+}
+
+/* we needed to add .item to the tag of video to make it a more specific styling addition */
+.video-item.item img {
+  max-width: 180px;
+}

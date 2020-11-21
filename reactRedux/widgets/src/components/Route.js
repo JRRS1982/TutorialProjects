@@ -13,7 +13,7 @@ const Route = ({ path, children }) => {
     }
 
     /**
-     * we in the link component we are dispatching an event called popstate, that is telling us that the url has been updated and we may want to update the component, here we are creating an event listener that is listing for that event... and will update the Route accordingly
+     * In the link component we are dispatching an event called popstate, that is telling us that the url has been updated and we may want to update the component, here we are creating an event listener that is listing for that event... and will update the Route accordingly
      */
     window.addEventListener('popstate', onLocationChange);
 

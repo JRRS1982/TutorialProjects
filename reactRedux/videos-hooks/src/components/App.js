@@ -1,63 +1,54 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import SearchBar from "./SearchBar";
 import youtube from '../apis/youtube';
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
 
-/**
- * complete a callback every time someone adds a term to the search bar that return videos from youtube
- */
-class App extends React.Component {
-  state = { videos: [], selectedVideo: null };
+const App = () => {
+  const [videos, setVideos] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
-  componentDidMount() {
-    this.onTermSubmit('rick roll'); // default search for the app.
-  }
-  
-  onTermSubmit = async (term) => {
-    /**
-     * so youtube is a pre-configured axios object, we are adding an endpoint to make the request to on youtube api, and
-     * specifying params that are required by youtube to make a request - and passing q (what youtube wants) - the term
-     * that we are wanting to search for.
-     *
-     * This is an async request as we will need to wait on a response from the api call.
-     */
+  /*
+   * componentDidMount is a lifecycle method, that will be called once, when the component is first rendered, this useEffect has a [] empty, therefore will be called only once, when the component is first rendered. So this useEffect replaces that lifecycle component
+   */
+  useEffect(() => {
+    onTermSubmit('rick roll'); // default search for the app.
+  }, []); // run only once.
+
+  const onTermSubmit = async (term) => {
+    // youtube is a pre-configured axios object, we are adding an endpoint to make the request to the youtube api, and specifying params that are required by youtube - and passing q (required param from Youtube) the term that we are wanting to search for. This is an async request as we will need to wait on a response from the api call.
     const response = await youtube.get("/search", {
       params: {
         q: term,
       },
     });
-    this.setState({
-      videos: response.data.items,
-      selectedVideo: response.data.items[0]
-    });
+    setVideos(response.data.items);
+    setSelectedVideo(response.data.items[0]);
   };
 
-  onVideoSelect = (video) => {
-    this.setState({ selectedVideo: video });
+  const onVideoSelect = (video) => {
+    setSelectedVideo(video);
   };
 
-  render() {
-    return (
-      <div className="ui container">
-        {/* onFormSubmit and onTermSubmit callback may be called the same thing in an PRD project, but here its different for clarity */}
-        <SearchBar onFormSubmit={this.onTermSubmit} />
-        <div className="ui grid">
-          <div className="ui row">
-            <div className="eleven wide column">
-              <VideoDetail video={this.state.selectedVideo} />
-            </div>
-            <div className="five wide column">
-              <VideoList
-                videos={this.state.videos}
-                onVideoSelect={this.onVideoSelect}
-              />
-            </div>
+  return (
+    <div className="ui container">
+      {/* when the form is submitted call the onTermSubmit, which gets the videos */}
+      <SearchBar onFormSubmit={onTermSubmit} /> 
+      <div className="ui grid">
+        <div className="ui row">
+          <div className="eleven wide column">
+            <VideoDetail video={selectedVideo} />
+          </div>
+          <div className="five wide column">
+            <VideoList
+              videos={videos}
+              onVideoSelect={onVideoSelect}
+            />
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;

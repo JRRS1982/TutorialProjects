@@ -260,6 +260,20 @@ All about giving function components more functionality. Function components can
 9. `useMemo`
 10. `useLayoutEffect
 
+## Custom Hooks
+
+- One of the best ways to create reusable code within a React project.
+- Created by extracting hook related code out of a function component.
+- Custom hooks always make use of at least one of the primitive hooks internally.
+- Should have a single purpose, an example being data fetching.
+- To make JSX reusable you will typically create a new component, to make functionality reusable you may create a custom hook.
+
+`Creating custom hooks`: inputs, outputs and refactoring into smaller functions.
+
+1. Identify each line of code that is related to a single purpose (i.e. not JSX and does just one thing). 
+2. Identify the inputs and outputs (i.e. what parameters are required by a function and what that function sets/updates).
+3. Extract all the code from that larger function into a smaller function that receives the inputs and returns the outputs.
+
 ## Event bubbling
 
 When an event happens in a component the event will bubble up the DOM. React will check is the parent of the event has a i.e. onClick event, if it does it will keep bubbling up to the root of the DOM if there are subsequent event listeners in place.

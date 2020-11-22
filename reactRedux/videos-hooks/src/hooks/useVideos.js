@@ -7,7 +7,7 @@ import youtube from '../apis/youtube';
 const useVideos = (defaultSearchTerm) => {
   const [videos, setVideos] = useState([]);
 
-  const youtubeSearch = async (defaultSearchTerm) => {
+  const search = async (defaultSearchTerm) => {
     // youtube is a pre-configured axios object, we are adding an endpoint to make the request to the youtube api, and specifying params that are required by youtube - and passing q (required param from Youtube) the term that we are wanting to search for. This is an async request as we will need to wait on a response from the api call.
     const response = await youtube.get("/search", {
       params: {
@@ -21,10 +21,10 @@ const useVideos = (defaultSearchTerm) => {
    * componentDidMount is a lifecycle method, that will be called once, when the component is first rendered, this useEffect has a [] empty, therefore will be called only once, when the component is first rendered. So this useEffect replaces that lifecycle component that would be available in a class based system.
    */
   useEffect(() => {
-    youtubeSearch(defaultSearchTerm); // default search for the app.
-  }, []); // run only once.
+    search(defaultSearchTerm); // default search for the app.
+  }, [defaultSearchTerm]);
 
-  return [videos, youtubeSearch];
+  return [videos, search];
 };
 
 export default useVideos;

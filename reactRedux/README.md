@@ -1,66 +1,89 @@
 # Modern React with Redux 2020 Course
 
-These are my notes and projects from [Stephen Grinders Course](https://www.udemy.com/course/react-redux/). I recommend / love all of his stuff. 
+These are my notes and projects from [Stephen Grinders Course](https://www.udemy.com/course/react-redux/). I recommend all of his stuff. 
 
-1. JSX
-2. Components
-3. Pics
+## Projects in this directory
+
+1. `JSX`
+2. `Components`
+3. `Pics`
+4. `Seasons`
+5. `Videos`
+6. `Videos-Hooks`
+
+# React
 
 ## Features
-React - a reconciler - knows how to work with components
-ReactDom - a renderer - knows how to take instructions and HTML
-state - data in the system, that may change over time.
-useState - used to make react update the HTMl on the page
-Babel - a command line tool that can take any version of Javascript and spit out a newer version of it. Its included in every new install of a React project. This is required as a web browser where the project is executed may not support newer versions of Javascript. It consists of a huge number or npm packages.
-Webpack - a bundler system. 
 
-## Project Directories
-/src - directory where we put all the source code.
-/public - directory where we store all static files like images.
-/node_modules - directory that contains all the projects dependencies.
-package.json - records the projects dependencies and configures the project.
-package-lock.json - records the exact version of the dependencies we install.
+A rough summary:
+
+- React - a reconciler - knows how to work with components
+- ReactDom - a renderer - knows how to take instructions and HTML
+- State - data in the system, that may change over time.
+- useState - used to make react update the HTMl on the page
+- Babel - a command line tool that can take any version of Javascript and spit out a newer version of it. Its included in every new install of a React project. This is required as a web browser where the project is executed may not support newer versions of Javascript. It consists of a huge number or npm packages.
+- Webpack - a bundler system. 
+
+## React Project Directories
+
+A rough summary:
+
+- /src - directory where we put all the source code.
+    - /src/components - typically where you build components
+    - /src/hooks - typically where you build custom hooks
+- /public - directory where we store all static files like images.
+- /node_modules - directory that contains all the projects dependencies.
+- package.json - records the projects dependencies and configures the project.
+- package-lock.json - records the exact version of the dependencies we install.
 
 ## Formatting
-Components are in PascalCase
 
-## Install
+Components are typically in PascalCase
+hooks are typically in camelCase
+
+## Project Setup
 ```
+// install a project with `create-react-app`
 npx create-react-app exampleAppName
-```
-## Commands
-```
+
 // start the project
 npm start
+
 // stopping the project
 Ctrl + c in the running terminal
+
+// run tests 
+npm test
 ```
 
-### import vs require
-- import is ES2015 Javascript Import statement, this is a modules system, that describes how code can be shared between files.
-- require is CommonJS require statement, that does a similar thing, but uses a different modules system for sharing files.
-```
-// Every file inside the project is its own little universe, if want access to anything else around the project we need to import them.
-import React from 'react'
-- import - self named.
-- React - a variable can be whatever we want to name it. 
-- from - self named.
-- 'react' - a directory in the node modules folder called exactly 'react'.
-```
+### Import vs Require
+Every file inside the project is its own little universe, if want access to anything else around the project we need to import/require them.
+- `import` is a ES2015 Javascript Import statement, this is a modules system, that describes how code can be shared between files. This is the preferred way of working in React.
+- `require` is a CommonJS require statement, that does a similar thing, but uses a different modules system for sharing files.
+
+`import React from 'react'`
+- import - self named
+- React - a variable can be whatever we want to name it
+- from - self named
+- 'react' - a directory in the `node modules` folder called exactly 'react' or the route of a file you wish to use in your code.
 
 ### what is a component?
+
 A function or class that produces HTML for the user using JSX, and handles feedback from the user using event handlers.
 
 ### what are props?
-Properties passed from a parent to child component, this can include other components being passed along as a property. Use props.children in the parent component to refer to/place where its child elements need to go. i.e. comment details is a property of ApprovalCard in components i.e. its contained in the wrapper of the large element that is ApprovalCard.
+
+Properties passed from a parent to child component, this can include other components being passed along as a property. Use props.children in the parent component to refer to/place where its child elements need to go. i.e. comment details is a property of ApprovalCard in components i.e. its contained in the wrapper of the large element that is ApprovalCard <ParentComponent>Child</ParentComponent>
 
 ### What is JSX
-Babel.js/io is used to process JSX, no browser knows what JSX looks like, Babel changes JSX into normal Javascript code. 
 
-#### JSX vs HTML
-Adding custom styling / or a class to an element uses a different syntax than HTML, but JSX can reference Javascript. 
+Babel.js/io is used to process JSX, no browser knows what JSX looks like, Babel changes JSX into normal Javascript code, which is why it is such a large import, it has thousands of modules.
 
-- If you are referencing a style like background-colour here you will need to remove the - and make it backgroundColour. This relates to any styles that have 'compound names' i.e. those with a dash.
+### JSX vs HTML
+
+Adding custom styling / or a class to an element uses a different syntax than HTML, but JSX can reference Javascript.
+
+- If you are referencing a style like background-colour here you will need to remove the "-" and make it backgroundColour. This relates to any styles that have 'compound names' i.e. those with  a dash.
 - The outer brackets indicate that we are going to be referencing Javascript and the inner bracket indicates that backgroundColor: red is an object.
 - JSX is supposed to use " not ' when you want to indicate a string. For non JSX the convention is to use ' quotes.
 
@@ -69,9 +92,10 @@ HTML = <div style="background-color: red"></div>
 JSX = <div style {{ backgroundColor: red }}></div>
 ```
 
-## Skeleton index.js
+## Example index.js
 
 ```
+
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -84,6 +108,7 @@ ReactDOM.render(<App />, document.querySelector("#root"));
 ```
 
 ### Class Components
+
 Benefits 
 - easier code organization
 - can use 'state' therefore easier to handle user input
@@ -97,6 +122,7 @@ Requirements
 ### Feature Components
 
 ## State in components
+
 - only usable with class components (or when using hooks in feature components)
 - you will confuse props with state
 - State is a JS object that contains data relevant to a component
@@ -104,56 +130,69 @@ Requirements
 - State must be initialized when a component is first created
 - State can only be updated with the function setState - you will forget this.
 
-
 ## Component Lifecycle Methods
+
 During the life of a component these steps/functions will take place. It seems simple enough.
 
-1. constructor
-As per normal functions, classes need instantiating. This is a good place for one-time setup.
-2. render
-Will need to show the component, this is how it is done. Avoid doing anything apart from returning JSX in this function. Try and avoid adding conditional statements here, if we need to make helper methods to renderContent.
-3. componentDidMount 
-When render is called, this will also be called (once). This is a good place to do data loading.
-4. componentDidUpdate
-When setState is called, this will also be called. This is another good place to do data loading, when state/props change.
-5. componentWillUnmount
-Called if we remove the component. It is a good place to do cleanup, especially of non React stuff.
+1. `constructor` as with normal functions, classes need instantiating. This is a good place for one-time setup.
+2. `render` we will need to show the component, this is how it is done. Avoid doing anything apart from returning JSX in this function. Try and avoid adding conditional statements here, if we need to make helper methods to renderContent.
+3. `componentDidMount` when render is called, this will also be called (once). This is a good place to do data loading.
+4. `componentDidUpdate` when setState is called, this will also be called. This is another good place to do data loading, when state/props change.
+5. `componentWillUnmount` called if we remove the component. It is a good place to do cleanup, especially of non React stuff.
 
-Others (less frequently used)
-- shouldComponentUpdate
-- getDerivedStateFromProps
-- getSnapshotBeforeUpdate
+Other lifecycle methods (less frequently used)
+
+- `shouldComponentUpdate`
+- `getDerivedStateFromProps`
+- `getSnapshotBeforeUpdate`
 
 ### React Component Conventions
-A component will typically be at the bottom of a file, with the config of the component at the top and helper functions in the middle. 
+
+A component will typically be at the bottom of a file, with the config of the component at the top and helper functions in the middle. i.e. do the setup and the call the component.
 
 ## How to get feedback from the user
-pics project
-## How to fetch data from an outside service or API
-pics project
-## How to show lists of records
-pics project
 
-### Functions / Event Handlers
+See widgets project for a dropdown to get selection from user with click handlers in src/components/Dropdown.js
+
+## How to fetch data from an outside service or API
+
+See Videos-Hooks project for a call to youtube in src/hooks/useVideos.js
+
+## How to show lists of records
+
+See Videos-Hooks project for App.js page which, with the help of semantic ui, a stylesheet imported in the public/index.html page is displaying click to play videos on the page with description and sidebars.
+
+```
+// semantic ui stylesheet import - check cdnjs website for up to date versions.
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+```
+
+## Functions and Event Handlers
 
 If you apply these to a div/element and pass a callback function the callback function will be called.
 
-- onClick -> callback for when a user clicks on something
-- onChange -> callback for when text changes in an input
-- onSubmit -> callback for when a user submits a form
+```
+<input type="text" onChange={this.onInputChange} />
+```
+- `onChange` a callback for when text changes in an input
+- `onClick` a callback for when a user clicks on something
+- `onSubmit` a callback for when a user submits a form
+
+If there is a text input field, onChange will call onInputChange every time the text in the field changes... and in this case return the value of the event that happened... or do whatever you want.
 
 ```
-// i.e. if there is a text input field, onChange will call onInputChange every time the text in the field changes... and in this case return the value of the event that happened... or do whatever you want.
-onInputChange(event) { // some event callback
+// an event handler, being passed the event that happened and doing something with that event
+onInputChange(event) {
   return event.target.value;
 }
-<input type="text" onChange={this.onInputChange} />
-
+onClick(event) {
+  return event.target.value;
+}
 ```
 
-## "Cannot read property state of undefined" - the most common error is React 'this'
+## "Cannot read property state of undefined": The most common error is React are problems with 'this'
 
-"I can not access the property state on the value undefined" - undefined is a value in JS, what the error is saying is that 'this' has not been defined, and therefore it does not have an attribute called state, which is what we are trying to call.
+Undefined is a value in JS, what the error is saying is that 'this' has not been defined, and therefore it does not have an attribute called state, which is what we are trying to call.
 ```
 this.state.example -> this is what we are probably wanting to do
 undefined.state.example -> this is what we are actually doing
@@ -161,15 +200,15 @@ undefined.state.example -> this is what we are actually doing
 drive() { return this.sound; }
 drive() // there is no parent for this to be called on so it will return above error.
 
-We are basically calling 'this' where there is no element on the left, i.e. where there is no parent element that is 'this'.
+We are basically calling 'this' where there is no element on the left of drive, i.e. where there is no parent element that is 'this' there is only undefined.sound which does not exist.
 ```
 
-### Axios
-
-- fetch is a function that has been built into modern browsers, its does the job but is not great.
-- axios is a package that can be installed which provides some helper methods which is more reliable and useful for projects.
+## Axios
 
 When you make a request with axios it will return an object called a promise, which is like a callback with whatever data.
+
+- fetch is a function that has been built into modern browsers, its does the job but is not great and should be avoided.
+- axios is a package that can be installed which provides some helper methods which is more reliable and useful for projects.
 
 ```
 axios
@@ -185,37 +224,46 @@ axios
 });
 ```
 
-## Map function in javascript (reminder)
+## Map | Reduce | Filter functions in javascript (reminder these are useful)
 
 ```
 // just a quick reminder about the map function.
+
 numbers =  [0,1,2];
-numbers.map((num) => {
-  return num * 10;
-})
+  numbers.map((num) => {
+    return num * 10;
+}); -> [0, 10, 20]
+
 OR 
+
 numbers.map((num) => num * 10); // slimline
 numbers.map(num => num * 10); // super slimline
+
 ```
 
 ## key property on lists
-On a list of elements we are required to add a 'key' for each element in the list so that React is able to work with it. The key should be unique, if it is not used an error will be thrown in console.
+
+A list of React elements require a unique 'key' property in the list so that React is able to work with it. If it is not provided  an error will be thrown in console.
 ```
 return <img key={image.id} src={image.urls.regular}>
 ```
 
 ## React Refs
+
 - Gives access to a single dom element that is rendered by a component
 - We create 'refs' in the constructor, assign them to instance variables, then pass to a particular JSX element as props.
+
 1. define constructor
 2. call a function from constructor to create a reference and assign it as an instance variable on our class.
 3. we can setState on these, but it is not required to do so as they are not going to change. In general we only set state on things that are going to change over time.
+
 ```
 // this is an example of how to create a reference called imageRef which is being created as an instance variable which we can therefore refer back to later in the class.
-  constructor(props) {
-    super(props);
-    this.imageRef = React.createRef();
-  }
+
+constructor(props) {
+  super(props);
+  this.imageRef = React.createRef();
+}
 ```
 
 ## Hooks
@@ -258,7 +306,7 @@ All about giving function components more functionality. Function components can
 7. `useImperativeHandle`
 8. `useContext`
 9. `useMemo`
-10. `useLayoutEffect
+10. `useLayoutEffect`
 
 ## Custom Hooks
 
@@ -269,6 +317,8 @@ All about giving function components more functionality. Function components can
 - To make JSX reusable you will typically create a new component, to make functionality reusable you may create a custom hook.
 
 `Creating custom hooks`: inputs, outputs and refactoring into smaller functions.
+
+An example custom hook being videos-hooks/src/hooks/useVideos.js
 
 1. Identify each line of code that is related to a single purpose (i.e. not JSX and does just one thing). 
 2. Identify the inputs and outputs (i.e. what parameters are required by a function and what that function sets/updates).

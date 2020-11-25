@@ -30,7 +30,7 @@ hooks are typically in camelCase
 
 ## Project Setup
 ```
-// install a project with `create-react-app`
+// install a project with `create-react-app <projectName>`
 npx create-react-app exampleAppName
 
 // start the project
@@ -41,6 +41,9 @@ Ctrl + c in the running terminal
 
 // run tests 
 npm test
+
+// also install Redux?
+npm install --save redux react-redux
 ```
 
 ### Import vs Require

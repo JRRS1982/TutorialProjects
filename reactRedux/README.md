@@ -9,5 +9,6 @@ These are my notes and projects from [Stephen Grinders Course](https://www.udemy
 3. `Pics`
 4. `Seasons`
 5. `Videos`
-6. `Videos-Hooks`
+6. `Videos-Hooks` React Hooks
 7. `Widgets` deployed here -> https://react-widgets-omega.vercel.app/
+9. `Songs` React with Redux

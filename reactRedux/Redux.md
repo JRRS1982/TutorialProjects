@@ -2,10 +2,15 @@
 
 A state management library - it attempts to manage the data of an application in an easier way.
 
+## Installation of Redux
+
+1. Install React `create-react-app <projectName>`
+2. Install Redux and React-Redux `npm install --save redux react-redux`
+
 ## Redux Cycle
 
 1. Action Creator
-    - the only purpose it has is to create an action.
+    - the only purpose it has is to create an action, to change the state of an application this is what we call, it creates an action.
 ```
 const createPolicy  = (name, amount) => {
   return {
@@ -27,11 +32,11 @@ const deletePolicy = (name) => {
 };
 ```
 2. Action
-    - the name/type of what needs to take place
+    - the name/type of what needs to take place. i.e. the type of the return in the action creator.
 3. Dispatch
-    - takes the actions and sends to reducers with data
+    - takes the action and sends to (all) the reducer with data.
 4. Reducers
-    - receive an action and data and process the data dependent on the action
+    - receive an action and data and transforms something / does the change we want.
     - nb the first time a reducer is called it will have no value in 'oldListOfClaims', for the payload to be added to, so a default will need to be provided.
 ```
 const claimsHistory = (oldListOfClaims = [], action) => {
@@ -51,6 +56,53 @@ const accounting = (bagOfMoney = 100, action) => {
   return bagOfMoney;
 }
 
+// where a list of policies is a list of names of a person with a policy
+const policies = (listOfPolicies = [], action) => {
+  if (action.type === "CREATE_POLICY) {
+    return [...oldListOfClaims, action.payload.name];
+  } else if (action.type === "DELETE_POLICY) {
+    return listOfPolicies.filter(name => name !== action.payload.name);
+  }
+  return listOfPolicies;
+}
+
 ```
 5. State
-    - central repository of all information
+    - central repository of all information - after being updated waits until another change is required.
+
+---
+
+## combineReducers
+
+Where we have different reducers we use the `combineReducers` function.
+```
+const ourDepartments = combineReducers({
+  accounting: accounting, 
+  claimsHistory: claimsHistory,
+  policyOwnerNames: policies
+});
+```
+What is on the left is what will be on the state, what is on the right is the name of the reducer
+
+## createStore
+
+When we have combined the reducers we can create a `store` object 
+```
+const store = createStore(ourDepartments);
+```
+
+## Store Object
+
+That store object now has a number of functions available on it, that come from the reducers that it is made of and others. One of the reducers that was created is called createPolicy, it takes two arguments:
+
+```
+const action = createPolicy('Alex', 20);
+```
+
+## dispatch
+
+action here is what is returned by the action creator, i.e. an action, that action has a type, that type (CREATE_POLICY) and data ('Alex', 20) is sent to all the reducers that are in the store. If the reducers need to do something with that action type they will.
+
+```
+store.dispatch(action)
+```

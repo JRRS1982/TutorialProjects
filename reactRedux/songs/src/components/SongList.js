@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import { selectSong } from "../actions";
+
+
 
 class SongList extends React.Component {
   renderList() {
@@ -7,7 +10,14 @@ class SongList extends React.Component {
       return (
         <div className="item" key={song.title}>
           <div className="right floated content">
-            <button className="ui button primary">Select</button>
+            <button
+              className="ui button primary"
+              onClick={() => {
+                this.props.selectSong(song);
+              }}
+            >
+              Select
+            </button>
           </div>
           <div className="content">{song.title}</div>
         </div>
@@ -36,4 +46,6 @@ const mapStateToProps = (state) => {
  *
  * In this instance we are telling the connect function that we want to get a list of songs out of the Redux store with the mapStateToProps function and passing it to the SongList component. So when the list of songs in the store, so when the list of songs in the list changes it is passed down to the React component.
  */
-export default connect(mapStateToProps)(SongList);
+export default connect(mapStateToProps, {
+  selectSong: selectSong, // setting a property called selectSong, with the value of the function called selectSong, after doing this we make the selectSong function available in the SongList component above. If we call the function that is passed into the props of SongList then it is going to take the action that is returned and send it to the redux dispatch function. i.e. when this.selectSong(song) is called in the component above it will be 'dispatched'.
+})(SongList);

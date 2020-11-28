@@ -34,7 +34,23 @@ const deletePolicy = (name) => {
 2. Action
     - the name/type of what needs to take place. i.e. the type of the return in the action creator.
 3. Dispatch
-    - takes the action and sends to (all) the reducer with data.
+    - is passed an action and sends to (all) the reducer with data. 
+
+To use an action a component will need to have that action creator imported at the top and mapped to the component to make it available in state for its use by the component. The component will then be able to use that selectSong() function. If we do not do the import/export the action creator will not store.dispatch(selectSong()) it will just be a selectSong() and that will not update state via the reducer.
+```
+1. import { selectSong } from '../actions';
+
+2. export default connect(mapStateToProps, {
+  selectSong: selectSong,
+})(SongList);
+
+3. <button
+     className="ui button primary"
+     onClick={() => { this.props.selectSong(song)}}
+     >Select
+   </button>
+```
+
 4. Reducers
     - receive an action and data and transforms something / does the change we want.
     - nb the first time a reducer is called it will have no value in 'oldListOfClaims', for the payload to be added to, so a default will need to be provided.

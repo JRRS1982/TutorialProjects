@@ -2,6 +2,10 @@
 
 A state management library - it attempts to manage the data of an application in an easier way.
 
+- react-redux is used in redux projects, and allows the integration of redux into react projects.
+- axios - helps us make network requests.
+- redux-thunk is a middleware, which helps make network requests from the redux side of the application.
+
 ## Installation of Redux
 
 1. Install React `create-react-app <projectName>`

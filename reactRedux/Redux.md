@@ -11,10 +11,27 @@ A state management library - it attempts to manage the data of an application in
 1. Install React `create-react-app <projectName>`
 2. Install Redux and React-Redux `npm install --save redux react-redux`
 
+## How Redux Works / Handling data.
+
+1. Component gets rendered onto the screen
+    - Components are generally responsible for fetching data they need by calling an action creator.
+2. Component's `componentDidMount` lifecycle method gets called
+3. We call `action creator` from componentDidMount
+4. Action creator runs code to make an API request
+    - Action creators are responsible for making API requests - this is where redux-thunk comes in.
+5. API responds with data
+6. Action creator return an `action` with the fetched data on the `payload` property
+7. Some reducer will see the action and return the data off the payload. 
+    - We get fetched data into a component by generating a new state in the redux store, then pushing that through to the component via the mapStateToProps function.
+    - mapStateToProps is how Redux connects/sends data to React.
+8. Because we generated a new state object, redux/react-redux will cause the React app to rerender
+
 ## Redux Cycle
 
 1. Action Creator
-    - the only purpose it has is to create an action, to change the state of an application this is what we call, it creates an action.
+    - An action creator `must` return an action object, it is its only purpose. To change the state of our state, this is what we call.
+    - async can not be used in an action creator, as the response we get back (with the data that is assigned to the action and therefore reducer) will not be available for the reducer to act on. Something like redux-thunk (middleware) is used to manage this.
+    - redux-thunk will allow you to return action objects and functions, without it, it is not possible.
 ```
 const createPolicy  = (name, amount) => {
   return {
@@ -35,10 +52,13 @@ const deletePolicy = (name) => {
   };
 };
 ```
+
 2. Action
-    - the name/type of what needs to take place. i.e. the type of the return in the action creator.
+    - An action must have a `type` and `payload`, an action is the name/type of what needs to take place. i.e. what is returned in the action creator is:
+        1. The Action you want to do (type) 
+        2. The new state you want to provide to that action (payload)
 3. Dispatch
-    - is passed an action and sends to (all) the reducer with data. 
+    - is passed an action and sends to (all) the reducers with data. 
 
 To use an action a component will need to have that action creator imported at the top and mapped to the component to make it available in state for its use by the component. The component will then be able to use that selectSong() function. If we do not do the import/export the action creator will not store.dispatch(selectSong()) it will just be a selectSong() and that will not update state via the reducer.
 ```
@@ -57,7 +77,26 @@ To use an action a component will need to have that action creator imported at t
 
 4. Reducers
     - receive an action and data and transforms something / does the change we want.
+    - must return something other than undefined
+    - must produce 'state' or data, and use only the previous state and action that it is passed. 
+    - must not 'reach out of iteself', to decide what value to return (it is pure / given the state/data + action it needs), should not make an API request, or reach out into the DOM make a DB request. We return a computation on the two object that it is given as parameters.
+    - must not mutate the state it reutrns, it should create a new state. This is a soft rule, but if followed will save from an edge case. The [...state, action.payload] i.e. a 
     - nb the first time a reducer is called it will have no value in 'oldListOfClaims', for the payload to be added to, so a default will need to be provided.
+
+`useful reducer examples`
+- Removing an element from an array 
+return state.filter(element => element !== 'whatYouWantToRemove')
+- Adding an element to an array 
+return [...state, 'whatYouWantToAdd']
+- Replacing an element in an array 
+return state.map(el => el === 'hi' ? 'bye' : el)
+- Updating a property in an object
+return {...state, name: 'Sam'}
+- Adding a property to an object 
+return {...state, age: 30}
+- Remoing a property from an object
+return {...state, age: undefined} OR via lodash library _.omit(state, 'age') which will create a new object without that property called age.
+
 ```
 const claimsHistory = (oldListOfClaims = [], action) => {
   if (action.type === 'CREATE_CLAIM) { // if this reducer cares about this action type
@@ -89,6 +128,42 @@ const policies = (listOfPolicies = [], action) => {
 ```
 5. State
     - central repository of all information - after being updated waits until another change is required.
+
+
+## Middleware
+
+- A function that gets called with every action we dispatch
+- Has the ability to stop or modify actions
+- Most popular use of middleware is for dealing with async actions, using `redux-thunk`
+
+Middleware sits between the action and reducers, when an action is `dispatch`ed it is sent to the midddleware (if there is any), and that middleware will do what it needs to do before passing it off to the the reducers.
+
+Apply middleware to the redux store, with the applyMiddleware function:
+```
+const store = createStore(reducers, applyMiddleware(thunk));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.querySelector('#root') 
+);
+```
+
+### Redux-Thunk
+
+Example/notes here: reactRedux/blog/src/actions/index.js
+
+Redux-Thunk allows action creators to return a function, and will call that function for you.
+
+Normatlly action creators are only able to return actions, but if you use redux-thunk then action creators are able to return action objects or functions.
+
+- If an action object is returned it must have a type. 
+- If an action object gets returned, it can optionally have a payload. i.e. a payload is no longer essential.
+
+Middleware sits between the actions and reducers, a dispatch of the action will send the action to the middleware first, in the case of redux-thunk an object will be passed straight through to the reducers, but a function will be:
+1. Invoked, and passed the `dispatch` and `getState` functions as arguments. 
+2. It is also told to dispatch its internal action at its leisure (i.e. wait for a response then dispatch an action).
 
 ---
 

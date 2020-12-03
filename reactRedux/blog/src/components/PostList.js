@@ -6,13 +6,10 @@ class PostList extends React.Component {
   /** will call componentDidMount as soon as the component is rendered */
   componentDidMount() {
     /** will then call fetchPosts  */
-    console.log(this.props + 'before');
     this.props.fetchPosts();
-    console.log(this.props + 'after');
   }
 
   renderList() {
-    console.log(this);
     return this.props.posts.map(post => {
       return (
         <div className="item" key={post.id}>
@@ -40,7 +37,7 @@ const mapStateToProps = (state) => {
   return { posts: state.posts };
 }
 
-export default connect(null, {
+export default connect(
   mapStateToProps,
-  fetchPosts,
-})(PostList);
+  { fetchPosts }
+)(PostList);

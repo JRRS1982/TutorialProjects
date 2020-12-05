@@ -34,3 +34,11 @@ export const fetchPosts = () => {
 //   const response = await jsonPlaceholder.get('/posts');
 //   dispatch({ type: 'FETCH_POSTS', payload: response});
 // }
+
+/**
+ * below is an async function that uses the new syntax to get an individual user and dispatch the required action with a payload from the response. Basically its how you async get data.
+ */
+export const fetchUser = (id) => async dispatch => {
+  const response = await jsonPlaceholder.get(`/users/${id}`);
+  dispatch({ type: 'FETCH_USER', payload: response.data });
+}

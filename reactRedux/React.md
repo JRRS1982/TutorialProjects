@@ -337,6 +337,20 @@ onClick={() => {
 }}
 ```
 
+## Async 
+
+See redux thunk middleware for more info about how to use async in React.
+
+See here for notes on Async operation: /Users/Jeremyrrsmith/Coding/GitHub/tutorialProjects/reactRedux/blog/src/actions/index.js
+
+Below is an example of how this works, you cant call a async function with react, therefore need to use redux-thunk to dispatch an action once we have had the response.
+```
+export const fetchUser = (id) => async dispatch => {
+  const response = await jsonPlaceholder.get(`/users/${id}`);
+  dispatch({ type: 'FETCH_USER', payload: response.data });
+}
+```
+
 ## Deployment 
 
 A React application is a static application, that does not require any backend server, and is therefore often cheaper to run than an application that requires a Node.js backend.

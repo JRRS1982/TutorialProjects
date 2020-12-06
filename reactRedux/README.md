@@ -12,4 +12,5 @@ These are my notes and projects from [Stephen Grinders Course](https://www.udemy
 6. `Videos-Hooks` React Hooks
 7. `Widgets` deployed here -> https://react-widgets-omega.vercel.app/
 9. `Songs` React with Redux
-10. `Blog` React, redux, axois, redux-thunk
+10. `Blog` React, redux, axois, redux-thunk, lodash, action creators returning action creators.
+11. `Streams` Multi app project, React, redux, redux-thunk, 

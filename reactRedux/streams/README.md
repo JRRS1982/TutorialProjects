@@ -33,6 +33,7 @@ This project was created with:
 
 * Frameworks
 * Libraries
+    - react-router-dom (the core library of the react-router)
 * API's
 * CI / CD?
 * Linting / style guide
@@ -65,7 +66,9 @@ Please see the `./docs/images` file for screenshots.
 ## Reflection and ideas for future development
 
 #### What did i learn?
-- 
+- Navigation using <a> tags and href are bad as the old HTML and React/redux state you have will be dumped as the new HTML page is loaded. Use <Link> tag from react-router-dom import instead. This is where the Single Page App naming comes from, we are still using the same HTML, it is not refreshed, i.e. a single HTML page is used, but we hide and show components.
+- react-router-dom, BrowserRouter usage.
+- create-react-app build flow - a request to a url will check development resources in src, check the public directory and if not in any of that will return the index.html file.
 
 #### What would i do differently?
 - 

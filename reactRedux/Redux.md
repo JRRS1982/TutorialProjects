@@ -11,6 +11,33 @@ A state management library - it attempts to manage the data of an application in
 1. Install React `create-react-app <projectName>`
 2. Install Redux and React-Redux `npm install --save redux react-redux`
 
+## Redux Dev Tools 
+
+[Found here](https://github.com/zalmoxisus/redux-devtools-extension#usage)
+
+1. Install Chrome extension
+
+```
+// in the root index.js, import compose, applyMiddleware
+import { createStore, applyMiddleware, compose } from "redux";
+
+// setup the middleware
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // REDUX DEV TOOLS CHROME EXTENSION
+
+// add the middleware to the store 
+const store = createStore(
+  reducers,
+  composeEnhancers(applyMiddleware())
+);
+// once that is completed the chrome extension called redux dev tools will light up and show the actions that take place and the state at a given time.
+```
+
+2. Use the debug session 
+
+Adding `localhost:3000?debug_session=<some_string>` in the browser url will trigger redux dev tools to start a debug session, which will auto save all data in redux store, which will persist across page refreshes. 
+
+i.e. if you add `?debug_session=123` after your route then it will save your action stream.
+
 ## How Redux Works / Handling data.
 
 1. Component gets rendered onto the screen

@@ -27,7 +27,7 @@ class GoogleAuth extends React.Component {
 
   onAuthChange = isSignedIn => {
     if (isSignedIn) {
-      this.props.signIn();
+      this.props.signIn(this.auth.currentUser.get().getId());
     } else {
       this.props.signOut();
     }
@@ -74,3 +74,9 @@ export default connect(
   mapStateToProps, 
   { signIn, signOut }
 )(GoogleAuth);
+
+
+/**
+ * return the GoogleID of the current user that is logged in.. unique id of a google user.
+ * gapi.auth2.getAuthInstance().currentUser.get().getId()
+ */

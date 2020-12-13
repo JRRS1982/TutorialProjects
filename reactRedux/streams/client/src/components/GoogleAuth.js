@@ -29,21 +29,31 @@ class GoogleAuth extends React.Component {
     this.setState({ isSignedIn: this.auth.isSignedIn.get() }); // This is a callback that is loaded on the component did mount element above, and will update the isSignedIn state of the app when the listen function hears a change to that. i.e. this is what updates state when the auth changes.
   };
 
+  onSignIn = () => {
+    this.auth.signIn();
+  }
+
+  onSignOut = () => {
+    this.auth.signOut();
+  }
+
   renderAuthButton() {
     if (this.state.isSignedIn === null) {
       return null;
     } else if (this.state.isSignedIn) {
       return (
-        <button class="ui red google button">
+        <button class="ui red google button" onClick={this.onSignOut}>
           <i class="google icon"></i>
           Signout
         </button>
       );
     } else {
-      <button class="ui red google button">
-        <i class="google icon"></i>
-        Signin
-      </button>;
+      return (
+        <button class="ui red google button" onClick={this.onSignIn}>
+          <i class="google icon"></i>
+          Signin
+        </button>
+      );
     }
   }
 

@@ -1,53 +1,54 @@
 # Redux
 
-A state management library - it attempts to manage the data of an application in an easier way.
-
-- react-redux is used in redux projects, and allows the integration of redux into react projects.
-- axios - helps us make network requests.
-- redux-thunk is a middleware, which helps make network requests from the redux side of the application.
+A state management library - it attempts to manage the data of an application in an easier way than can be done in just React.
 
 ## Installation of Redux
 
 1. Install React `create-react-app <projectName>`
 2. Install Redux and React-Redux `npm install --save redux react-redux`
 
+## Extensions
+
+- react-redux is used in redux projects, and allows the integration of redux into react projects.
+- axios - helps us make network requests.
+- redux-thunk is a middleware, which helps make network requests from the redux side of the application.
+
 ## Redux Dev Tools 
 
-[Found here](https://github.com/zalmoxisus/redux-devtools-extension#usage)
+A chrome extension, that is very useful in discovering state / what actions have been triggered, [Github repo here](https://github.com/zalmoxisus/redux-devtools-extension#usage)
 
-1. Install Chrome extension
+`Installation of redux dev tools` required more than just installing the chrome extension, you also need to add this to your project in the code:
 
 ```
-// in the root index.js, import compose, applyMiddleware
+// in the root index.js, import compose and applyMiddleware, you will already be using createStore if you are working with Redux.
 import { createStore, applyMiddleware, compose } from "redux";
 
-// setup the middleware
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // REDUX DEV TOOLS CHROME EXTENSION
+// setup
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-// add the middleware to the store 
+// apply
 const store = createStore(
   reducers,
   composeEnhancers(applyMiddleware())
 );
-// once that is completed the chrome extension called redux dev tools will light up and show the actions that take place and the state at a given time.
+
 ```
+Once the installation is completed the chrome extension called redux dev tools, which you have added to chrome will light up (identify the web app you are on uses its middleware) and show the actions that take place and the state at a given time, and allow you to jump around the app to different state.
 
-2. Use the debug session 
+`Debugging with redux dev tools`
 
-Adding `localhost:3000?debug_session=<some_string>` in the browser url will trigger redux dev tools to start a debug session, which will auto save all data in redux store, which will persist across page refreshes. 
+Once setup, adding `localhost:3000?debug_session=<some_string>` (i.e. `?debug_session=123TestAThing`) in the browser url will trigger redux dev tools to start a debug session, which will auto save all data in redux store, which will persist across page refreshes, which is normally lost on page refresh - so you can see what action triggers the page to be reloaded.
 
-i.e. if you add `?debug_session=123` after your route then it will save your action stream.
-
-## How Redux Works / Handling data.
+## How Redux (Thunk) Handles Data / Works
 
 1. Component gets rendered onto the screen
     - Components are generally responsible for fetching data they need by calling an action creator.
 2. Component's `componentDidMount` lifecycle method gets called
 3. We call `action creator` from componentDidMount
 4. Action creator runs code to make an API request
-    - Action creators are responsible for making API requests - this is where redux-thunk comes in.
+    - Action creators are responsible for making API requests - this is where redux-thunk comes in. 
 5. API responds with data
-6. Action creator return an `action` with the fetched data on the `payload` property
+6. Action creator return an `action` with the fetched data on the `payload` property and a `type` i.e. name.
 7. Some reducer will see the action and return the data off the payload. 
     - We get fetched data into a component by generating a new state in the redux store, then pushing that through to the component via the mapStateToProps function.
     - mapStateToProps is how Redux connects/sends data to React.
@@ -177,7 +178,7 @@ ReactDOM.render(
 );
 ```
 
-### Redux-Thunk
+## Redux-Thunk
 
 Example/notes here: reactRedux/blog/src/actions/index.js
 
@@ -228,3 +229,27 @@ action here is what is returned by the action creator, i.e. an action, that acti
 ```
 store.dispatch(action)
 ```
+
+## Redux-form
+
+Middleware to remove some of the repetitive nature of building interactions between the component and the redux store i.e. mapStateToProps and action creators.
+
+Docs are found here [redux-form.com](https://redux-form.com/8.3.0/) under examples you will find some excellent documentation.
+
+[Wizard Form](https://redux-form.com/8.3.0/examples/wizard/) is one of the common forms that is used widly. 
+
+### Installation 
+
+import reducer from redux-form, and set it as `form` in the reducers index.js file i.e. where the other reducers are combined and saved to the store.
+
+```
+import { reducer as formReducer } from 'redux-form'
+
+export default combineReducers({
+  auth: authReducer,
+  form: formReducer 
+})
+```
+After this has been installed there will be a new key called form in the state of the application, which will contain the data that is filled in on forms of the application.
+
+Example of this in use at streams/client/src/components/streams/StreamCreat.js

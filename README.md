@@ -1,11 +1,12 @@
 # TutorialProjects
 
-🌟 **Loved it**
-🌕 Finished, liked it
-🌘 🌗 🌖 In progress
-🌑 Haven't started
-🥮 **Wouldn't recommend**This is a list of some of the courses that I have started/finished, or have an ongoing interest in completing.
+- 🌟 **Loved it**
+- 🌕 Finished, liked it
+- 🌘 🌗 🌖 In progress
+- 🌑 Haven't started
+- 🥮 **Wouldn't recommend**This is a list of some of the courses that I have started/finished, or have an ongoing interest in completing.
 
+## Courses to complete
 
 - 🌗 Laracasts: [Laravel from scratch](https://laracasts.com/series/laravel-6-from-scratch) 9 hours of video plus projects 50% complete, then moved onto Typescript at work.
 - 🌟 Udemy: [Javascript Essentials](https://www.udemy.com/course/javascript-essentials/) 7 hours of video 

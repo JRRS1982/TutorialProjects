@@ -19,6 +19,10 @@ class StreamCreate extends React.Component {
     );
   }
 
+  onSubmit(event) {
+    event.preventDefault();
+  }
+
   render() {
     return (
       <form className="ui form">

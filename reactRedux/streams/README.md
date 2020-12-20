@@ -17,6 +17,9 @@ Read more [about the project.]('./docs/About.md)
 
 To run this project, install it locally using npm.
 
+1. `npm start` in api project
+2. `npm start` in client project
+
 ```
 git clone ...
 cd ./...

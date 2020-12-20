@@ -11,8 +11,9 @@ The only customisation of this has been to add the start command to the package.
 
 So when you run `npm start` in the project you will have a resource at `localhost:3001/streams`, if you want to create, read, update or delete elements you can do that with restful requests to this endpoint. 
 
-List all -> GET -> /streams
-List one -> GET -> /streams/:id
-Create -> POST -> /streams
-Update -> PUT -> /streams/:id
-Delete -> DELETE -> /streams/:id
+ACTION -> METHOD -> ROUTE -> RESPONSE
+List all -> GET -> /streams -> array of records 
+List one -> GET -> /streams/:id -> single record
+Create -> POST -> /streams -> single record
+Update -> PUT -> /streams/:id -> single record
+Delete -> DELETE -> /streams/:id -> nothing

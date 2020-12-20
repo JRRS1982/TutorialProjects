@@ -1,5 +1,15 @@
 import React from 'react'
 import { Field, reduxForm } from "redux-form";
+import { connect } from 'react-redux';
+import { createStream } from '../../actions/index';
+
+/**
+ * 1. When user tries to submit a form, we are going to validate the inputs
+ * 2. If valid, will call onSubmit
+ * 3. onSubmit will call createStream
+ * 4. createStream will post to /streams with the formValues using axios to our api server
+ * 5. a new stream should appear in api/db.json 
+ */
 
 /**
  * Field being a component that we are going to display on the page and redux-from being just like the connect function.. as that is what it is really replacing.
@@ -33,8 +43,14 @@ class StreamCreate extends React.Component {
     );
   }
 
-  onSubmit(formValues) {
-    console.log(formValues);
+  /**
+   * 1. DEFINE AN ACTION CREATOR
+   * 2. WIRE UP TO COMPONENT VIA CONNECT HELPER FUNCTION
+   * 3. CALL FROM ON SUBMIT
+   * 4. ACTION CREATOR WILL USE AXIOS TO CALL OUR API.
+   */
+  onSubmit = (formValues) => {
+    this.props.createStream(formValues);
   }
 
   render() {
@@ -68,8 +84,14 @@ const validate = (formValues) => {
   return errors;
 }
 
-export default reduxForm({
-  // kind of replacing the connect function.
+const formWrapped = reduxForm({
+  // kind of replacing the connect function, but not, redux form works along side connect function.
   form: "streamCreate", // what we are naming this form
   validate // descructured as same name, this is called every time the form renders and is interacted with
+
 })(StreamCreate);
+
+/**
+ * we are wrapping the reudxForm (formWrapped) in the connect function, kind of nesting these exports so that both the reduxForm and connect function are exported
+ */
+export default connect(null, {createStream})(formWrapped);

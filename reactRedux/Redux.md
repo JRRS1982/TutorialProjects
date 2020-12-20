@@ -230,7 +230,9 @@ action here is what is returned by the action creator, i.e. an action, that acti
 store.dispatch(action)
 ```
 
-## Redux-form
+## Redux-form 
+
+https://redux-form.com/8.3.0/docs/api/
 
 Middleware to remove some of the repetitive nature of building interactions between the component and the redux store i.e. mapStateToProps and action creators.
 
@@ -240,7 +242,7 @@ Docs are found here [redux-form.com](https://redux-form.com/8.3.0/) under exampl
 
 ### Installation 
 
-import reducer from redux-form, and set it as `form` in the reducers index.js file i.e. where the other reducers are combined and saved to the store.
+Immport `reducer` from redux-form, and set it as `form` in the reducers index.js file i.e. where the other reducers are combined and saved to the store.
 
 ```
 import { reducer as formReducer } from 'redux-form'
@@ -250,6 +252,16 @@ export default combineReducers({
   form: formReducer 
 })
 ```
-After this has been installed there will be a new key called form in the state of the application, which will contain the data that is filled in on forms of the application.
+After this has been setup there will be a new key called form in the state of the application, which will contain the data that has been filled in on all the forms of the application.
 
-Example of this in use at streams/client/src/components/streams/StreamCreat.js
+Example of this in use at 
+- streams/client/src/components/streams/StreamCreate.js
+
+### Validating form entry
+
+Dont forget to validate the contents of a form, to ensure it has at least some value, as the user probably doesnt want an empty field to be submitted. 
+
+On initial render of a form (when using redux-form) and when it is interacted with a `validate` function is called with all of the data from that form. You will need to define that validate function with the error checks you wish to carry out, and you should can define it outside of the component.
+
+See StreamCreate.js for an exampe of this (validate function) the validate function is created outside of the component and neeeds to be added to the connector / reduxForm function (i.e. at the bottom) so it is passed up.
+

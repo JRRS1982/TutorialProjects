@@ -34,8 +34,9 @@ export const signOut = () => {
  * 
  * THIS IS AN AXIOS REQUEST, WHERE WE POST ALL THE DATA THAT WILL BE FORMVALUES to this endpoint, this is the start of creating a stream. After making the post request we get a resposne back with success criteria etc. 
  */
-export const createStream = formValues => async dispatch => {
-  const response = streams.post("/streams", formValues);
+export const createStream = formValues => async ( dispatch, getState ) => {
+  const { userId } = getState().auth;
+  const response = streams.post("/streams", {...formValues, userId });
   // action creator here, with a type and a payload... the response from the post request
   dispatch({ type: CREATE_STREAM, payload: response.data });
 };
@@ -55,7 +56,7 @@ export const updateStreams = (id, formValues) => async dispatch => {
   dispatch({ type: UPDATE_STREAM, payload: response.data });
 }
 
-export const deleteStrea = (id) => async dispatch => {
+export const deleteStream = (id) => async dispatch => {
   await streams.delete(`/sreams/${id}`);
   dispatch({ type: DELETE_STREAM, payload: id }); // there is no response on delete, so we are using id of the stream for the reducer.
 }

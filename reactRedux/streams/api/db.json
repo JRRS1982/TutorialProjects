@@ -1,3 +1,19 @@
 {
-  "streams": []
+  "streams": [
+    {
+      "title": "A example",
+      "description": "This is an example description",
+      "id": 1
+    },
+    {
+      "title": "Another example title",
+      "description": "Another example description is right here",
+      "id": 2
+    },
+    {
+      "title": "And yet one more title",
+      "description": "And the descriptions keep on coming",
+      "id": 3
+    }
+  ]
 }

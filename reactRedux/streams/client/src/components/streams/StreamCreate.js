@@ -88,10 +88,12 @@ const formWrapped = reduxForm({
   // kind of replacing the connect function, but not, redux form works along side connect function.
   form: "streamCreate", // what we are naming this form
   validate // descructured as same name, this is called every time the form renders and is interacted with
-
 })(StreamCreate);
 
 /**
  * we are wrapping the reudxForm (formWrapped) in the connect function, kind of nesting these exports so that both the reduxForm and connect function are exported
  */
-export default connect(null, {createStream})(formWrapped);
+export default connect(
+  null, 
+  {createStream}
+)(formWrapped);

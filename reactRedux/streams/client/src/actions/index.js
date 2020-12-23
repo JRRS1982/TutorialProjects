@@ -34,11 +34,10 @@ export const signOut = () => {
  * 
  * THIS IS AN AXIOS REQUEST, WHERE WE POST ALL THE DATA THAT WILL BE FORMVALUES to this endpoint, this is the start of creating a stream. After making the post request we get a resposne back with success criteria etc. 
  */
-export const createStream = formValues => async ( dispatch, getState ) => {
-  const { userId } = getState().auth;
-  const response = streams.post("/streams", {...formValues, userId });
-  // action creator here, with a type and a payload... the response from the post request
-  dispatch({ type: CREATE_STREAM, payload: response.data });
+export const createStream = formValues => async (dispatch, getState) => {
+  const { googleUserId } = getState().auth;
+  const response = await streams.post("/streams", {...formValues, googleUserId }); 
+  dispatch({ type: CREATE_STREAM, payload: response.data });// action creator here, with a type and a payload... the response from the post request
 };
 
 export const getStreams = () => async dispatch => {

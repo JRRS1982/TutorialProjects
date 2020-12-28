@@ -358,3 +358,8 @@ A React application is a static application, that does not require any backend s
 1. Vercel.com is a provider that will deploy React apps easily - widgets deployed here -> https://react-widgets-omega.vercel.app/
 2. Netlify.com is an alternative ot Vercel, i believe you can deploy github private projects with netlify.
 3. Github! Also provides a deployment option.
+
+
+## React-Router
+
+- Each component needs to be designed to work in isolation, i.e. fetch its own data.

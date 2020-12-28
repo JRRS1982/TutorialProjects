@@ -8,7 +8,7 @@ import {
   DELETE_STREAM,
 } from "./types";
 import streams from '../apis/streams';
-
+import history from '../history';
 
 export const signIn = (googleUserId) => {
   return {
@@ -38,8 +38,7 @@ export const createStream = formValues => async (dispatch, getState) => {
   const { googleUserId } = getState().auth;
   const response = await streams.post("/streams", {...formValues, googleUserId }); 
   dispatch({ type: CREATE_STREAM, payload: response.data });// action creator here, with a type and a payload... the response from the post request
-  // programmatic navigation to send user back to streams, if the create stream request is successful.
-  
+  history.push('/');  // using the history object to push the user to the root page.
 };
 
 export const getStreams = () => async dispatch => {

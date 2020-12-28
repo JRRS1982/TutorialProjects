@@ -38,6 +38,8 @@ export const createStream = formValues => async (dispatch, getState) => {
   const { googleUserId } = getState().auth;
   const response = await streams.post("/streams", {...formValues, googleUserId }); 
   dispatch({ type: CREATE_STREAM, payload: response.data });// action creator here, with a type and a payload... the response from the post request
+  // programmatic navigation to send user back to streams, if the create stream request is successful.
+  
 };
 
 export const getStreams = () => async dispatch => {

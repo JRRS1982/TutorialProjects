@@ -15,6 +15,7 @@ const Modal = (props) => {
     <div className="ui dimmer modals visible active" onClick={props.onDismiss}>
       {/* stopPropigation below is stopping any click event from bubbling up to the higher level onClick event handler just above this, i.e. if you click outside the modal you redirect to / path, but if click inside you will not */}
       <div className="ui standard modal visible active" onClick={(e) => e.stopPropagation()}> 
+        <i className="close icon" onClick={props.onDismiss}></i>
         <div className="header">{props.title}</div>
         <div className="content">{props.content}</div>
         <div className="actions">{props.actions}</div>

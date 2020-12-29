@@ -360,9 +360,17 @@ A React application is a static application, that does not require any backend s
 3. Github! Also provides a deployment option.
 
 
-## React-Router
+## React-Router middleware
 
 - Each component needs to be designed to work in isolation, i.e. fetch its own data.
+
+## react-router-dom middleware
+
+<Switch> function on the app.js file routes to prevent multiple routes from being loaded with wildcards
+
+<Router>
+
+<Route> 
 
 ## Portals
 

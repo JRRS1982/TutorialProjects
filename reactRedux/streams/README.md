@@ -37,6 +37,7 @@ This project was created with:
 * Frameworks
 * Libraries
     - react-router-dom (the core library of the react-router)
+    - node-media-server ()
 * API's
 * CI / CD?
 * Linting / style guide

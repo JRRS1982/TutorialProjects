@@ -58,6 +58,7 @@ export const updateStream = (id, formValues) => async dispatch => {
 }
 
 export const deleteStream = (id) => async dispatch => {
-  await streams.delete(`/sreams/${id}`);
+  await streams.delete(`/streams/${id}`);
   dispatch({ type: DELETE_STREAM, payload: id }); // there is no response on delete, so we are using id of the stream for the reducer.
+  history.push('/');
 }

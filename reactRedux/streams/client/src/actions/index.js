@@ -51,9 +51,10 @@ export const getStream = (id) => async dispatch => {
   dispatch({ type: GET_STREAM, payload: response.data });
 } 
 
-export const updateStreams = (id, formValues) => async dispatch => {
-  const response = await streams.put(`/streams/${id}`, formValues); // formValues = what we want to update.
+export const updateStream = (id, formValues) => async dispatch => {
+  const response = await streams.patch(`/streams/${id}`, formValues); // formValues = what we are giving to this request to update, important to remember patch will update what we pass to it, but put will update ALL properties of what we are looking to update, so if some elemnets are missed they will be removed.
   dispatch({ type: UPDATE_STREAM, payload: response.data });
+  history.push('/');  // using the history object to push the user to the root page.
 }
 
 export const deleteStream = (id) => async dispatch => {

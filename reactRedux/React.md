@@ -363,3 +363,30 @@ A React application is a static application, that does not require any backend s
 ## React-Router
 
 - Each component needs to be designed to work in isolation, i.e. fetch its own data.
+
+## Portals
+
+React Portals are a way to get around the dom tree, and create 'modals' (popups) a bit easier. React components are typically nested deeply, and so giving a high z-index to a modal (so that it appears above all other components in the UI) may not work. 
+
+Portals extract the modal away from the tree, attach it to another element, i.e. making it a child of some other React element, typically this is attached to a div on the main html body (so there is nothing between the modal and the body that can change/create a conflict with the modals z-index or positioning).
+
+## React Fragment
+
+```
+<React.Fragment>
+  <div />
+  <div />
+</React.Fragment>
+```
+
+shorthand for this is:
+```
+<>
+  <div />
+  <div />
+</>
+```
+
+As shown in Streams/client/src/components/streams/StreamDelete.js
+
+It doesnt have any impact on the dom, normally the divs above will need to be nested in their own div, but that will impact on styling. So React.Fragment acts like an invisible div, which you can nest things in, but will not impact on the dom tree and therefore no affect styling of divs.

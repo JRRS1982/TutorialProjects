@@ -7,4 +7,6 @@ import React from "react";
  *
  * it creates a `context` for any component that it is imported into and used (see Button component), the default value of that is whatever is passed into the createContext function here.
  */
-export default React.createContext("dutch");
+export default React.createContext("english"); // default value of LanguageContext context
+
+

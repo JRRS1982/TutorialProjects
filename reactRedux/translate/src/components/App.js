@@ -3,7 +3,7 @@ import UserCreate from './UserCreate';
 
 
 class App extends React.Component {
-  state = { language: "english" };
+  state = { language: "english" }; // setting the default language as english
 
   onLanguageChange = (language) => {
     this.setState({ language });
@@ -23,7 +23,7 @@ class App extends React.Component {
             onClick={() => this.onLanguageChange("dutch")}
           />
         </div>
-        <UserCreate></UserCreate>
+        <UserCreate />
       </div>
     );
   }

@@ -2,9 +2,9 @@ import React from 'react'
 import { Field, reduxForm } from "redux-form";
 
 /**
- * a component to reduce duplication, edit and create basically use the same layout, so we are using this as a skeleton for that. 
+ * a component to reduce duplication. Edit and create basically use the same layout, so we are using this as a skeleton for that. 
  * 
- * 1. When user tries to submit a form, we are going to validate the inputs
+ * 1. When user tries to submit a form, we are going to validate the inputs 
  * 2. If valid, will call onSubmit
  * 3. onSubmit will call createStream
  * 4. createStream will post to /streams with the formValues using axios to our api server
@@ -35,7 +35,7 @@ class StreamForm extends React.Component {
     );
   }
   /**
-   * streamForm will be passed a callback from its parents component in the props, and that callback will be called with any values coming from the form
+   * streamForm will be passed a callback (props.onSubmit) from its parents component in the props, and that callback will be called with any values coming from the form. Which is what makes this reusable.
    */
   onSubmit = (formValues) => {
     this.props.onSubmit(formValues);

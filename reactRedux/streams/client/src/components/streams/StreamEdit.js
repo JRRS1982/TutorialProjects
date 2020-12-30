@@ -31,9 +31,6 @@ class StreamEdit extends React.Component {
   }
 }
 
-/**
- * state as in the state from redux store, and ownProps as in the props that is passed to this component.
- */
 const mapStateToProps = (state, ownProps) => {
   return { stream: state.streams[ownProps.match.params.id] }; // so state is where the list of streams is kept, ownProps is what is passed to this component, and therefore we can use the props (the id that is passed in via the url i.e. the params) and use that to return the stream with that id... to the stream property that is returned.
 };

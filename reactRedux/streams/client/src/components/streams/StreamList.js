@@ -10,7 +10,7 @@ class StreamList extends React.Component {
   }
 
   /**
-   * a helper function to 
+   * a helper function to show the buttons for edit and delete if the current user is the user that created the stream
    */
   renderAdmin(stream) {
     if (stream.googleUserId === this.props.currentUserId) {
@@ -33,7 +33,7 @@ class StreamList extends React.Component {
     return this.props.streams.map(stream => {
       return (
         <div className="item" key={stream.id}>
-          {this.renderAdmin(stream)} {/*render admin has to be shown before the i tag for semantic ui to work*/}
+          {this.renderAdmin(stream)} {/* render admin has to be shown before the i tag for semantic ui to work */}
           <i className="large middle aligned icon camera"></i>
           <div className="content">
             <Link to={`/streams/${stream.id}`} className="header"> 

@@ -4,16 +4,14 @@ import { connect } from "react-redux";
 import { getStream } from "../../actions";
 
 
-
 class StreamShow extends React.Component {
   constructor(props) {
     super(props);
-
     this.videoRef = React.createRef();
   }
 
-  componentDidMount() {
-    const { id } = this.props.match.params.id;
+  componentDidMount() { // called after the component is rendered for the first time
+    const { id } = this.props.match.params;
     this.props.getStream(id);     
     this.buildPlayer();
   }
@@ -22,11 +20,19 @@ class StreamShow extends React.Component {
     this.buildPlayer();
   }
 
+  /**
+   * does cleanup i.e. the video continues to be played even when you navigate away from the page, we dont give a command to stop the playing of the video... it only stops playing the stream when the stream stops. So we need to break links to the stream when we navigate away from it... which is where componentWillUnmount comes in.
+   */
+  componentWillUnmount() { 
+    this.player.destroy(); // delete the player when we unmount / navigate away from the page
+  }
+
   buildPlayer() {
-    const { id } = this.props.match.params.id;
-    if(this.player || !this.props.stream) {
+    if (this.player || !this.props.stream) {
       return;
     }
+
+    const { id } = this.props.match.params;
     /**
      * https://github.com/illuspas/Node-Media-Server#via-flvjs-over-http-flv has example code for setting up flv.... 
      * 

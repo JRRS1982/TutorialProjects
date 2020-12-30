@@ -1,19 +1,51 @@
-# API
+# Title: JsonServer API
 
-Acting as a database. 
+A small json-server project that is acting as a database.
 
-The only customisation of this has been to add the start command to the package.json.
+## Table of contents
+* [Setup](#setup)
+* [Technology](#tech)
+* [Screenshots](#screenshots)
+* [Reflection and credits](#reflection)
+
+<div id='setup'>
+
+## Setup
+
+Navigate to ./streams/api, then run the following in the terminal:
 
 ```
-// so start up json-server on port 3001, and watch the db.json file for any changes to it. 
-"start": "json-server -p 3001 -w db.json"
+npm install
+npm start
 ```
+Then this api project should be running on local host port 3001
 
-So when you run `npm start` in the project you will have a resource at `localhost:3001/streams`, if you want to create, read, update or delete elements you can do that with restful requests to this endpoint. 
+<div id='tech'>
 
-ACTION -> METHOD -> ROUTE -> RESPONSE
-List all -> GET -> /streams -> array of records 
-List one -> GET -> /streams/:id -> single record
-Create -> POST -> /streams -> single record
-Update -> PUT -> /streams/:id -> single record
-Delete -> DELETE -> /streams/:id -> nothing
+## Technology used
+
+This project was created with:
+
+* `json-server` npm package
+
+<div id='screenshots'>
+
+## Screenshots 
+
+Please see the `./docs/images` file for a screenshot of it running.
+
+<div id='reflection'>
+
+## Reflection and ideas for future development
+
+#### What did i learn?
+
+- That this kind of api can be created really quickly if you know how!
+
+#### What would i do differently?
+
+- This particular project took very little time and went well, thinking i will start to move away from tutorials soon.
+
+#### Credits
+
+- Stephen Grider React 2020 Course

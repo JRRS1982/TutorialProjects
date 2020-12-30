@@ -23,7 +23,6 @@ export const signOut = () => {
   };
 }
 
-
 /**
  * REDUX THUNK, long version of the syntax
  * 
@@ -31,30 +30,28 @@ export const signOut = () => {
  *  return (dispatch) => {
  *  }
  * };
- * 
- * THIS IS AN AXIOS REQUEST, WHERE WE POST ALL THE DATA THAT WILL BE FORMVALUES to this endpoint, this is the start of creating a stream. After making the post request we get a resposne back with success criteria etc. 
  */
-export const createStream = formValues => async (dispatch, getState) => {
+export const createStream = formValues => async (dispatch, getState) => { // create a stream
   const { googleUserId } = getState().auth;
-  const response = await streams.post("/streams", {...formValues, googleUserId }); 
-  dispatch({ type: CREATE_STREAM, payload: response.data });// action creator here, with a type and a payload... the response from the post request
-  history.push('/');  // using the history object to push the user to the root page.
+  const response = await streams.post("/streams", {...formValues, googleUserId });  // axios post request, sending formValues and googleUserId to the /streams endpoint
+  dispatch({ type: CREATE_STREAM, payload: response.data });// action creator here, with action type (CREATE_STREAM) and a payload... the response from the post request will have the success / fail response on it
+  history.push('/');  // using the history object to push the user to the root page after
 };
 
-export const getStreams = () => async dispatch => {
+export const getStreams = () => async dispatch => { // get all streams
   const response = await streams.get('/streams');
   dispatch({ type: GET_STREAMS, payload: response.data });
 }
 
-export const getStream = (id) => async dispatch => {
+export const getStream = (id) => async dispatch => { // get a stream
   const response = await streams.get(`/streams/${id}`);
   dispatch({ type: GET_STREAM, payload: response.data });
 } 
 
-export const updateStream = (id, formValues) => async dispatch => {
+export const updateStream = (id, formValues) => async dispatch => { // update a stream
   const response = await streams.patch(`/streams/${id}`, formValues); // formValues = what we are giving to this request to update, important to remember patch will update what we pass to it, but put will update ALL properties of what we are looking to update, so if some elemnets are missed they will be removed.
   dispatch({ type: UPDATE_STREAM, payload: response.data });
-  history.push('/');  // using the history object to push the user to the root page.
+  history.push('/'); // using the history object to push the user to the root page.
 }
 
 export const deleteStream = (id) => async dispatch => {

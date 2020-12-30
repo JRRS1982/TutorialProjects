@@ -15,6 +15,7 @@ class StreamDelete extends React.Component {
     const { id } = this.props.match.params;
 
     return (
+      // React.Fragment acts like an invisible div, we need to nest Link, but if we were to do that in a div it may change the styling.
       <React.Fragment>
         <Link to="/" className="ui button">
           Cancel
@@ -28,13 +29,10 @@ class StreamDelete extends React.Component {
       </React.Fragment>
     );
   }
-
-  /**
-   * handle the initial state - the component will be rendered, and only then will componentDidMount be called, so the stream will not be available straight away
-   */
+  
   renderContent() {
     if (!this.props.stream) {
-      return 'Are you sure you want to delete this stream?';
+      return 'Are you sure you want to delete this stream?'; // handle initial state, on first render there will be no stream, as getStream is called by componentDidMount only after the component has been rendered, which then triggers a re-render with the stream. 
     } 
     return `Are you sure you want to delete the stream called: ${this.props.stream.title}`;
   }

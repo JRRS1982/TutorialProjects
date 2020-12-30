@@ -398,3 +398,12 @@ shorthand for this is:
 As shown in Streams/client/src/components/streams/StreamDelete.js
 
 It doesnt have any impact on the dom, normally the divs above will need to be nested in their own div, but that will impact on styling. So React.Fragment acts like an invisible div, which you can nest things in, but will not impact on the dom tree and therefore no affect styling of divs.
+
+
+## React Props System
+
+`Gets data from a parent component to *a direct* child component`
+
+## React Context System
+
+`Gets data from a parent component to *any* nested child component` it allows the communication of data to a very deeply nested component.

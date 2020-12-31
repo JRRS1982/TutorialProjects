@@ -1,6 +1,8 @@
 import React from "react";
 import UserCreate from './UserCreate';
 import LanguageContext from '../contexts/LanguageContext';
+import ColourContext from '../contexts/ColourContext';
+
 
 class App extends React.Component {
   state = { language: "english" }; // setting the default language as english
@@ -25,9 +27,11 @@ class App extends React.Component {
         </div>
         
         {/* wrapping UserCreate in the LanguageContext like this is providing the 'context' with the value of state, without the LanguageContext wrap the UserCreate and its children will rely on default value */}
-        <LanguageContext.Provider value={this.state.language}>
-          <UserCreate />
-        </LanguageContext.Provider>
+        <ColourContext.Provider value="red">
+          <LanguageContext.Provider value={this.state.language}>
+            <UserCreate />
+          </LanguageContext.Provider>
+        </ColourContext.Provider>
       </div>
     );
   }

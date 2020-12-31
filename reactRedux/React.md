@@ -407,3 +407,17 @@ It doesnt have any impact on the dom, normally the divs above will need to be ne
 ## React Context System
 
 `Gets data from a parent component to *any* nested child component` it allows the communication of data to a very deeply nested component.
+
+Context system is not as good are redux, if we want to use the context system we need to:
+- be able to get data to any component in our hierachy
+- be able to seperate our view logic from the business logic
+- be able to split up the business logic (i.e. not have huge files)
+
+Benefits 
+- No need for an extra library - the only real benefit.
+
+Negatives
+- Hard to build store components with cross store relationships
+- Redux has good documentation
+- Redux has well known design patterns
+- Redux has a lot of open source libraries

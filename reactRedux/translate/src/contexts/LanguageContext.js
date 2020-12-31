@@ -7,6 +7,29 @@ import React from "react";
  *
  * it creates a `context` for any component that it is imported into and used (see Button component), the default value of that is whatever is passed into the createContext function here.
  */
-export default React.createContext("english"); // default value of LanguageContext context
 
+const Context = React.createContext('english');
 
+export class LanguageStore extends React.Component {
+  state = { language: 'english' }; // default
+
+  onLanguageChange = (language) => { // callback to set
+    this.setState({ language });
+  };
+
+  render() {
+    return (
+      <Context.Provider value={{ ...this.state, onLanguageChange: this.onLanguageChange }}>
+        {/* we pass this component some JSX, which can be other components we have created... they show up on this component as this.props.children  */}
+        {this.props.children} 
+      </Context.Provider>
+    );
+  }
+}
+
+export default Context;
+
+/** 
+ * so import LanguageContext from './LanguageContext'; to import the vanilla Context
+ * or import { LanguageStore } ... to import this component
+*/

@@ -4,31 +4,31 @@
 
 A rough summary:
 
-- React - a reconciler - knows how to work with components
-- ReactDom - a renderer - knows how to take instructions and HTML
-- State - data in the system, that may change over time.
-- useState - used to make react update the HTMl on the page
-- Babel - a command line tool that can take any version of Javascript and spit out a newer version of it. Its included in every new install of a React project. This is required as a web browser where the project is executed may not support newer versions of Javascript. It consists of a huge number or npm packages.
-- Webpack - a bundler system. 
+- `React` - a reconciler - knows how to work with components
+- `ReactDom` - a renderer - knows how to take instructions and HTML
+- `State` - data in the system, that may change over time.
+- `useState` - used to make react update the HTMl on the page
+- `Babel` - a command line tool that can take any version of Javascript and spit out a newer version of it. Its included in every new install of a React project. This is required as a web browser where the project is executed may not support newer versions of Javascript. It consists of a huge number or npm packages.
+- `Webpack` - a bundler system. 
 
 ## React Project Directories
 
-A rough summary:
+A rough summary of this directory layout:
 
-- /src - directory where we put all the source code.
-    - /src/components - typically where you build components
-    - /src/hooks - typically where you build custom hooks
-- /public - directory where we store all static files like images.
-- /node_modules - directory that contains all the projects dependencies.
-- package.json - records the projects dependencies and configures the project.
-- package-lock.json - records the exact version of the dependencies we install.
+- `/src` - directory where we put all the source code.
+    - `/src/components` - typically where you build components
+    - `/src/hooks` - typically where you build custom hooks
+- `/public` - directory where we store all static files like images.
+- `/node_modules` - directory that contains all the projects dependencies.
+- `package.json` - records the projects dependencies and configures the project.
+- `package-lock.json` - records the exact version of the dependencies we install.
 
 ## Formatting
 
-Components are typically in PascalCase
-hooks are typically in camelCase
+- Components are typically in PascalCase
+- Hooks are typically in camelCase
 
-## Project Setup
+## Installation
 ```
 // install a project with `create-react-app <projectName>`
 npx create-react-app exampleAppName

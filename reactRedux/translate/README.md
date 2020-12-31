@@ -1,12 +1,3 @@
-
-
-
-App is the root, so we are storing state in that, which is where the language is declared and can be read from. So in App, we are reading state.language and passing that into the LanguageContext.Provider, which is creating a context for anthing nested within it. 
-
-.Provider is a React component that is created by the context system.
-
-.Consumer is another component that is created by the context system. 
-
 # Title: Translate
 
 This is a create-react-app project that explores the use of React Context, a single page which has field, and button components which will change from english to dutch language depending on the current state of the LanguageStore, which is updated by clicking on the flag on the page. 
@@ -67,6 +58,7 @@ All about Context in React, and Provider and Consumer.
 - Context object createContext is a vessel for holding a default value or value from the parent component, which is used by the Consumer of the nested child, or is available in this.context of the nested child component, i.e. passes props by a different name. 
 - Provider and Consumer.
     - Consumer (see Button.js) is always passed one argument, that argument is a function and that function is automatically called with whatever value is currently in the 'pipe' aka what is given in the Provider. 
+- .Consumer and .Providers are provided by the context system.
 
 #### What would i do differently?
 

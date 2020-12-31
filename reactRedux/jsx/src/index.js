@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-
 // Create a react component
 const App = () => {
   const buttonText = "Click me";

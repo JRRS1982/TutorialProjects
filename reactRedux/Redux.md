@@ -1,62 +1,40 @@
 # Redux
 
-A state management library - it attempts to manage the data of an application in an easier way than can be done in just React.
+A state management library - it helps manage state, in an easier way than can be done in plain React.
+
+## Contents
+
+- Installation
+- Redux Dev Tools
+- Redux Code Flow
+- Middleware
+    - redux-thunk
+    - redux-form
+- Useful reducer examples
+
 
 ## Installation of Redux
 
 1. Install React `create-react-app <projectName>`
 2. Install Redux and React-Redux `npm install --save redux react-redux`
 
-## Extensions
+## Packages (commonly used with redux)
 
-- react-redux is used in redux projects, and allows the integration of redux into react projects.
-- axios - helps us make network requests.
-- redux-thunk is a middleware, which helps make network requests from the redux side of the application.
+- `react-redux` is used in redux projects, and allows the integration of redux into react projects.
+- `redux-thunk` is a middleware, which helps make network requests from the redux side of the application.
+- `redux-form` middleware to reduce the amout of code when working with forms.
 
-## Redux Dev Tools 
+---
 
-A chrome extension, that is very useful in discovering state / what actions have been triggered, [Github repo here](https://github.com/zalmoxisus/redux-devtools-extension#usage)
+## Redux Code Flow
 
-`Installation of redux dev tools` required more than just installing the chrome extension, you also need to add this to your project in the code:
+1. `Action Creator` 
+2. `Action`
+3. `Dispatch`
+4. `Reducer`
+5. `State`
 
-```
-// in the root index.js, import compose and applyMiddleware, you will already be using createStore if you are working with Redux.
-import { createStore, applyMiddleware, compose } from "redux";
-
-// setup
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// apply
-const store = createStore(
-  reducers,
-  composeEnhancers(applyMiddleware())
-);
-
-```
-Once the installation is completed the chrome extension called redux dev tools, which you have added to chrome will light up (identify the web app you are on uses its middleware) and show the actions that take place and the state at a given time, and allow you to jump around the app to different state.
-
-`Debugging with redux dev tools`
-
-Once setup, adding `localhost:3000?debug_session=<some_string>` (i.e. `?debug_session=123TestAThing`) in the browser url will trigger redux dev tools to start a debug session, which will auto save all data in redux store, which will persist across page refreshes, which is normally lost on page refresh - so you can see what action triggers the page to be reloaded.
-
-## How Redux (Thunk) Handles Data / Works
-
-1. Component gets rendered onto the screen
-    - Components are generally responsible for fetching data they need by calling an action creator.
-2. Component's `componentDidMount` lifecycle method gets called
-3. We call `action creator` from componentDidMount
-4. Action creator runs code to make an API request
-    - Action creators are responsible for making API requests - this is where redux-thunk comes in. 
-5. API responds with data
-6. Action creator return an `action` with the fetched data on the `payload` property and a `type` i.e. name.
-7. Some reducer will see the action and return the data off the payload. 
-    - We get fetched data into a component by generating a new state in the redux store, then pushing that through to the component via the mapStateToProps function.
-    - mapStateToProps is how Redux connects/sends data to React.
-8. Because we generated a new state object, redux/react-redux will cause the React app to rerender
-
-## Redux Cycle
-
-1. Action Creator
+- Action Creator
     - An action creator `must` return an action object, it is its only purpose. To change the state of our state, this is what we call.
     - async can not be used in an action creator, as the response we get back (with the data that is assigned to the action and therefore reducer) will not be available for the reducer to act on. Something like redux-thunk (middleware) is used to manage this.
     - redux-thunk will allow you to return action objects and functions, without it, it is not possible.
@@ -154,8 +132,72 @@ const policies = (listOfPolicies = [], action) => {
 }
 
 ```
-5. State
+5. State: 
+
+Eventually the state of the application is updated! 
+
+---
+
+## Redux Dev Tools 
+
+- A chrome extension, that is very useful in discovering state / what actions have been triggered: [Github Repo](https://github.com/zalmoxisus/redux-devtools-extension#usage)
+- `INSTALL`: It is more than just adding a chrome extension, you need to add code to your application.
+
+```
+// in the root index.js, import compose and applyMiddleware, you will already be using createStore if you are working with Redux.
+import { createStore, applyMiddleware, compose } from "redux";
+
+// setup
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+// apply
+const store = createStore(
+  reducers,
+  composeEnhancers(applyMiddleware())
+);
+
+```
+Once the installation is completed the chrome extension called redux dev tools, which you have added to chrome will light up (identify the web app you are on uses its middleware) and show the actions that take place and the state at a given time, and allow you to jump around the app to different state.
+
+- `Debugging with redux dev tools`
+
+Once setup, adding `localhost:3000?debug_session=<some_string>` (i.e. `?debug_session=123TestAThing`) in the browser url will trigger redux dev tools to start a debug session, which will auto save all data in redux store, which will persist across page refreshes, which is normally lost on page refresh - so you can see what action triggers the page to be reloaded.
+
+---
+
+## Redux Thunk
+
+Middleware that allows action creators to return a function instead of an action object, and will call that function for you. Normally action creators are only able to return actions. 
+
+`example here:` reactRedux/blog/src/actions/index.js
+
+- If an action object is returned it must have a type. 
+- If an action object gets returned, it can optionally have a payload. i.e. a payload is no longer essential.
+
+### How it works:
+
+1. Component gets rendered onto the screen
+    - Components are generally responsible for fetching data they need by calling an action creator.
+2. Component's `componentDidMount` lifecycle method gets called
+3. We call `action creator` from componentDidMount
+4. Action creator runs code to make an API request
+    - Action creators are responsible for making API requests - this is where redux-thunk comes in. 
+5. API responds with data
+6. Action creator return an `action` with the fetched data on the `payload` property and a `type` i.e. name.
+7. Some reducer will see the action and return the data off the payload. 
+    - We get fetched data into a component by generating a new state in the redux store, then pushing that through to the component via the mapStateToProps function.
+    - mapStateToProps is how Redux connects/sends data to React.
+8. Because we generated a new state object, redux/react-redux will cause the React app to rerender
+
+
+Middleware sits between the actions and reducers, a dispatch of the action will send the action to the middleware first, in the case of redux-thunk an object will be passed straight through to the reducers, but a function will be:
+
+1. Invoked, and passed the `dispatch` and `getState` functions as arguments. 
+2. Redux thunk is told to dispatch its internal action at its leisure (i.e. wait for a response then dispatch an action).
+
+---
     - central repository of all information - after being updated waits until another change is required.
+
 
 
 ## Middleware
@@ -178,20 +220,7 @@ ReactDOM.render(
 );
 ```
 
-## Redux-Thunk
 
-Example/notes here: reactRedux/blog/src/actions/index.js
-
-Redux-Thunk allows action creators to return a function, and will call that function for you.
-
-Normatlly action creators are only able to return actions, but if you use redux-thunk then action creators are able to return action objects or functions.
-
-- If an action object is returned it must have a type. 
-- If an action object gets returned, it can optionally have a payload. i.e. a payload is no longer essential.
-
-Middleware sits between the actions and reducers, a dispatch of the action will send the action to the middleware first, in the case of redux-thunk an object will be passed straight through to the reducers, but a function will be:
-1. Invoked, and passed the `dispatch` and `getState` functions as arguments. 
-2. It is also told to dispatch its internal action at its leisure (i.e. wait for a response then dispatch an action).
 
 ---
 
@@ -230,19 +259,17 @@ action here is what is returned by the action creator, i.e. an action, that acti
 store.dispatch(action)
 ```
 
-## Redux-form 
+---
 
-https://redux-form.com/8.3.0/docs/api/
+## redux-form 
 
 Middleware to remove some of the repetitive nature of building interactions between the component and the redux store i.e. mapStateToProps and action creators.
 
-Docs are found here [redux-form.com](https://redux-form.com/8.3.0/) under examples you will find some excellent documentation.
-
-[Wizard Form](https://redux-form.com/8.3.0/examples/wizard/) is one of the common forms that is used widly. 
+Docs are found here [redux-form.com](https://redux-form.com/8.3.0/) under examples you will find some excellent documentation. [Wizard Form](https://redux-form.com/8.3.0/examples/wizard/) is one of the common forms and is used widly. 
 
 ### Installation 
 
-Immport `reducer` from redux-form, and set it as `form` in the reducers index.js file i.e. where the other reducers are combined and saved to the store.
+Import `reducer` from redux-form, and set it as `form` in the reducers index.js file i.e. where the other reducers are combined and saved to the store.
 
 ```
 import { reducer as formReducer } from 'redux-form'
@@ -264,4 +291,3 @@ Dont forget to validate the contents of a form, to ensure it has at least some v
 On initial render of a form (when using redux-form) and when it is interacted with a `validate` function is called with all of the data from that form. You will need to define that validate function with the error checks you wish to carry out, and you should can define it outside of the component.
 
 See StreamCreate.js for an exampe of this (validate function) the validate function is created outside of the component and neeeds to be added to the connector / reduxForm function (i.e. at the bottom) so it is passed up.
-

@@ -13,5 +13,5 @@
 - 🌟 Udemy: [Typescript - The Complete Developers Guide 2020](https://www.udemy.com/course/typescript-the-complete-developers-guide/) 25 hours of video plus projects to create
 - 🌕 Docker: [Getting started](https://github.com/docker/getting-started) get up and running project
 - 🌗 Udemy: [Docker and Kubernetes - The Complete Guide](https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/) 22 hours of video plus projects to complete (50% complete, reached a point when the course was more advanced than i needed for work)
-- 🌑 Udemy: [Modern React with Redux 2020](https://www.udemy.com/course/react-redux/) 52 hours of video plus projects to create
+- 🌟 Udemy: [Modern React with Redux 2020](https://www.udemy.com/course/react-redux/) 52 hours of video plus projects to create
 - 🌑 Udemy: [NodeJS - The Complete Guide (MVC, REST, APIs, GQL, Deno)](https://www.udemy.com/course/nodejs-the-complete-guide/) 41 hours of video plus projects

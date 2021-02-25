@@ -1,0 +1,26 @@
+atomicwrites==1.3.0
+attrs==19.1.0
+Click==7.0
+coverage==4.5.4
+decorator==4.4.0
+Flask==1.1.1
+-e git+git@github.com:JRRS1982/flask-tutorial.git@dbe1045a03679a1703b1f884d61ff1310dc2269e#egg=flaskr
+gunicorn==19.9.0
+importlib-metadata==0.19
+itsdangerous==1.1.0
+Jinja2==2.10.1
+MarkupSafe==1.1.1
+more-itertools==7.2.0
+packaging==19.1
+pluggy==0.12.0
+public==2019.4.13
+py==1.8.0
+pyparsing==2.4.2
+pytest==5.1.2
+self==2019.4.13
+six==1.12.0
+virtualenv==16.7.4
+waitress==1.3.1
+wcwidth==0.1.7
+Werkzeug==0.15.5
+zipp==0.6.0

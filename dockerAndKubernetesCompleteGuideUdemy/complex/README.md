@@ -1,8 +1,8 @@
 # Title: Complex
 
-Probably my favourite project to date.
+Probably my favorite project to date.
 
-A way more complicated than it needs to be Fibonacci calculator. Using multiple container images and a CI / CD workflow that is bloomin complicated! AWS Elastic Beanstalk, AWS Relational Database, AWS Elastic Cache all in use and being deployed only on merge of master branch.
+A way more complicated than it needs to be Fibonacci calculator. Using multiple container images and a CI / CD workflow that is complicated! AWS Elastic Beanstalk, AWS Relational Database, AWS Elastic Cache all in use and being deployed only on merge of master branch.
 
 See my notes on this course in [docs/notes](./docs/notes.md) that is where i have most of the material about the project itself. 
 
@@ -53,7 +53,7 @@ This project was created with:
 * Docker
     - Dockerrun.aws.json
 
-### Coding pattterns used
+### Coding patterns used
 
 No particular pattern was used in this project.
 
@@ -61,15 +61,15 @@ No particular pattern was used in this project.
 
 ## Tests and style guide
 
-No tests or styleguide was used in this project.
+No tests or style guide was used in this project.
 
 <div id='screenshots'>
 
 ## Screenshots 
 
-Currently there are no screenshots, but if it get to it, they will be saved in `docs/images`
+Currently there are no screenshots, but if I get to it, they will be saved in `docs/images`
 
-<div id='reflection'>
+<div id='reflection' />
 
 ## Reflection and ideas for future development
 
@@ -77,12 +77,12 @@ The project is complete and this is as far as I have got with this course, I cur
 
 #### What did i learn?
 
-- A shit tonne about AWS, a tonne about Travis, a metric shit tonne about Docker and more than I am going to be summarise / remember.
+- A shit tonne about AWS, a tonne about Travis, a metric shit tonne about Docker and more than I am going to be summarize / remember.
 
 #### What would i do differently?
 
-- Write better notes, I am definetly going to be referring back to this project in the future. 
-- I am going to do this project again at somepoint.
+- Write better notes, I am going to be referring back to this project in the future. 
+- I am going to do this project again at some point.
 
 #### Credits
 - [Stephen Grider: Docker and Kubernetes Udemy Course](https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/)

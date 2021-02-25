@@ -29,9 +29,9 @@ The core navigation library, this is not installed manually.
 
 ## react-router-dom
 
-Naviation for dom based apps. This is the librrary that you would need to install if you wanted to work work. This is what you want when you are working with web applications. 
+Naviation for dom based apps. This is the library that you would need to install for it to work with web applications.
 
-Simple example here of how it can be used - where PageOne and PageTwo are components that are displated to the dom if the url is '/' or pageTwo.
+A simple example here of how it can be used - where PageOne and PageTwo are components that are shown to the dom if the url is '/' or pageTwo.
 
 ```
 

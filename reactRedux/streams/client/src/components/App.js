@@ -14,15 +14,15 @@ const App = () => {
     <div className="ui container">
       {/* Router / BrowserRouter has a default history implementation, instead of using that we have created a history object that we will use, we need this as it allows more than just the components to refer to the history, i.e. action creators will be able to use it / redirect the user if we have it */}
       <Router history={history}>
-        <Header></Header>
+        <Header/>
         <div>
-          {/* Switch from react-router-dom will prevent multiple routese from being loaded withe the : wildcards. */}
+          {/* Switch from react-router-dom will prevent multiple routes from being loaded withe the : wildcards. */}
           <Switch>
-            <Route path="/" exact component={StreamList}></Route>
-            <Route path="/streams/new" exact component={StreamCreate}></Route>
-            <Route path="/streams/edit/:id" exact component={StreamEdit}></Route>
-            <Route path="/streams/delete/:id" exact component={StreamDelete}></Route>
-            <Route path="/streams/:id" exact component={StreamShow}></Route>
+            <Route path="/" exact component={StreamList} />
+            <Route path="/streams/new" exact component={StreamCreate} />
+            <Route path="/streams/edit/:id" exact component={StreamEdit} />
+            <Route path="/streams/delete/:id" exact component={StreamDelete} />
+            <Route path="/streams/:id" exact component={StreamShow} />
           </Switch>
         </div>
       </Router>

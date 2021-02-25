@@ -43,7 +43,7 @@ export default () => {
 
   return (
     <div>
-    <Header />
+      <Header />
       <Route path="/">
         {/* Accordion will appear in the Route component as a prop called children */}
         <Accordion items={items} /> 

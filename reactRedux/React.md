@@ -362,15 +362,20 @@ A React application is a static application, that does not require any backend s
 
 ## React-Router middleware
 
-- Each component needs to be designed to work in isolation, i.e. fetch its own data.
+- This is a core navigation library, which is never installed by itself, we are going to be selecting one of 
 
-## react-router-dom middleware
+- react-router-dom
+    - This is the navigation for dom-based apps.
 
-<Switch> function on the app.js file routes to prevent multiple routes from being loaded with wildcards
+    <Switch> function on the app.js file routes to prevent multiple routes from being loaded with wildcards
+    <Router>
+    <Route> 
 
-<Router>
+-  react-router-native 
+    - Navigation for react-router native apps
 
-<Route> 
+- react-router-redux
+    - Bindings between redux and react router
 
 ## Portals
 

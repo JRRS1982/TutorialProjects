@@ -1,0 +1,144 @@
+/* remove browser default formatting */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* give the page a splash of colour */
+body{
+  background-image: linear-gradient(120deg, #C0E4F1, #fda085 );
+  color: white;
+  font-family: "Roboto", sans-serif;
+  min-height: 100vh;
+}
+
+header{
+  font-size: 1.5rem;
+  color: grey;
+}
+
+/* center things */
+header, form{
+  min-height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* remove border from form */
+form input, form button{
+  padding: 0.4rem;
+  font-size: 1.5rem;
+  border: none;
+}
+
+/* add a transition and colour to the form button */
+form button{
+   color: #fda085;
+   background: white;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+
+/* invert colour when hover on button on the form */
+form button:hover{
+  background: #fda085;
+  color: white;
+}
+
+.todo-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todo-list{
+  min-width: 30%;
+  list-style: none;
+}
+
+.todo {
+  margin: 0.5rem; 
+  background: white;
+  color: black;
+  font-size: 1rem;
+  display: flex; /* so items sit nicely */
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/*  */
+.todo li {
+  flex: 1
+}
+
+/*  */
+.delete-btn,
+.complete-btn {
+  background-color:#fda085; 
+  color: white;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.complete-btn {
+  background: green
+  ;
+}
+
+.todo-item {
+  padding: 0rem 0.5rem;
+}
+
+/* so you cant click on the icon in the todo item delete and check buttons */
+.fa-trash,
+.fa.check { 
+  pointer-events: none;
+}
+
+.completed{
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.fall{
+  transform: translateY(12rem) rotateZ(540deg);
+  opacity: 0;
+}
+
+/*CUSTOM SELECTOR */
+select {
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background-image: none;
+}
+
+/* Custom Select */
+.select {
+  margin: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+select {
+  color: #ff6f47;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  width: 12rem;
+  padding: 1rem;
+}
+
+.select::after {
+  content: "\25BC";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  background: #ff6f47;
+  cursor: pointer;
+  pointer-events: none;
+}

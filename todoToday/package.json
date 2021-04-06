@@ -1,0 +1,15 @@
+{
+  "name": "todotoday",
+  "version": "1.0.0",
+  "description": "- nodemon ``` npm install nodemon --save-dev ```   -  Add it to your package start script nodemon library: an always on node process library - watch for changes in your code with this.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server ./src"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
+}

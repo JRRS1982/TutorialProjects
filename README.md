@@ -6,7 +6,7 @@
 - 🌑 Haven't started
 - 🥮 **Wouldn't recommend**This is a list of some of the courses that I have started/finished, or have an ongoing interest in completing.
 
-## Courses to complete
+## Tutorials / Courses
 
 - 🌟 Udemy: [Javascript Essentials](https://www.udemy.com/course/javascript-essentials/) 7 hours of video
 - 🌟 Udemy: [Typescript - The Complete Developers Guide 2020](https://www.udemy.com/course/typescript-the-complete-developers-guide/) 25 hours of video plus projects to create

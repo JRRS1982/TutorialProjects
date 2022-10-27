@@ -1,33 +1,34 @@
 # Getting started with Docker
 
-https://github.com/docker/getting-started
+<https://github.com/docker/getting-started>
 
 ## Creating a Docker Image
-```
+
+```shell
 docker build -t getting-started .
 ```
-1. Where -t getting-started is tagging / naming the image 'getting-started'
+
+1. Where `-t getting-started` is tagging aka naming the image 'getting-started'
 2. Don't forget the .
 
 To start the container:
-```
+
+```shell
 docker run -dp 3000:3000 getting-started
 ```
+
 1. Creates a mapping between the hosts port 3000 and the containers port 3000
-2. Application should then be running on http://localhost:3000
+2. Application should then be running on `http://localhost:3000`
 3. You can't have the same port used by more than one container - so check out what is running.
 
-To find out what containers are running:
-```
+```shell
+// To find out what containers are running:
 docker ps
-```
 
-To stop a container from running:
-```
+// To stop a container from running
 docker stop <exampleContainerID>
-```
-You may then want to remove the container:
-```
+
+// You may then want to remove the container
 docker rm <exampleContainerID>
 
 // or by forcing it
@@ -36,20 +37,15 @@ docker rm -f <exampleContainerID>
 
 ---
 
-## Sharing the Docker Image:
+## Sharing the Docker Image
 
 1. Create a repository on docker by logging into docker hub and following the simple commands to create a new public repository.
 
-2. Push the image that you have just created / want to share to the public repo.
+2. Push the image `docker push exampleDockerUserName/exampleDockerImageName` that you have just created / want to share to the public repo.
 
-```
-docker push exampleDockerUserName/exampleDockerImageName
-```
+3. Your image may have a different name to that which is found remotely. So you may need to change the name of the local image
 
-Your image may have a different name to that which is found remotely. So you may need to change the name of the local image:
-
-3. Change the local docker image name.
-```
+```shell
 // find the name of the local image
 docker image ls
 
@@ -78,49 +74,61 @@ docker run -dp 3000:3000 exampleDockerUserName/getting-started
 
 A docker container doesn't retain information, that isn't provided as part of its setup. i.e. each new container doesn't have what have a record of what has been done in a different container.
 
-1. Create a named volume on the docker host, that will hold the data your you want to use in other containers. todo-db being the name of the volume being created for this db. 
-```
+1. Create a named volume on the docker host, that will hold the data your you want to use in other containers. todo-db being the name of the volume being created for this db.
+
+```shell
 docker volume create todo-db
 ```
+
 2. Start the todo container, but add -v flag to specify a volume to mount. We will use the named volume and mount it to /etc/todos, which will capture all files created at the path.
 
-```
+```shell
 // this creates the exampleContainerName, but affixes (-v) the todo-db:/etc/todos volume to it.
 docker run -dp 3000:3000 -v todo-db:/etc/todos exampleContainerName
 ```
+
 3. Boom you are done. The volume has been created and as its been mounted / fixed onto the container the data created in the container will persist into other containers that use this volume.
 
-* Where is that data actually being stored though? 
+* Where is that data actually being stored though?
+
 ```
 docker volume inspect todo-db
 // "Mountpoint" will show where exactly the file is.
 ```
+
 ---
 
 ## Bind mounts (live updates)
+
 Named volumes as shown in persisting the db above allow us to save data, but the location of that data is not specified. Bind mounts control the exact mount point on the host. This can be used to persist data, but also to provide additional data into containers - such as source code. When working on an application we can use a bind mount to mount our source code into the container and let it/us see code changes right away, rather than rebuilding a new container.
 
 1. Do some fancy code
+
 ```
 docker run -dp 3000:3000 \
     -w /app -v $PWD:/app \
     node:12-alpine \
     sh -c "yarn install && yarn run dev"
 ```
+
 Notes:
-- If the port is not free it will not work - need to stop any other containers that are using that port, or pick another one.
-- Will need this folder to be shared - Docker > Preferences > File-sharing
-- -dp 3000:3000 Run in (-d) detached (background) mode and create a (-p) port mapping
-- w /app - sets the "working directory" or the current directory that the command will run from
-- node:12-alpine - the image to use. Note that this is the base image for our app from the Dockerfile
-- sh -c "yarn install && yarn run dev" - the command. We're starting a shell using sh (alpine doesn't have bash) and running yarn install to install all dependencies and then running yarn run dev. If we look in the package.json, we'll see that the dev script is starting nodemon.
+
+* If the port is not free it will not work - need to stop any other containers that are using that port, or pick another one.
+* Will need this folder to be shared - Docker > Preferences > File-sharing
+* -dp 3000:3000 Run in (-d) detached (background) mode and create a (-p) port mapping
+* w /app - sets the "working directory" or the current directory that the command will run from
+* node:12-alpine - the image to use. Note that this is the base image for our app from the Dockerfile
+* sh -c "yarn install && yarn run dev" - the command. We're starting a shell using sh (alpine doesn't have bash) and running yarn install to install all dependencies and then running yarn run dev. If we look in the package.json, we'll see that the dev script is starting nodemon.
 
 2. Watch the logs / wait for the code to complete executing.
-```
+
+```shell
 docker logs -f <containerID>
 ```
+
 When the below shows it will have finished .
-```
+
+```shell
 docker logs -f <container-id>
 $ nodemon src/index.js
 [nodemon] 1.19.2
@@ -132,26 +140,34 @@ Listening on port 3000
 ```
 
 3. Boom, your done - now when you make changes in the source code it will be immediately be reflected in the app at port 3000. When you are finished with this container stop it and when you need another one to work in run:
-```
+
+```shell
 docker build -t exampleContainerName
 ```
+
 ---
+
 ## Multi container apps
 
 Each container should do one thing, and do it as well as possible. If two containers are on the same network then they can talk to each other, otherwise they cant. This is a good thing.
 
 There are two ways to put a container on a network
-- Assign it at the start.
-- Connect an existing container.
 
-### Creating the network then attaching the mysql container;
+* Assign it at the start.
+* Connect an existing container.
+
+### Creating the network then attaching the mysql container
+
 1. Create the network.
-```
+
+```shell
 // create the network and name it todo-app
 docker network create todo-app
 ```
+
 2. Start a mysql container and attach it to the network
-```
+
+```shell
 // start a mysql container from the docker hub image.
 // attach the mysql container to the todo-app network.
 // define a few environment variables for the database.
@@ -163,33 +179,41 @@ docker run -d \
     -e MYSQL_DATABASE=todos \
     mysql:5.7
 ```
-3. Check that the database is up and running. 
-```
+
+3. Check that the database is up and running.
+
+```shell
 docker exec -it <mysql-container-id> mysql -p
 ```
-- when the prompt for a password appears type in 'secret' - we have just set the password above.
-- this should put you into the mysql shell
-- then 'SHOW DATABASES;' which should show the todos database!
-- reminder these environment variables/passwords should be secret - not covered in this.
+
+* when the prompt for a password appears type in 'secret' - we have just set the password above.
+
+* this should put you into the mysql shell
+* then 'SHOW DATABASES;' which should show the todos database!
+* reminder these environment variables/passwords should be secret - not covered in this.
 
 4. Boom! You have created a mysql database
 
 ---
+
 ## Connecting to mysql
 
 If we run another container on the same network, how do we find the container? (each container has its own IP address)?
 
-To figure it out, we're going to make use of the nicolaka/netshoot https://github.com/nicolaka/netshoot container, which ships with a lot of tools that are useful for troubleshooting or debugging networking issues.
+To figure it out, we're going to make use of the nicolaka/netshoot <https://github.com/nicolaka/netshoot> container, which ships with a lot of tools that are useful for troubleshooting or debugging networking issues.
 
 1. Start a new container using the nicolaka/netshoot image. Make sure to connect it to the same network.
+
 ```
 docker run -it --network todo-app nicolaka/netshoot
 ```
+
 2. Use the dig command inside the container, which is a useful DNS tool - we're going to look up the IP address for the hostname mysql.
 
 ```
 dig mysql
 ```
+
 And you'll get an output like this...
 
 ```
@@ -219,13 +243,15 @@ What this means is... our app only simply needs to connect to a host named mysql
 
 Useful article on env vars and why they should not be used in production. Currently at work we are saving env vars in circle ci and linking to them via variables.
 
-https://diogomonica.com/2017/03/27/why-you-shouldnt-use-env-variables-for-secret-data/
+<https://diogomonica.com/2017/03/27/why-you-shouldnt-use-env-variables-for-secret-data/>
 
 1. set mysql environment variables.
-- MYSQL_HOST
-- MYSQL_USER
-- MYSQL_PASSWORD
-- MYSQL_DB
+
+* MYSQL_HOST
+
+* MYSQL_USER
+* MYSQL_PASSWORD
+* MYSQL_DB
 
 ```
 // remember the 3000 port needs to be clear
@@ -239,7 +265,9 @@ docker run -dp 3000:3000 \
   node:12-alpine \
   sh -c "yarn install && yarn run dev"
 ```
+
 2. Docker logs the container 'docker logs <container-id>', we should see a message indicating it's using the mysql database.
+
 ```
 $ nodemon src/index.js
 [nodemon] 1.19.2
@@ -249,12 +277,16 @@ $ nodemon src/index.js
 Connected to mysql db at host mysql
 Listening on port 3000
 ```
+
 3. Add a few items to the todo list on your localhost 3000
 4. Connect to mysql database and prove that the items have been written there.
+
 ```
 docker exec -ti <mysql-container-id> mysql -p todos
 ```
+
 and when in sql shell
+
 ```
 select * from todo_items;
 
@@ -265,14 +297,16 @@ select * from todo_items;
 | 2912a79e-8486-4bc3-a4c5-460793a575ab | Be awesome!        |         0 |
 +--------------------------------------+--------------------+-----------+
 ```
+
 5. BOOM!!!!! You have a persistent mysql database with two docker containers, one for the app, and another for mysql which is where the app saves its data! Awesome!
 
 Basically there is a lot to do to start up an application
-- create a network
-- start containers
-- specify the env vars
-- expose the correct ports
-- more
+
+* create a network
+* start containers
+* specify the env vars
+* expose the correct ports
+* more
 
 ... 'Docker Compse' makes its easier.
 
@@ -281,26 +315,35 @@ Basically there is a lot to do to start up an application
 # Docker Compose
 
 1. Check that its installed already
+
 ```
 docker-compose version
 ```
+
 2. Install it if not.
 3. Create a file called docker-compose.yml at the root of your app project.
 4. Define the schema version - check versions and compatibility:
-https://docs.docker.com/compose/compose-file/
+<https://docs.docker.com/compose/compose-file/>
+
 ```
 version: "3.7"
 ```
+
 5. Define the list of services (or containers)
+
 ```
 version: "3.7"
 services: 
 ```
+
 6. Migrate the services created manually above into the compose file.
+
 ---
+
 ## Define the app service in docker-compose file
 
 This was the command we used to define the app container.
+
 ```
 docker run -dp 3000:3000 \
   -w /app -v $PWD:/app \
@@ -314,6 +357,7 @@ docker run -dp 3000:3000 \
 ```
 
 1. Define the service entry (i.e. name - 'app') and image for the container. The name will automatically become a network alias, which will be useful with mysql connection.
+
 ```
 version: "3.7"
 
@@ -321,7 +365,9 @@ services:
   app:
     image: node:12-alpine
 ```
+
 2. There is no ordering, but 'command' often follows, recap that this command opens shell, installs and runs the image.
+
 ```
 version: "3.7"
 
@@ -332,7 +378,8 @@ services:
 ```
 
 3. Using short or long syntax for defining the ports for the service.
-https://docs.docker.com/compose/compose-file/#long-syntax-1
+<https://docs.docker.com/compose/compose-file/#long-syntax-1>
+
 ```
 version: "3.7"
 
@@ -343,7 +390,9 @@ services:
     ports:
       - 3000:3000
 ```
+
 4. Working directory and volume mapping.
+
 ```
 // Next, we'll migrate both the working directory (-w /app) and the volume mapping (-v $PWD:/app) by using the working_dir and volumes definitions. Volumes also has a short https://docs.docker.com/compose/compose-file/#short-syntax-3 and long https://docs.docker.com/compose/compose-file/#long-syntax-3 syntax.
 
@@ -359,7 +408,9 @@ services:
     volumes:
       - ./:/app
 ```
-5. Environment variables. 
+
+5. Environment variables.
+
 ```
 version: "3.7"
 
@@ -378,12 +429,15 @@ services:
       MYSQL_PASSWORD: secret
       MYSQL_DB: todos
 ```
-6. Boom your done - the app container has been dockerised. 
+
+6. Boom your done - the app container has been dockerised.
 
 ---
+
 ## Defining the mysql service
 
-The command that was used: 
+The command that was used:
+
 ```
 docker run -d \
   --network todo-app --network-alias mysql \
@@ -392,6 +446,7 @@ docker run -d \
   -e MYSQL_DATABASE=todos \
   mysql:5.7
 ```
+
 1. Define the new service and name it mysql so that it automatically gets the network alias.
 
 ```
@@ -404,9 +459,10 @@ services:
     image: mysql:5.7
 ```
 
-2. Now define the volume mapping. When we ran the container with docker run, the named volume was created automatically. However, that doesn't happen when running with Compose. We need to define the volume in the top-level volumes: section and then specify the mount point in the service config. By simply providing only the volume name, the default options are used. There are many more options available though. https://docs.docker.com/compose/compose-file/#volume-configuration-reference
+2. Now define the volume mapping. When we ran the container with docker run, the named volume was created automatically. However, that doesn't happen when running with Compose. We need to define the volume in the top-level volumes: section and then specify the mount point in the service config. By simply providing only the volume name, the default options are used. There are many more options available though. <https://docs.docker.com/compose/compose-file/#volume-configuration-reference>
 
-- i.e. we need to make a volume in the volumes: section (at the root level of the file) and then mount that volume where you need it in the services.
+* i.e. we need to make a volume in the volumes: section (at the root level of the file) and then mount that volume where you need it in the services.
+
 ```
 version: "3.7"
 
@@ -425,6 +481,7 @@ volumes:
 ```
 
 3. And then specify the environment variables
+
 ```
 version: "3.7"
 
@@ -442,7 +499,9 @@ services:
 volumes:
   todo-mysql-data:
 ```
+
 4. BOOM! Your done the docker-compose.yml file should look like:
+
 ```
 version: "3.7"
 
@@ -472,9 +531,10 @@ services:
 volumes:
   todo-mysql-data:
 ```
+
 ## Running the application with docker compose
 
-```
+```shell
 // check if there are any other running instances
 docker ps
 
@@ -487,34 +547,40 @@ docker-compose up -d
 
 By default docker compose automatically creates a network specifically for the network stack, so we did not need to define one in the docker-compose file.
 
-```
+```shell
 /// checkout the docker logs - this will show a single stream of all the services (-f follows the log - a live stream)
 docker-compose logs -f
 ```
 
 Notes
-- docker dashboard - by default the project name is the name of the directory that the docker-compose.yml was located in, if you look in the project in docker dashboard the two containers names will follow the pattern of <project-name>_<service-name>_<replica-number>
-- 
-```
+
+* docker dashboard - by default the project name is the name of the directory that the docker-compose.yml was located in, if you look in the project in docker dashboard the two containers names will follow the pattern of <project-name>_<service-name>_<replica-number>
+
+```shell
 // bring the project down
 docker-compose down
 ```
 
 ---
-## Optimizing
+
+##  Optimizing
+
 Rather than download the same dependencies for each service, on a node.js project a file called package.json can assist by caching the dependencies.
 
 Insert the package.json into the Dockerfile, to help support the caching of dependencies. Basically this says copy the contents of the package.json file into the project, then install them before you copy everything else in.
 From (what it was):
-```
+
+```shell
 FROM node:12-alpine
 WORKDIR /app
 COPY . .
 RUN yarn install --production
 CMD ["node", "/app/src/index.js"]
 ```
-To (what is should now be): 
-```
+
+To (what is should now be):
+
+```shell
 FROM node:12-alpine
 WORKDIR /app
 COPY package.json yarn.lock ./
@@ -524,12 +590,15 @@ CMD ["node", "/app/src/index.js"]
 ```
 
 Build it again
-```
+
+```shell
 docker build -t getting-started
 ```
+
 This should now show 'Using cache' at some steps through the build - and it should build much quicker.
 
 ---
+
 ## Multi stage build
 
 React Example
